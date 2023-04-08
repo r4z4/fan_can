@@ -1,0 +1,38 @@
+<.header>
+  Candidate <%= @candidate.id %>
+  <:subtitle>This is a candidate record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/candidates/#{@candidate}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit candidate</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Prefix"><%= @candidate.prefix %></:item>
+  <:item title="F name"><%= @candidate.f_name %></:item>
+  <:item title="L name"><%= @candidate.l_name %></:item>
+  <:item title="Suffix"><%= @candidate.suffix %></:item>
+  <:item title="State"><%= @candidate.state %></:item>
+  <:item title="District"><%= @candidate.district %></:item>
+  <:item title="Residence"><%= @candidate.residence %></:item>
+  <:item title="Type"><%= @candidate.type %></:item>
+  <:item title="Party"><%= @candidate.party %></:item>
+  <:item title="Cpvi"><%= @candidate.cpvi %></:item>
+  <:item title="Incumbent since"><%= @candidate.incumbent_since %></:item>
+  <:item title="Dob"><%= @candidate.dob %></:item>
+  <:item title="Attachments"><%= @candidate.attachments %></:item>
+</.list>
+
+<.back navigate={~p"/candidates"}>Back to candidates</.back>
+
+<.modal :if={@live_action == :edit} id="candidate-modal" show on_cancel={JS.patch(~p"/candidates/#{@candidate}")}>
+  <.live_component
+    module={FanCanWeb.CandidateLive.FormComponent}
+    id={@candidate.id}
+    title={@page_title}
+    action={@live_action}
+    candidate={@candidate}
+    patch={~p"/candidates/#{@candidate}"}
+  />
+</.modal>

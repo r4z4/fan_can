@@ -1,0 +1,53 @@
+<.header>
+  Listing Candidates
+  <:actions>
+    <.link patch={~p"/candidates/new"}>
+      <.button>New Candidate</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="candidates"
+  rows={@streams.candidates}
+  row_click={fn {_id, candidate} -> JS.navigate(~p"/candidates/#{candidate}") end}
+>
+  <:col :let={{_id, candidate}} label="Prefix"><%= candidate.prefix %></:col>
+  <:col :let={{_id, candidate}} label="F name"><%= candidate.f_name %></:col>
+  <:col :let={{_id, candidate}} label="L name"><%= candidate.l_name %></:col>
+  <:col :let={{_id, candidate}} label="Suffix"><%= candidate.suffix %></:col>
+  <:col :let={{_id, candidate}} label="State"><%= candidate.state %></:col>
+  <:col :let={{_id, candidate}} label="District"><%= candidate.district %></:col>
+  <:col :let={{_id, candidate}} label="Residence"><%= candidate.residence %></:col>
+  <:col :let={{_id, candidate}} label="Type"><%= candidate.type %></:col>
+  <:col :let={{_id, candidate}} label="Party"><%= candidate.party %></:col>
+  <:col :let={{_id, candidate}} label="Cpvi"><%= candidate.cpvi %></:col>
+  <:col :let={{_id, candidate}} label="Incumbent since"><%= candidate.incumbent_since %></:col>
+  <:col :let={{_id, candidate}} label="Dob"><%= candidate.dob %></:col>
+  <:col :let={{_id, candidate}} label="Attachments"><%= candidate.attachments %></:col>
+  <:action :let={{_id, candidate}}>
+    <div class="sr-only">
+      <.link navigate={~p"/candidates/#{candidate}"}>Show</.link>
+    </div>
+    <.link patch={~p"/candidates/#{candidate}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, candidate}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: candidate.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="candidate-modal" show on_cancel={JS.patch(~p"/candidates")}>
+  <.live_component
+    module={FanCanWeb.CandidateLive.FormComponent}
+    id={@candidate.id || :new}
+    title={@page_title}
+    action={@live_action}
+    candidate={@candidate}
+    patch={~p"/candidates"}
+  />
+</.modal>
