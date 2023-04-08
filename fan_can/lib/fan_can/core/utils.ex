@@ -13,8 +13,16 @@ defmodule FanCan.Core.Utils do
         "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]
     end
 
+    def territories do
+        ["American Samoa", "Guam", "Northern Mariana Islands", "Peurto Rico", "Virgin Islands", "District of Columbia"]
+    end
+
     def seats do
-        [:senator, :judge, :legislator, :comptroller, :mayor, :governor, :sherrif, :assessor]
+        [:senator, :judge, :legislator, :comptroller, :mayor, :governor, :sherrif, :board_member, council_member, public_defender ]
+    end
+
+    def parties do
+        [:republican, :democrat, :independent, :libertarian, :other_party]
     end
 
     def attachment_types do

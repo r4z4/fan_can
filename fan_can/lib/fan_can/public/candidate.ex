@@ -12,7 +12,7 @@ defmodule FanCan.Public.Candidate do
     field :f_name, :string
     field :incumbent_since, :date
     field :l_name, :string
-    field :party, Ecto.Enum, values: [:republican, :democrat, :independent, :other]
+    field :party, Ecto.Enum, values: Urils.parties
     field :prefix, :string
     field :residence, :string
     field :state, Ecto.Enum, values: Utils.states
@@ -25,7 +25,7 @@ defmodule FanCan.Public.Candidate do
   @doc false
   def changeset(candidate, attrs) do
     candidate
-    |> cast(attrs, [:prefix, :f_name, :l_name, :suffix, :state, :district, :residence, :type, :party, :cpvi, :incumbent_since, :dob, :attachments])
-    |> validate_required([:prefix, :f_name, :l_name, :suffix, :state, :district, :residence, :type, :party, :cpvi, :incumbent_since, :dob, :attachments])
+    |> cast(attrs, [:prefix, :f_name, :l_name, :suffix, :state, :district, :residence, :seat, :party, :cpvi, :incumbent_since, :dob, :attachments])
+    |> validate_required([:prefix, :f_name, :l_name, :suffix, :state, :district, :residence, :seat, :party, :cpvi, :incumbent_since, :dob, :attachments])
   end
 end

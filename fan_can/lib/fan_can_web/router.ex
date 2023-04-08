@@ -21,6 +21,7 @@ defmodule FanCanWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/home", HomeLive
     live "/elections", ElectionLive.Index, :index
     live "/elections/new", ElectionLive.Index, :new
     live "/elections/:id/edit", ElectionLive.Index, :edit
@@ -41,6 +42,13 @@ defmodule FanCanWeb.Router do
 
     live "/candidates/:id", CandidateLive.Show, :show
     live "/candidates/:id/show/edit", CandidateLive.Show, :edit
+
+    live "/forums", ForumLive.Index, :index
+    live "/forums/new", ForumLive.Index, :new
+    live "/forums/:id/edit", ForumLive.Index, :edit
+
+    live "/forums/:id", ForumLive.Show, :show
+    live "/forums/:id/show/edit", ForumLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

@@ -8,7 +8,7 @@
   </:actions>
 </.header>
 
-<img src={@image.path} />
+<img class="h-32 w-32" src={@image_path} />
 
 <.list>
   <:item title="Prefix"><%= @candidate.prefix %></:item>
@@ -18,7 +18,7 @@
   <:item title="State"><%= @candidate.state %></:item>
   <:item title="District"><%= @candidate.district %></:item>
   <:item title="Residence"><%= @candidate.residence %></:item>
-  <:item title="Type"><%= @candidate.type %></:item>
+  <:item title="Type"><%= @candidate.seat %></:item>
   <:item title="Party"><%= @candidate.party %></:item>
   <:item title="Cpvi"><%= @candidate.cpvi %></:item>
   <:item title="Incumbent since"><%= @candidate.incumbent_since %></:item>
