@@ -11,7 +11,8 @@ defmodule FanCan.Repo.Migrations.CreateCandidates do
       add :state, :string
       add :district, :integer
       add :residence, :string
-      add :type, :string
+      # Enums in Schema just strings in DB
+      add :seat, :string
       add :party, :string
       add :cpvi, :string
       add :incumbent_since, :date

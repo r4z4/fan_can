@@ -12,4 +12,12 @@ defmodule FanCan.Core.Utils do
         "New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
         "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"]
     end
+
+    def seats do
+        [:senator, :judge, :legislator, :comptroller, :mayor, :governor, :sherrif, :assessor]
+    end
+
+    def attachment_types do
+        [:image, :pdf]
+    end
 end

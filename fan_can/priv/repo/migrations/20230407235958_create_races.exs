@@ -6,9 +6,7 @@ defmodule FanCan.Repo.Migrations.CreateRaces do
       add :id, :binary_id, primary_key: true
       add :candidates, {:array, :binary_id}
       add :seat, :string
-      add :year, :integer
-      add :election_date, :date
-      add :state, :string
+      add :election_id, references(:elections, type: :binary_id, on_delete: :nothing)
       add :elect_percentage, :integer
       add :district, :integer
       add :attachments, {:array, :binary_id}

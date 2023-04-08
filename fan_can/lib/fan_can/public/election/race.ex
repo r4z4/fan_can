@@ -7,14 +7,11 @@ defmodule FanCan.Public.Election.Race do
   schema "races" do
     field :attachments, {:array, :binary_id}
     field :candidates, {:array, :binary_id}
+    field :election_id, :binary_id
     field :district, :integer
     field :elect_percentage, :integer
-    field :election_date, :date
-    field :seat, :string
-    field :state, Ecto.Enum, values: Utils.states
-    field :year, :integer
-    field :elect, :id
-
+    field :seat, Ecto.Enum, values: Utils.seats
+    field :elect, :binary_id
     timestamps()
   end
 

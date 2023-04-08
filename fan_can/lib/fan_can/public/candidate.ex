@@ -17,7 +17,7 @@ defmodule FanCan.Public.Candidate do
     field :residence, :string
     field :state, Ecto.Enum, values: Utils.states
     field :suffix, :string
-    field :type, :string
+    field :seat, Ecto.Enum, values: Utils.seats
 
     timestamps()
   end

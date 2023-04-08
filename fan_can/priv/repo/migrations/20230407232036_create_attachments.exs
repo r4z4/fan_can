@@ -6,6 +6,7 @@ defmodule FanCan.Repo.Migrations.CreateAttachments do
       add :id, :binary_id, primary_key: true
       add :title, :string
       add :path, :string
+      add :type, :string
       add :data, :binary
 
       timestamps()
