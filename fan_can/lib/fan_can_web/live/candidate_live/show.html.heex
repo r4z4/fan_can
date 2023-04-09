@@ -12,17 +12,24 @@
 
 <.list>
   <:item title="Prefix"><%= @candidate.prefix %></:item>
-  <:item title="F name"><%= @candidate.f_name %></:item>
-  <:item title="L name"><%= @candidate.l_name %></:item>
+  <:item title="First name"><%= @candidate.f_name %></:item>
+  <:item title="Last name"><%= @candidate.l_name %></:item>
   <:item title="Suffix"><%= @candidate.suffix %></:item>
   <:item title="State"><%= @candidate.state %></:item>
+  <:item title="Birth State"><%= @candidate.birth_state %></:item>
+  <:item title="Education">
+    <ul>
+      <%= for item <- @candidate.education do %>
+        <li><%= item %></li>
+      <%= end %>
+    </ul>
+  </:item>
   <:item title="District"><%= @candidate.district %></:item>
-  <:item title="Residence"><%= @candidate.residence %></:item>
-  <:item title="Type"><%= @candidate.seat %></:item>
+  <:item title="Seat"><%= @candidate.seat %></:item>
   <:item title="Party"><%= @candidate.party %></:item>
-  <:item title="Cpvi"><%= @candidate.cpvi %></:item>
+  <:item title="CPVI"><%= @candidate.cpvi %></:item>
   <:item title="Incumbent since"><%= @candidate.incumbent_since %></:item>
-  <:item title="Dob"><%= @candidate.dob %></:item>
+  <:item title="DOB"><%= @candidate.dob %></:item>
   <:item title="Attachments"><%= @candidate.attachments %></:item>
 </.list>
 

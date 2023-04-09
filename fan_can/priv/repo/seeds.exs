@@ -93,26 +93,51 @@ Repo.insert_all(User, [
 Repo.insert_all(Attachment, [
       %{id: "a7f44567-e031-44f1-aae6-972d7aabbb45", type: :image, title: "Test Democrat", path: "https://upload.wikimedia.org/wikipedia/commons/b/bb/PavelTravnicek2022.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "a5f44567-e031-44f1-aae6-972d7aabbb45", type: :image, title: "Test Republican", path: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Roy_Dale_Cope.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "a8f14567-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Rep_2022", path: "https://upload.wikimedia.org/wikipedia/commons/9/94/Adrian_Smith_116th_Congress.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "a6f14567-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Rep_2022", path: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Mike_Flood_117th_Congress_%28cropped%29.jpeg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "a2f14567-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Rep_2022", path: "https://upload.wikimedia.org/wikipedia/commons/5/5f/Don_Bacon_portrait_%28118th_Congress%29.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "a5f44967-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Gov_2018", path: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Sen._Pete_Ricketts_official_portrait%2C_118th_Congress.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "a5f88967-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Gov_2022", path: "https://upload.wikimedia.org/wikipedia/commons/7/72/Jim_Pillen_%28cropped%29.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "a5f44567-e031-44f1-aae6-972d7aabbb49", type: :image, title: "AK_Gov", path: "https://en.wikipedia.org/wiki/Mike_Dunleavy_(politician)#/media/File:Mike_Dunleavy_official_photo.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()}
 ])
 # Removing IDs but will need them for prod likely (binary_id vs. int)
 Repo.insert_all(Candidate, [
       %{id: "0e31998f-503f-4218-a801-c8bb7ff9498b", prefix: :Mr, f_name: "Robert", l_name: "Boyd", suffix: :Jr, incumbent_since: nil, dob: ~D[1976-05-05], district: 10, attachments: ["a7f44567-e031-44f1-aae6-972d7aabbb45"],
-      party: :Democrat, cpvi: "D+20", residence: "Douglas", education: ["University of Nebraska-Lincoln"], birth_state: :NE, state: :NE, seat: :Senator, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      party: :Democrat, cpvi: "D+20", education: ["University of Nebraska-Lincoln"], birth_state: :NE, state: :NE, seat: :Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "0e91998f-503f-4218-a801-c8bb7ff9498b", prefix: nil, f_name: "Joe", l_name: "Trumpet", suffix: :III, incumbent_since: ~D[2020-11-04], dob: ~D[1980-09-01], district: 10, attachments: ["a5f44567-e031-44f1-aae6-972d7aabbb45"],
-      party: :Republican, cpvi: "R+10", residence: "Lancaster", education: ["University of Nebraska-Omaha"], birth_state: :NE, state: :NE, seat: :Senator, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      party: :Republican, cpvi: "R+10", education: ["University of Nebraska-Omaha"], birth_state: :NE, state: :NE, seat: :Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "0e91798f-503f-4218-a801-c8bb7ff9498b", prefix: :Dr, f_name: "Judson", l_name: "Frazier", suffix: nil, incumbent_since: ~D[2016-11-04], dob: ~D[1980-09-01], district: 3, attachments: nil,
-      party: :Republican, cpvi: "R+30", residence: "Holt", education: ["University of Nebraska-Lincoln"], birth_state: :NE, state: :NE, seat: :Judge, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      party: :Republican, cpvi: "R+30", education: ["University of Nebraska-Lincoln"], birth_state: :NE, state: :NE, seat: :Judge, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "0e91198f-503f-4218-a801-c8bb7ff9498b", prefix: nil, f_name: "Pete", l_name: "Ricketts", suffix: nil, incumbent_since: nil, dob: ~D[1964-08-19], district: nil, attachments: ["a5f44967-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "R+30", education: ["University of Chicago"], birth_state: :NE, state: :NE, seat: :Governor, end_date: ~D[2023-01-05], inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      # NE Gov Race E.g.
+      %{id: "0e97798f-503f-4218-a801-c8bb7ff9498b", prefix: nil, f_name: "Jim", l_name: "Pillen", suffix: nil, incumbent_since: ~D[2023-01-05], dob: ~D[1955-12-31], district: nil, attachments: ["a5f88967-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "R+30", education: ["University of Nebraska Lincoln", "Kansas State University"], birth_state: :NE, state: :NE, seat: :Governor, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "0e97798f-503f-4218-a801-c8bb7ff3498b", prefix: nil, f_name: "Carol", l_name: "Blood", suffix: nil, incumbent_since: ~D[2017-01-04], dob: ~D[1961-03-05], district: 3, attachments: nil,
+      party: :Democrat, cpvi: "D+20", education: ["Metropolitan Community College"], birth_state: :NE, state: :NE, seat: :Legislator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+
+      # NE House Reps
+      %{id: "0e97798f-503f-4218-a801-c8bb1ff9498b", prefix: nil, f_name: "Mike", l_name: "Flood", suffix: nil, incumbent_since: ~D[2022-07-12], dob: ~D[1975-02-23], district: 1, attachments: ["a6f14567-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "R+9", education: ["University of Notre Dame", "University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :Representative, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "0e97798f-503f-4218-a801-c8bb2ff9498b", prefix: nil, f_name: "Don", l_name: "Bacon", suffix: nil, incumbent_since: ~D[2017-01-03], dob: ~D[1963-08-16], district: 2, attachments: ["a2f14567-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "EVEN", education: ["Northern Illinois University", "University of Phoenix", "National War College"], birth_state: :IL, state: :NE, seat: :Representative, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "0e97798f-503f-4218-a801-c8bb3ff9498b", prefix: nil, f_name: "Adrian", l_name: "Smith", suffix: nil, incumbent_since: ~D[2007-01-04], dob: ~D[1970-12-19], district: 3, attachments: ["a8f14567-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "R+29", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :Representative, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+
+      %{id: "0e91138f-503f-4218-a801-c8bb7ff3398b", prefix: nil, f_name: "Pete", l_name: "Ricketts", suffix: nil, incumbent_since: ~D[2023-01-23], dob: ~D[1964-08-19], district: nil, attachments: ["a5f44967-e031-44f1-aae6-972d7aabbb45"],
+      party: :Republican, cpvi: "R+30", education: ["University of Chicago"], birth_state: :NE, state: :NE, seat: :Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "0e91778f-503f-4218-a801-c8bb7ff9498b", prefix: nil, f_name: "Mike", l_name: "Dunleavy", suffix: nil, incumbent_since: ~D[2018-12-03], dob: ~D[1961-05-06], district: nil, attachments: ["a5f44567-e031-44f1-aae6-972d7aabbb49"],
-      party: :Republican, cpvi: "R+30", residence: "Juneau", education: ["Misericordia University", "University of Alaska Fairbanks"], birth_state: :PA, state: :AK, seat: :Governor, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      party: :Republican, cpvi: "R+30", education: ["Misericordia University", "University of Alaska Fairbanks"], birth_state: :PA, state: :AK, seat: :Governor, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
 ])
 
 Repo.insert_all(Election, [
-      %{id: "a1f44567-e031-44f1-aae6-972d7aabbb45", desc: "2024 General Election", election_date: ~D[2024-11-01], state: :NE, year: 2024, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "a1f44567-e031-44f1-aae6-972d7aabbb45", desc: "2022 General Election", election_date: ~D[2022-11-01], state: :NE, year: 2022, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
 ])
 
+# Elect % 0.0 for non-race (appointments, emergency positions etc...). Add a notes col or table
 Repo.insert_all(Race, [
-      %{seat: :Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: nil, elect: nil, district: 10, candidates: ["0e31998f-503f-4218-a801-c8bb7ff9498b", "0e91998f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{seat: :Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 0.0, elect: "0e91138f-503f-4218-a801-c8bb7ff3398b", district: nil, candidates: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :Governor, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 59.7, elect: "0e97798f-503f-4218-a801-c8bb7ff9498b", district: nil, candidates: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
 

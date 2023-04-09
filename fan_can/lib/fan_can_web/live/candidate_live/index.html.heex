@@ -8,30 +8,31 @@
 </.header>
 
 <.table
+  class="w-full"
   id="candidates"
   rows={@streams.candidates}
   row_click={fn {_id, candidate} -> JS.navigate(~p"/candidates/#{candidate}") end}
 >
   <:col :let={{_id, candidate}} label="Prefix"><%= candidate.prefix %></:col>
-  <:col :let={{_id, candidate}} label="F name"><%= candidate.f_name %></:col>
-  <:col :let={{_id, candidate}} label="L name"><%= candidate.l_name %></:col>
+  <:col :let={{_id, candidate}} label="First name"><%= candidate.f_name %></:col>
+  <:col :let={{_id, candidate}} label="Last name"><%= candidate.l_name %></:col>
   <:col :let={{_id, candidate}} label="Suffix"><%= candidate.suffix %></:col>
   <:col :let={{_id, candidate}} label="Birth State"><%= candidate.birth_state %></:col>
   <:col :let={{_id, candidate}} label="Education">
     <ul>
       <%= for item <- candidate.education do %>
-        <li>item</li>
+        <li><%= item %></li>
       <%= end %>
     </ul>
   </:col>
   <:col :let={{_id, candidate}} label="State"><%= candidate.state %></:col>
   <:col :let={{_id, candidate}} label="District"><%= candidate.district %></:col>
-  <:col :let={{_id, candidate}} label="Residence"><%= candidate.residence %></:col>
   <:col :let={{_id, candidate}} label="Type"><%= candidate.seat %></:col>
   <:col :let={{_id, candidate}} label="Party"><%= candidate.party %></:col>
-  <:col :let={{_id, candidate}} label="Cpvi"><%= candidate.cpvi %></:col>
+  <:col :let={{_id, candidate}} label="CPVI"><%= candidate.cpvi %></:col>
   <:col :let={{_id, candidate}} label="Incumbent since"><%= candidate.incumbent_since %></:col>
-  <:col :let={{_id, candidate}} label="Dob"><%= candidate.dob %></:col>
+  <:col :let={{_id, candidate}} label="End Date"><%= candidate.end_date %></:col>
+  <:col :let={{_id, candidate}} label="DOB"><%= candidate.dob %></:col>
   <:col :let={{_id, candidate}} label="Attachments"><%= candidate.attachments %></:col>
   <:action :let={{_id, candidate}}>
     <div class="sr-only">

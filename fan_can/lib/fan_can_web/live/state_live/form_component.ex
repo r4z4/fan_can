@@ -22,9 +22,7 @@ defmodule FanCanWeb.StateLive.FormComponent do
         <.input field={@form[:id]} type="number" label="Id" />
         <.input field={@form[:name]} type="text" label="Name" />
         <.input field={@form[:code]} type="text" label="Code" />
-        <.input field={@form[:population]} type="number" label="Population" />
         <.input field={@form[:num_districts]} type="number" label="Num districts" />
-        <.input field={@form[:capital_city]} type="text" label="Capital city" />
         <:actions>
           <.button phx-disable-with="Saving...">Save State</.button>
         </:actions>

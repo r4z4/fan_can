@@ -26,8 +26,8 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
           prompt="Choose a value"
           options={Ecto.Enum.values(FanCan.Public.Candidate, :prefix)}
         />
-        <.input field={@form[:f_name]} type="text" label="F name" />
-        <.input field={@form[:l_name]} type="text" label="L name" />
+        <.input field={@form[:f_name]} type="text" label="First name" />
+        <.input field={@form[:l_name]} type="text" label="Last name" />
         <.input
           field={@form[:suffix]}
           type="select"
@@ -50,8 +50,7 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
           options={Ecto.Enum.values(FanCan.Public.Candidate, :birth_state)}
         />
         <.input field={@form[:district]} type="number" label="District" />
-        <.input field={@form[:residence]} type="text" label="Residence" />
-        <.input field={@form[:type]} type="text" label="Type" />
+        <.input field={@form[:type]} type="text" label="Seat" />
         <.input
           field={@form[:party]}
           type="select"
@@ -59,9 +58,13 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
           prompt="Choose a value"
           options={Ecto.Enum.values(FanCan.Public.Candidate, :party)}
         />
-        <.input field={@form[:cpvi]} type="text" label="Cpvi" />
+        <.input field={@form[:cpvi]} type="text" label="CPVI" />
         <.input field={@form[:incumbent_since]} type="date" label="Incumbent since" />
-        <.input field={@form[:dob]} type="date" label="Dob" />
+        <.input field={@form[:dob]} type="date" label="DOB" />
+
+        <.live_file_input upload={@file} />
+        <button type="submit">Upload</button>
+        
         <.input
           field={@form[:attachments]}
           type="select"

@@ -9,7 +9,6 @@ defmodule FanCan.Public.State do
     field :code, Ecto.Enum, values: Utils.states
     field :name, Ecto.Enum, values: Utils.state_names
     field :num_districts, :integer
-    field :population, :integer
     field :governor, :binary_id
 
     timestamps()
@@ -18,7 +17,7 @@ defmodule FanCan.Public.State do
   @doc false
   def changeset(state, attrs) do
     state
-    |> cast(attrs, [:id, :name, :code, :population, :num_districts, :capital_city])
-    |> validate_required([:id, :name, :code, :population, :num_districts, :capital_city])
+    |> cast(attrs, [:id, :name, :code, :num_districts])
+    |> validate_required([:id, :name, :code, :num_districts])
   end
 end
