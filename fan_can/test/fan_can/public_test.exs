@@ -140,4 +140,68 @@ defmodule FanCan.PublicTest do
       assert %Ecto.Changeset{} = Public.change_election(election)
     end
   end
+
+  describe "states" do
+    alias FanCan.Public.State
+
+    import FanCan.PublicFixtures
+
+    @invalid_attrs %{capital_city: nil, code: nil, id: nil, name: nil, num_districts: nil, population: nil}
+
+    test "list_states/0 returns all states" do
+      state = state_fixture()
+      assert Public.list_states() == [state]
+    end
+
+    test "get_state!/1 returns the state with given id" do
+      state = state_fixture()
+      assert Public.get_state!(state.id) == state
+    end
+
+    test "create_state/1 with valid data creates a state" do
+      valid_attrs = %{capital_city: "some capital_city", code: "some code", id: 42, name: "some name", num_districts: 42, population: 42}
+
+      assert {:ok, %State{} = state} = Public.create_state(valid_attrs)
+      assert state.capital_city == "some capital_city"
+      assert state.code == "some code"
+      assert state.id == 42
+      assert state.name == "some name"
+      assert state.num_districts == 42
+      assert state.population == 42
+    end
+
+    test "create_state/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Public.create_state(@invalid_attrs)
+    end
+
+    test "update_state/2 with valid data updates the state" do
+      state = state_fixture()
+      update_attrs = %{capital_city: "some updated capital_city", code: "some updated code", id: 43, name: "some updated name", num_districts: 43, population: 43}
+
+      assert {:ok, %State{} = state} = Public.update_state(state, update_attrs)
+      assert state.capital_city == "some updated capital_city"
+      assert state.code == "some updated code"
+      assert state.id == 43
+      assert state.name == "some updated name"
+      assert state.num_districts == 43
+      assert state.population == 43
+    end
+
+    test "update_state/2 with invalid data returns error changeset" do
+      state = state_fixture()
+      assert {:error, %Ecto.Changeset{}} = Public.update_state(state, @invalid_attrs)
+      assert state == Public.get_state!(state.id)
+    end
+
+    test "delete_state/1 deletes the state" do
+      state = state_fixture()
+      assert {:ok, %State{}} = Public.delete_state(state)
+      assert_raise Ecto.NoResultsError, fn -> Public.get_state!(state.id) end
+    end
+
+    test "change_state/1 returns a state changeset" do
+      state = state_fixture()
+      assert %Ecto.Changeset{} = Public.change_state(state)
+    end
+  end
 end

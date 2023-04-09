@@ -9,6 +9,7 @@ defmodule FanCan.Repo.Migrations.CreateCandidates do
       add :l_name, :string
       add :suffix, :string
       add :state, :string
+      add :birth_state, :string
       add :district, :integer
       add :residence, :string
       # Enums in Schema just strings in DB
@@ -17,6 +18,7 @@ defmodule FanCan.Repo.Migrations.CreateCandidates do
       add :cpvi, :string
       add :incumbent_since, :date
       add :dob, :date
+      add :education, {:array, :string}
       add :attachments, {:array, :binary_id}
 
       timestamps()

@@ -2,6 +2,7 @@ defmodule FanCan.Public.Election do
   use Ecto.Schema
   import Ecto.Changeset
   alias FanCan.Core.Utils
+  
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "elections" do

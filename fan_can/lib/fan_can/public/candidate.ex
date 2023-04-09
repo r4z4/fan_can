@@ -2,21 +2,24 @@ defmodule FanCan.Public.Candidate do
   use Ecto.Schema
   import Ecto.Changeset
   alias FanCan.Core.Utils
+  
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "candidates" do
     field :attachments, {:array, :binary_id}
+    field :education, {:array, :string}
     field :cpvi, :string
     field :district, :integer
     field :dob, :date
     field :f_name, :string
     field :incumbent_since, :date
     field :l_name, :string
-    field :party, Ecto.Enum, values: Urils.parties
-    field :prefix, :string
+    field :party, Ecto.Enum, values: Utils.parties
+    field :prefix, Ecto.Enum, values: Utils.prefixes
     field :residence, :string
     field :state, Ecto.Enum, values: Utils.states
-    field :suffix, :string
+    field :birth_state, Ecto.Enum, values: Utils.states
+    field :suffix, Ecto.Enum, values: Utils.suffixes
     field :seat, Ecto.Enum, values: Utils.seats
 
     timestamps()

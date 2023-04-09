@@ -46,4 +46,23 @@ defmodule FanCan.PublicFixtures do
 
     election
   end
+
+  @doc """
+  Generate a state.
+  """
+  def state_fixture(attrs \\ %{}) do
+    {:ok, state} =
+      attrs
+      |> Enum.into(%{
+        capital_city: "some capital_city",
+        code: "some code",
+        id: 42,
+        name: "some name",
+        num_districts: 42,
+        population: 42
+      })
+      |> FanCan.Public.create_state()
+
+    state
+  end
 end

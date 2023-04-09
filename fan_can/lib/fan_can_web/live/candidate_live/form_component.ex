@@ -19,11 +19,36 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:prefix]} type="text" label="Prefix" />
+        <.input
+          field={@form[:prefix]}
+          type="select"
+          label="Prefix"
+          prompt="Choose a value"
+          options={Ecto.Enum.values(FanCan.Public.Candidate, :prefix)}
+        />
         <.input field={@form[:f_name]} type="text" label="F name" />
         <.input field={@form[:l_name]} type="text" label="L name" />
-        <.input field={@form[:suffix]} type="text" label="Suffix" />
-        <.input field={@form[:state]} type="text" label="State" />
+        <.input
+          field={@form[:suffix]}
+          type="select"
+          label="Suffix"
+          prompt="Choose a value"
+          options={Ecto.Enum.values(FanCan.Public.Candidate, :suffix)}
+        />
+        <.input
+          field={@form[:state]}
+          type="select"
+          label="State"
+          prompt="Choose a value"
+          options={Ecto.Enum.values(FanCan.Public.Candidate, :state)}
+        />
+        <.input
+          field={@form[:birth_state]}
+          type="select"
+          label="Birth State"
+          prompt="Choose a value"
+          options={Ecto.Enum.values(FanCan.Public.Candidate, :birth_state)}
+        />
         <.input field={@form[:district]} type="number" label="District" />
         <.input field={@form[:residence]} type="text" label="Residence" />
         <.input field={@form[:type]} type="text" label="Type" />

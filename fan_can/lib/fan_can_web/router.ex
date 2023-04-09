@@ -29,6 +29,13 @@ defmodule FanCanWeb.Router do
     live "/elections/:id", ElectionLive.Show, :show
     live "/elections/:id/show/edit", ElectionLive.Show, :edit
 
+    live "/states", StateLive.Index, :index
+    live "/states/new", StateLive.Index, :new
+    live "/states/:id/edit", StateLive.Index, :edit
+
+    live "/states/:id", StateLive.Show, :show
+    live "/states/:id/show/edit", StateLive.Show, :edit
+
     live "/races", RaceLive.Index, :index
     live "/races/new", RaceLive.Index, :new
     live "/races/:id/edit", RaceLive.Index, :edit
