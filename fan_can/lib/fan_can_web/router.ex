@@ -21,41 +21,6 @@ defmodule FanCanWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    live "/home", HomeLive
-    live "/elections", ElectionLive.Index, :index
-    live "/elections/new", ElectionLive.Index, :new
-    live "/elections/:id/edit", ElectionLive.Index, :edit
-
-    live "/elections/:id", ElectionLive.Show, :show
-    live "/elections/:id/show/edit", ElectionLive.Show, :edit
-
-    live "/states", StateLive.Index, :index
-    live "/states/new", StateLive.Index, :new
-    live "/states/:id/edit", StateLive.Index, :edit
-
-    live "/states/:id", StateLive.Show, :show
-    live "/states/:id/show/edit", StateLive.Show, :edit
-
-    live "/races", RaceLive.Index, :index
-    live "/races/new", RaceLive.Index, :new
-    live "/races/:id/edit", RaceLive.Index, :edit
-
-    live "/races/:id", RaceLive.Show, :show
-    live "/races/:id/show/edit", RaceLive.Show, :edit
-
-    live "/candidates", CandidateLive.Index, :index
-    live "/candidates/new", CandidateLive.Index, :new
-    live "/candidates/:id/edit", CandidateLive.Index, :edit
-
-    live "/candidates/:id", CandidateLive.Show, :show
-    live "/candidates/:id/show/edit", CandidateLive.Show, :edit
-
-    live "/forums", ForumLive.Index, :index
-    live "/forums/new", ForumLive.Index, :new
-    live "/forums/:id/edit", ForumLive.Index, :edit
-
-    live "/forums/:id", ForumLive.Show, :show
-    live "/forums/:id/show/edit", ForumLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -103,6 +68,42 @@ defmodule FanCanWeb.Router do
       on_mount: [{FanCanWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+      live "/home", HomeLive
+      live "/elections", ElectionLive.Index, :index
+      live "/elections/new", ElectionLive.Index, :new
+      live "/elections/:id/edit", ElectionLive.Index, :edit
+
+      live "/elections/:id", ElectionLive.Show, :show
+      live "/elections/:id/show/edit", ElectionLive.Show, :edit
+
+      live "/states", StateLive.Index, :index
+      live "/states/new", StateLive.Index, :new
+      live "/states/:id/edit", StateLive.Index, :edit
+
+      live "/states/:id", StateLive.Show, :show
+      live "/states/:id/show/edit", StateLive.Show, :edit
+
+      live "/races", RaceLive.Index, :index
+      live "/races/new", RaceLive.Index, :new
+      live "/races/:id/edit", RaceLive.Index, :edit
+
+      live "/races/:id", RaceLive.Show, :show
+      live "/races/:id/show/edit", RaceLive.Show, :edit
+
+      live "/candidates", CandidateLive.Index, :index
+      live "/candidates/new", CandidateLive.Index, :new
+      live "/candidates/:id/edit", CandidateLive.Index, :edit
+
+      live "/candidates/:id", CandidateLive.Show, :show
+      live "/candidates/:id/show/edit", CandidateLive.Show, :edit
+
+      live "/forums", ForumLive.Index, :index
+      live "/forums/new", ForumLive.Index, :new
+      live "/forums/:id/edit", ForumLive.Index, :edit
+
+      live "/forums/:id", ForumLive.Show, :show
+      live "/forums/:id/show/edit", ForumLive.Show, :edit
     end
   end
 

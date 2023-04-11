@@ -23,7 +23,7 @@ defmodule FanCanWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <.header class="text-center">
-      Fantasy Candidate
+      Hello <%= assigns.current_user.username %> || Welcome to Fantasy Candidate
       <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
     </.header>
 
