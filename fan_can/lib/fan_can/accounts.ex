@@ -6,7 +6,7 @@ defmodule FanCan.Accounts do
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
-  alias FanCan.Accounts.{User, UserToken, UserNotifier}
+  alias FanCan.Accounts.{User, UserToken, UserNotifier, UserFollows}
 
   ## Database getters
 
@@ -140,6 +140,25 @@ defmodule FanCan.Accounts do
   def register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Adds user_follows for type :user and admin id for each new user.
+
+  ## Examples
+
+      iex> register_user_follows(%{field: value})
+      {:ok, %UserFollows{}}
+
+      iex> register_user_follows(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def register_user_follows(attrs) do
+    IO.inspect(attrs, label: "Attrs")
+    %UserFollows{}
+    |> UserFollows.changeset(attrs)
     |> Repo.insert()
   end
 

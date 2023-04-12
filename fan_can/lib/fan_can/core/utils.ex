@@ -40,4 +40,8 @@ defmodule FanCan.Core.Utils do
     def attachment_types do
         [:image, :pdf]
     end
+
+    def follows_types do
+        [:user, :candidate, :election, :forum]
+    end
 end

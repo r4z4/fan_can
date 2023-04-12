@@ -3,6 +3,7 @@ defmodule FanCanWeb.UserRegistrationLive do
 
   alias FanCan.Accounts
   alias FanCan.Accounts.User
+  alias FanCan.Core.Utils
 
   def render(assigns) do
     ~H"""
@@ -32,6 +33,15 @@ defmodule FanCanWeb.UserRegistrationLive do
         </.error>
 
         <.input field={@form[:email]} type="email" label="Email" required />
+        <.input field={@form[:username]} type="text" label="Username" required />
+        <.input 
+          field={@form[:state]} 
+          type="select" 
+          label="State" 
+          prompt="Choose a state"
+          options={Utils.states}
+          required 
+        />
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>
@@ -61,7 +71,14 @@ defmodule FanCanWeb.UserRegistrationLive do
             user,
             &url(~p"/users/confirm/#{&1}")
           )
-
+          
+          # UserFollows%{user_id: user.id, type: :user, follow_ids: ["a9f44567-e031-44f1-aae6-972d7aabbb45"]}
+          IO.inspect(user.id, label: "User ID")
+          attrs = %{user_id: user.id, type: :user, follow_ids: ["a9f44567-e031-44f1-aae6-972d7aabbb45"]}
+          case Accounts.register_user_follows(attrs) do
+            {:ok, user_follows} -> IO.inspect(user_follows, label: "User Follows: ")
+            {:error, _} -> IO.puts "User Follows Registration Error"
+          end
         changeset = Accounts.change_user_registration(user)
         {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
 
