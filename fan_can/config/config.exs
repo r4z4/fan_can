@@ -29,6 +29,8 @@ config :fan_can, FanCanWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :fan_can, FanCan.Mailer, adapter: Swoosh.Adapters.Local
 
+config :ex_heroicons, type: "outline"
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

@@ -29,6 +29,6 @@ defmodule FanCan.Public.Candidate do
   def changeset(candidate, attrs) do
     candidate
     |> cast(attrs, [:prefix, :f_name, :l_name, :suffix, :state, :district, :end_date, :seat, :party, :cpvi, :incumbent_since, :dob, :attachments])
-    |> validate_required([:prefix, :f_name, :l_name, :suffix, :state, :district, :end_date, :seat, :party, :cpvi, :incumbent_since, :dob, :attachments])
+    |> validate_required([:f_name, :l_name, :state, :seat, :party, :cpvi, :dob])
   end
 end

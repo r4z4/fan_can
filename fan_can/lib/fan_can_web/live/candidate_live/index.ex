@@ -18,9 +18,6 @@ defmodule FanCanWeb.CandidateLive.Index do
     socket
     |> assign(:page_title, "Edit Candidate")
     |> assign(:candidate, Public.get_candidate!(id))
-    |> assign(:uploaded_files, [])
-    |> assign(:file, nil)
-    |> allow_upload(:avatar, accept: ~w(.jpg .jpeg), max_entries: 2)
   end
 
   defp apply_action(socket, :new, _params) do
@@ -33,9 +30,6 @@ defmodule FanCanWeb.CandidateLive.Index do
     socket
     |> assign(:page_title, "Listing Candidates")
     |> assign(:candidate, nil)
-    |> assign(:uploaded_files, [])
-    |> assign(:file, nil)
-    |> allow_upload(:avatar, accept: ~w(.jpg .jpeg), max_entries: 2)
   end
 
   @impl true

@@ -62,9 +62,6 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
         <.input field={@form[:incumbent_since]} type="date" label="Incumbent since" />
         <.input field={@form[:dob]} type="date" label="DOB" />
 
-        <.live_file_input upload={@file} />
-        <button type="submit">Upload</button>
-        
         <.input
           field={@form[:attachments]}
           type="select"
