@@ -106,8 +106,9 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
       {:ok, candidate} ->
         notify_parent({:saved, candidate})
         IO.inspect(socket, label: "socket")
-        new_message = "Candidate Updated"
-        FanCanWeb.Endpoint.broadcast!("topic", "new_message", new_message)
+        # assigns.user here is from <.live_component ... user={...} /> 
+        updated_message = "Candidate #{socket.assigns.candidate.l_name}, #{socket.assigns.candidate.f_name} Updated by #{socket.assigns.user.username}"
+        FanCanWeb.Endpoint.broadcast!("topic", "new_message", updated_message)
 
         {:noreply,
          socket
@@ -123,6 +124,8 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
     case Public.create_candidate(candidate_params) do
       {:ok, candidate} ->
         notify_parent({:saved, candidate})
+        new_message = "Candidate #{socket.assigns.candidate.l_name}, #{socket.assigns.candidate.f_name} has entered the race! Candidate added by #{socket.assigns.user.username}"
+        FanCanWeb.Endpoint.broadcast!("topic", "new_message", new_message)
 
         {:noreply,
          socket

@@ -8,7 +8,6 @@
 </.header>
 
 <.table
-  class="w-full"
   id="candidates"
   rows={@streams.candidates}
   row_click={fn {_id, candidate} -> JS.navigate(~p"/candidates/#{candidate}") end}
@@ -55,6 +54,7 @@
     module={FanCanWeb.CandidateLive.FormComponent}
     id={@candidate.id || :new}
     title={@page_title}
+    user={@current_user}
     action={@live_action}
     candidate={@candidate}
     patch={~p"/candidates"}

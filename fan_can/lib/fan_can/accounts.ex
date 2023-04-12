@@ -44,6 +44,69 @@ defmodule FanCan.Accounts do
     if User.valid_password?(user, password), do: user
   end
 
+
+  def get_all_user_info(token) do
+    query = from u in User,
+      # join: us in UserStats,
+      # on: us.user_id == u.id,
+      join: ut in UserToken,
+      on: ut.user_id == u.id,
+      where: ut.token == ^token,
+      # FIXME Change this to confirmed_at > inserted_at
+      select: {u.username, u.email, u.inserted_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+
+    SurfaceApp.Repo.one(query)
+  end
+
+  def get_user_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id
+    query = from [u, ut] in query,
+          where: ut.token == ^token,
+          select: {u}
+          # Repo.all returns a list
+    {u} = Repo.one(query)
+  end
+  
+
+  @doc """
+  Gets a user by user token/
+
+  ## Examples
+
+      iex> get_user_data_by_token("currect_token)
+      %User{}
+
+      iex> get_user_data_by_token("invalid_token or nil")
+      nil
+
+  """
+  def get_user_data_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id
+    query = from [u, ut] in query,
+          where: ut.token == ^token,
+          select: {u.email, u.username}
+          # Repo.all returns a list
+    {user_email, username} = Repo.one(query)
+  end
+
+  def get_user_data_by_id(id) do
+    query = from u in User,
+          where: u.id == ^id,
+          select: {u.email, u.id, u.username, u.user_follows, u.user_post_likes}
+          # Repo.all returns a list
+    {user_email, id, username, user_follows, user_post_likes} = Repo.one(query)
+  end
+
+
+
   @doc """
   Gets a single user.
 

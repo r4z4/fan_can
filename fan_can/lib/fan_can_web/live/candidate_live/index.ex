@@ -3,9 +3,11 @@ defmodule FanCanWeb.CandidateLive.Index do
 
   alias FanCan.Public
   alias FanCan.Public.Candidate
+  alias FanCan.Accounts
   # @impl Phoenix.LiveView
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    # {email, username} = Accounts.get_user_data_by_token(session["user_token"])
     FanCanWeb.Endpoint.subscribe("topic")
     {:ok, 
      socket
