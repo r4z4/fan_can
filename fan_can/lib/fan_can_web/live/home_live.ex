@@ -17,6 +17,7 @@ defmodule FanCanWeb.HomeLive do
 #   end
 
   def mount(_params, _session, socket) do
+    FanCanWeb.Endpoint.subscribe("topic")
     {:ok, socket}
   end
 
@@ -107,5 +108,15 @@ defmodule FanCanWeb.HomeLive do
       {:error, changeset} ->
         {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
     end
+  end
+
+  # def handle_event("new_message", params, socket) do
+  #   {:noreply, socket}
+  # end
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns[:messages] ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+    {:noreply, socket |> assign(:messages, updated_messages)}
   end
 end

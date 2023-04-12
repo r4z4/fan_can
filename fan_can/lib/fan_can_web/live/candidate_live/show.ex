@@ -7,6 +7,7 @@ defmodule FanCanWeb.CandidateLive.Show do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
+    FanCanWeb.Endpoint.subscribe("topic")
     {:ok, socket}
   end
 
@@ -26,6 +27,12 @@ defmodule FanCanWeb.CandidateLive.Show do
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:candidate, candidate)
      |> assign(:image_path, image_path)}
+  end
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns[:messages] ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+    {:noreply, socket |> assign(:messages, updated_messages)}
   end
 
   defp page_title(:show), do: "Show Candidate"

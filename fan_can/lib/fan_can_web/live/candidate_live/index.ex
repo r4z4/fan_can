@@ -6,7 +6,11 @@ defmodule FanCanWeb.CandidateLive.Index do
   # @impl Phoenix.LiveView
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :candidates, Public.list_candidates())}
+    FanCanWeb.Endpoint.subscribe("topic")
+    {:ok, 
+     socket
+     |> stream(:candidates, Public.list_candidates())
+     |> stream(:messages, [])}
   end
 
   @impl true
@@ -17,6 +21,7 @@ defmodule FanCanWeb.CandidateLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Candidate")
+    |> assign(:messages, [])
     |> assign(:candidate, Public.get_candidate!(id))
   end
 
@@ -43,5 +48,12 @@ defmodule FanCanWeb.CandidateLive.Index do
     {:ok, _} = Public.delete_candidate(candidate)
 
     {:noreply, stream_delete(socket, :candidates, candidate)}
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns[:messages] ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+    {:noreply, socket |> assign(:messages, updated_messages)}
   end
 end
