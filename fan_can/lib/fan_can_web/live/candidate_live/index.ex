@@ -54,6 +54,10 @@ defmodule FanCanWeb.CandidateLive.Index do
   def handle_info(%{event: "new_message", payload: new_message}, socket) do
     updated_messages = socket.assigns[:messages] ++ [new_message]
     IO.inspect(new_message, label: "New Message")
-    {:noreply, socket |> assign(:messages, updated_messages)}
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message}")}
   end
 end

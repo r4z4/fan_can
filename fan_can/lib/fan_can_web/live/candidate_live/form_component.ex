@@ -106,7 +106,7 @@ defmodule FanCanWeb.CandidateLive.FormComponent do
       {:ok, candidate} ->
         notify_parent({:saved, candidate})
         IO.inspect(socket, label: "socket")
-        new_message = "user info"
+        new_message = "Candidate Updated"
         FanCanWeb.Endpoint.broadcast!("topic", "new_message", new_message)
 
         {:noreply,
