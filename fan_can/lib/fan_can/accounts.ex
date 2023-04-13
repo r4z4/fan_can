@@ -47,13 +47,13 @@ defmodule FanCan.Accounts do
 
   def get_all_user_info(token) do
     query = from u in User,
-      # join: us in UserStats,
-      # on: us.user_id == u.id,
+      join: uf in UserFollows,
+      on: uf.user_id == u.id,
       join: ut in UserToken,
       on: ut.user_id == u.id,
       where: ut.token == ^token,
       # FIXME Change this to confirmed_at > inserted_at
-      select: {u.username, u.email, u.inserted_at}
+      select: {u.username, u.email, u.inserted_at, {uf.type, uf.follow_ids}}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -71,6 +71,18 @@ defmodule FanCan.Accounts do
           select: {u}
           # Repo.all returns a list
     {u} = Repo.one(query)
+  end
+
+  def get_user_follows_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: uf in UserFollows, on: u.id == uf.user_id
+    query = from [u, ut, uf] in query,
+          where: ut.token == ^token,
+          select: uf
+          # Repo.all returns a list
+    uf_rows = Repo.all(query)
   end
   
 

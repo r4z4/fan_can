@@ -2,6 +2,8 @@ defmodule FanCanWeb.HomeLive do
   use FanCanWeb, :live_view
 
   alias FanCan.Accounts
+  alias FanCan.Core.TopicHelpers
+  alias FanCan.Accounts.UserFollows
 
 #   def mount(%{"token" => token}, _session, socket) do
 #     socket =
@@ -17,7 +19,15 @@ defmodule FanCanWeb.HomeLive do
 #   end
 
   def mount(_params, _session, socket) do
-    FanCanWeb.Endpoint.subscribe("topic")
+    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+      IO.inspect(follow, label: "Type")
+      case follow.type do
+        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+      end
+    end
+    # FanCanWeb.Endpoint.subscribe("topic")
+    IO.inspect(socket, label: "Socket")
     {:ok, 
      socket
      |> assign(:messages, [])}

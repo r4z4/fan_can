@@ -149,7 +149,8 @@ defmodule FanCanWeb.UserAuth do
 
   def on_mount(:ensure_authenticated, _params, session, socket) do
     socket = mount_current_user(session, socket)
-
+    socket = mount_current_user_follows(session, socket)
+    
     if socket.assigns.current_user do
       {:cont, socket}
     else
@@ -170,6 +171,14 @@ defmodule FanCanWeb.UserAuth do
     else
       {:cont, socket}
     end
+  end
+
+  defp mount_current_user_follows(session, socket) do
+      Phoenix.Component.assign_new(socket, :current_user_follows, fn ->
+      if user_token = session["user_token"] do
+        Accounts.get_user_follows_by_token(user_token)
+      end
+    end)
   end
 
   defp mount_current_user(session, socket) do
