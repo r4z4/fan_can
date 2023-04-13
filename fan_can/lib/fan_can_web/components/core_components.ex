@@ -115,12 +115,20 @@ defmodule FanCanWeb.CoreComponents do
       class={[
         "fixed top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1",
         @kind == :info && "bg-emerald-50 text-emerald-800 ring-emerald-500 fill-cyan-900",
+        @kind == :candidate && "bg-sky-50 text-sky-800 ring-sky-500 fill-sky-900",
+        @kind == :forum && "bg-orange-50 text-orange-800 ring-orange-500 fill-orange-900",
+        @kind == :election && "bg-amber-50 text-amber-800 ring-amber-500 fill-amber-900",
+        @kind == :user && "bg-purple-50 text-purple-800 ring-purple-500 fill-purple-900",
         @kind == :error && "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
       ]}
       {@rest}
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
         <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
+        <.icon :if={@kind == :candidate} name="hero-information-banknotes" class="h-4 w-4" />
+        <.icon :if={@kind == :user} name="hero-information-user" class="h-4 w-4" />
+        <.icon :if={@kind == :forum} name="hero-information-megaphone" class="h-4 w-4" />
+        <.icon :if={@kind == :election} name="hero-information-scale" class="h-4 w-4" />
         <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
         <%= @title %>
       </p>
@@ -144,6 +152,10 @@ defmodule FanCanWeb.CoreComponents do
   def flash_group(assigns) do
     ~H"""
     <.flash kind={:info} title="Success!" flash={@flash} />
+    <.flash kind={:candidate} title="Candidate" flash={@flash} />
+    <.flash kind={:election} title="Election" flash={@flash} />
+    <.flash kind={:forum} title="Forum" flash={@flash} />
+    <.flash kind={:user} title="User" flash={@flash} />
     <.flash kind={:error} title="Error!" flash={@flash} />
     <.flash
       id="disconnected"

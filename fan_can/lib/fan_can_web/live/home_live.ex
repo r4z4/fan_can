@@ -121,6 +121,6 @@ defmodule FanCanWeb.HomeLive do
     {:noreply, 
      socket 
      |> assign(:messages, updated_messages)
-     |> put_flash(:info, "PubSub: #{new_message}")}
+     |> put_flash(new_message.type, "PubSub: #{new_message}")}
   end
 end
