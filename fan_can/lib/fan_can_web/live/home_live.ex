@@ -115,12 +115,13 @@ defmodule FanCanWeb.HomeLive do
   # end
   @impl true
   def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    IO.inspect(new_message.type, label: "New Message.type")
     updated_messages = socket.assigns[:messages] ++ [new_message]
     IO.inspect(new_message, label: "New Message")
 
     {:noreply, 
      socket 
      |> assign(:messages, updated_messages)
-     |> put_flash(new_message.type, "PubSub: #{new_message}")}
+     |> put_flash(new_message.type, "PubSub: #{new_message.string}")}
   end
 end
