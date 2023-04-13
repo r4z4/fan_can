@@ -17,8 +17,25 @@ defmodule FanCan.Public do
       [%Candidate{}, ...]
 
   """
-  def list_candidates do
+  def list_candidates(params \\ []) do
     Repo.all(Candidate)
+    |> order_by(desc: :updated_at)
+  end
+
+  @doc """
+  Returns paginated list of candidates.
+
+  ## Examples
+
+      iex> paginate_candidates()
+      [%Candidate{entries: }, ...]
+
+  """
+
+  def paginate_candidates(params \\ []) do
+    Candidate
+    |> order_by(desc: :updated_at)
+    |> Repo.paginate(params)
   end
 
   @doc """

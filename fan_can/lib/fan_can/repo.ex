@@ -1,5 +1,5 @@
 defmodule FanCan.Repo do
   use Ecto.Repo,
-    otp_app: :fan_can,
-    adapter: Ecto.Adapters.Postgres
+    otp_app: :fan_can, adapter: Ecto.Adapters.Postgres
+    use Scrivener, page_size: 10
 end
