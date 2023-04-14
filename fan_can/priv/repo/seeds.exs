@@ -226,7 +226,8 @@ Repo.insert_all(Candidate, [
 ])
 
 Repo.insert_all(Election, [
-      %{id: "a1f44567-e031-44f1-aae6-972d7aabbb45", desc: "2022 General Election", election_date: ~D[2022-11-01], state: :NE, year: 2022, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "a1f44567-e031-44f1-aae6-972d7aabbb45", desc: "2022 Midterm Election", election_date: ~D[2021-11-01], state: :NE, year: 2022, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", desc: "2024 General Election", election_date: ~D[2023-11-01], state: :NE, year: 2024, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
 ])
 
 # Elect % 0.0 for non-race (appointments, emergency positions etc...). Add a notes col or table

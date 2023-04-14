@@ -94,17 +94,21 @@ defmodule FanCanWeb.Router do
       live "/candidates", CandidateLive.Index, :index
       live "/candidates/new", CandidateLive.Index, :new
       live "/candidates/:id/edit", CandidateLive.Index, :edit
-      live "/candidates/:page_number", CandidateLive.Index, :nav
 
       live "/candidates/:id", CandidateLive.Show, :show
       live "/candidates/:id/show/edit", CandidateLive.Show, :edit
 
+      live "/candidates/:page_number", CandidateLive.Index, :nav
+
       live "/forums", ForumLive.Index, :index
       live "/forums/new", ForumLive.Index, :new
       live "/forums/:id/edit", ForumLive.Index, :edit
+      # Order matters. Need this before /:id or 'main' gets interpreted as an id
+      live "/forums/main", ForumLive.Main, :main
 
       live "/forums/:id", ForumLive.Show, :show
       live "/forums/:id/show/edit", ForumLive.Show, :edit
+
     end
   end
 
