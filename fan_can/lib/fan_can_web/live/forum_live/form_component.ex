@@ -64,6 +64,8 @@ defmodule FanCanWeb.ForumLive.FormComponent do
     case Site.update_forum(socket.assigns.forum, forum_params) do
       {:ok, forum} ->
         notify_parent({:saved, forum})
+        updated_message = %{type: :forum, string: "Forum #{socket.assigns.forum.title} has been edited by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("forum_" <> forum.id, "new_message", updated_message)
 
         {:noreply,
          socket
@@ -79,6 +81,8 @@ defmodule FanCanWeb.ForumLive.FormComponent do
     case Site.create_forum(forum_params) do
       {:ok, forum} ->
         notify_parent({:saved, forum})
+        new_message = %{type: :forum, string: "Forum #{socket.assigns.forum.title} has just been added by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("forum_" <> forum.id, "new_message", new_message)
 
         {:noreply,
          socket

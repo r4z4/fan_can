@@ -44,4 +44,8 @@ defmodule FanCan.Core.Utils do
     def follows_types do
         [:user, :candidate, :election, :forum]
     end
+
+    def forum_categories do
+        [:Site, :General, :Politics, :State]
+    end
 end

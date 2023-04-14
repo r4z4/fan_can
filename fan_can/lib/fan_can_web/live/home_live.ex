@@ -24,6 +24,8 @@ defmodule FanCanWeb.HomeLive do
       case follow.type do
         :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
         :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
       end
     end
     # FanCanWeb.Endpoint.subscribe("topic")

@@ -59,6 +59,8 @@ defmodule FanCanWeb.ElectionLive.FormComponent do
     case Public.update_election(socket.assigns.election, election_params) do
       {:ok, election} ->
         notify_parent({:saved, election})
+        updated_message = %{type: :election, string: "Election #{socket.assigns.election.desc} has been edited by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("election_" <> election.id, "new_message", updated_message)
 
         {:noreply,
          socket
@@ -74,6 +76,8 @@ defmodule FanCanWeb.ElectionLive.FormComponent do
     case Public.create_election(election_params) do
       {:ok, election} ->
         notify_parent({:saved, election})
+        new_message = %{type: :election, string: "Election #{socket.assigns.election.desc} has just been added by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("election_" <> election.id, "new_message", new_message)
 
         {:noreply,
          socket

@@ -235,6 +235,11 @@ Repo.insert_all(Race, [
       %{seat: :Governor, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 59.7, elect: "0e97798f-503f-4218-a801-c8bb7ff9498b", district: nil, candidates: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
+Repo.insert_all(Forums, [
+      %{id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", title: "Issues", desc: "Forum for all generic site related issues. All users will be subscribed.", category: :Site, moderator: "a9f44567-e031-44f1-aae6-972d7aabbb45", members: ["a9f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "8r04fd4f-1321-4e9f-911a-7369d57d0b55", title: "2024 Election", desc: "It's almost here.", category: :Politics, moderator: "b5f44567-e031-44f1-aae6-972d7aabbb45", members: ["b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+])
+# "Follow" = "Subscribe"
 Repo.insert_all(UserFollows, [
       # All need to follow admin
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -243,7 +248,12 @@ Repo.insert_all(UserFollows, [
       %{user_id: "b2f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Set up some initial candidate follows
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # Set up some initial election follows
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :election, follow_ids: ["a1f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # Set up some initial forum follows
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55", "8r04fd4f-1321-4e9f-911a-7369d57d0b55" ], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
 # Ecto.UUID.bingenerate()
