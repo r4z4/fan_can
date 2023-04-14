@@ -10,8 +10,9 @@
 
 <.list>
   <:item title="Title"><%= @forum.title %></:item>
+  <:item title="Description"><%= @forum.desc %></:item>
   <:item title="Category"><%= @forum.category %></:item>
-  <:item title="Subscribers"><%= @forum.subscribers %></:item>
+  <:item title="Members"><%= @forum.members %></:item>
 </.list>
 
 <.back navigate={~p"/forums"}>Back to forums</.back>
@@ -21,6 +22,7 @@
     module={FanCanWeb.ForumLive.FormComponent}
     id={@forum.id}
     title={@page_title}
+    user={@current_user}
     action={@live_action}
     forum={@forum}
     patch={~p"/forums/#{@forum}"}

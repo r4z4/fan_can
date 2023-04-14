@@ -1,6 +1,7 @@
 defmodule FanCan.Site.Forum do
   use Ecto.Schema
   import Ecto.Changeset
+  alias FanCan.Core.Utils
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -17,7 +18,7 @@ defmodule FanCan.Site.Forum do
   @doc false
   def changeset(forum, attrs) do
     forum
-    |> cast(attrs, [:title, :category, :members. :moderator, :desc])
+    |> cast(attrs, [:title, :category, :members, :moderator, :desc])
     |> validate_required([:title, :category])
   end
 end

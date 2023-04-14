@@ -22,6 +22,7 @@
     module={FanCanWeb.ElectionLive.FormComponent}
     id={@election.id}
     title={@page_title}
+    user={@current_user}
     action={@live_action}
     election={@election}
     patch={~p"/elections/#{@election}"}

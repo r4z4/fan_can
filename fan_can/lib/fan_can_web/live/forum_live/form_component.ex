@@ -20,12 +20,13 @@ defmodule FanCanWeb.ForumLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:title]} type="text" label="Title" />
+        <.input field={@form[:desc]} type="text" label="Description" />
         <.input field={@form[:category]} type="text" label="Category" />
         <.input
-          field={@form[:subscribers]}
+          field={@form[:members]}
           type="select"
           multiple
-          label="Subscribers"
+          label="Members"
           options={[]}
         />
         <:actions>

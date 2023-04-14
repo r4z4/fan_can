@@ -41,6 +41,7 @@
       module={FanCanWeb.CandidateLive.FormComponent}
       id={@candidate.id}
       title={@page_title}
+      user={@current_user}
       action={@live_action}
       candidate={@candidate}
       patch={~p"/candidates/#{@candidate}"}
