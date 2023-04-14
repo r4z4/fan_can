@@ -1,4 +1,4 @@
-<div class="max-w-2xl"> 
+<div class="max-w-2xl mx-auto"> 
   <.header>
     Candidate <%= @candidate.id %>
     <:subtitle>This is a candidate record from your database.</:subtitle>
@@ -9,7 +9,7 @@
     </:actions>
   </.header>
 
-  <img class="h-32 w-32" src={@image_path} />
+  <img class="h-32 w-32 mt-4 mx-auto border-solid border-2 border-sky-500 rounded-md" src={@image_path} />
 
   <.list>
     <:item title="Prefix"><%= @candidate.prefix %></:item>
@@ -26,7 +26,7 @@
       </ul>
     </:item>
     <:item title="District"><%= @candidate.district %></:item>
-    <:item title="Seat"><%= @candidate.seat %></:item>
+    <:item title="Seat"><%= MapHelpers.atom_to_str(@candidate.seat) %></:item>
     <:item title="Party"><%= @candidate.party %></:item>
     <:item title="CPVI"><%= @candidate.cpvi %></:item>
     <:item title="Incumbent Since"><%= @candidate.incumbent_since %></:item>
@@ -35,6 +35,7 @@
   </.list>
 
   <.back navigate={~p"/candidates"}>Back to candidates</.back>
+</div>
 
   <.modal :if={@live_action == :edit} id="candidate-modal" show on_cancel={JS.patch(~p"/candidates/#{@candidate}")}>
     <.live_component
@@ -47,4 +48,3 @@
       patch={~p"/candidates/#{@candidate}"}
     />
   </.modal>
-</div>

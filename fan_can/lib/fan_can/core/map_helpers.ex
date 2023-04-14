@@ -15,6 +15,12 @@ defmodule FanCan.Core.MapHelpers do
     |> Enum.into(%{})
   end
 
+  def atom_to_str(atom) do
+    atom
+    |> Atom.to_string()
+    |> String.replace("_", " ")
+  end
+
   # Walk the list and atomize the keys of
   # of any map members
   def underscore_keys([head | rest]) do

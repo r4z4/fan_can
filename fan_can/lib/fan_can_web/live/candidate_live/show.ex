@@ -4,6 +4,7 @@ defmodule FanCanWeb.CandidateLive.Show do
   alias FanCan.Public
   alias FanCan.Core
   alias FanCan.Core.Utils
+  alias FanCan.Core.MapHelpers
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
