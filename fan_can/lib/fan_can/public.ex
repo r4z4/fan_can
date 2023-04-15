@@ -134,6 +134,26 @@ defmodule FanCan.Public do
     Repo.all(Election)
   end
 
+    @doc """
+  Returns the list of elections.
+
+  ## Examples
+
+      iex> list_elections()
+      [%Election{}, ...]
+
+  """
+  def list_elections_and_ballots do
+    elections = Repo.all(Election)
+    final_elections = 
+      for election <- elections do
+        ballot_ids = Election.get_ballot_ids_by_election_id(election.id)
+        IO.inspect(ballot_ids, label: "ballot_ids")
+        new = Map.put(election, :ballot_ids, ballot_ids)
+        IO.inspect(new, label: "new")
+      end
+  end
+
   @doc """
   Gets a single election.
 

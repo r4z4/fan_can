@@ -8,7 +8,7 @@ defmodule FanCan.Public.Election.Ballot do
   schema "ballots" do
     field :attachment, :binary_id
     field :columns, :integer
-    field :election, :binary_id
+    field :election_id, :binary_id
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule FanCan.Public.Election.Ballot do
   @doc false
   def changeset(ballot, attrs) do
     ballot
-    |> cast(attrs, [:columns, :attachment])
-    |> validate_required([:columns, :attachment])
+    |> cast(attrs, [:election_id, :columns, :attachment])
+    |> validate_required([:election_id])
   end
 end

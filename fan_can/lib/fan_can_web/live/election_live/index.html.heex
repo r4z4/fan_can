@@ -15,7 +15,14 @@
   <:col :let={{_id, election}} label="Year"><%= election.year %></:col>
   <:col :let={{_id, election}} label="State"><%= election.state %></:col>
   <:col :let={{_id, election}} label="Desc"><%= election.desc %></:col>
-  <:col :let={{_id, election}} label="Election date"><%= election.election_date %></:col>
+  <:col :let={{_id, election}} label="Ballot Link(s)">
+    <ul>
+      <%= for id <- election.ballot_ids do %>
+        <li><.link navigate={~p"/elections/live/ballot/#{id}"}>Go To Ballot</.link></li>
+      <%= end %>
+    </ul>
+  </:col>
+  <:col :let={{_id, election}} label="Election Date"><%= election.election_date %></:col>
   <:action :let={{_id, election}}>
     <div class="sr-only">
       <.link navigate={~p"/elections/#{election}"}>Show</.link>

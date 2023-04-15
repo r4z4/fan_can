@@ -32,6 +32,7 @@ defmodule FanCan.Public.Election do
   @type ballot_map :: %{
    id: binary,
    year: integer,
+   district: integer,
    candidates: [%Candidate{}],
    election_date: %Date{},
    desc: String.t,
@@ -47,11 +48,11 @@ defmodule FanCan.Public.Election do
       join: e in Election,
       on: r.election_id == e.id,
       join: b in Ballot,
-      on: b.election == e.id,
+      on: b.election_id == e.id,
       where: b.id == ^ballot_id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => r.id, :candidates => [], :seat => r.seat, :state => e.state, :desc => e.desc, :election_date => e.election_date, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
+      select: %{:id => r.id, :candidates => [], :seat => r.seat, :district => r.district, :state => e.state, :desc => e.desc, :election_date => e.election_date, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -64,12 +65,6 @@ defmodule FanCan.Public.Election do
       join: r in Race,
       where: c.id in r.candidates,
       where: r.id == ^race_id
-      # FIXME Change this to confirmed_at > inserted_at
-      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
-      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
-      # distinct: p.id
-      # where: u.age > type(^age, :integer)
     FanCan.Repo.all(query)
   end
 
@@ -197,6 +192,18 @@ defmodule FanCan.Public.Election do
 
   """
   def get_ballot!(id), do: Repo.get!(Ballot, id)
+
+  @doc """
+  Gets all ballots by election id (usually just one)
+  """
+  def get_ballot_ids_by_election_id(id) do
+    query = from b in Ballot,
+      join: e in Election,
+      on: b.election_id == e.id,
+      where: e.id == ^id,
+      select: b.id
+    FanCan.Repo.all(query)
+  end
 
   @doc """
   Creates a ballot.

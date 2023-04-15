@@ -22,7 +22,7 @@ defmodule FanCan.Core.Utils do
     end
 
     def parties do
-        [:Republican, :Democrat, :Independent, :Libertarian, :Other_Party]
+        [:Republican, :Democrat, :Independent, :Now, :Libertarian, :Non_Partisan, :Other_Party]
     end
 
     def suffixes do

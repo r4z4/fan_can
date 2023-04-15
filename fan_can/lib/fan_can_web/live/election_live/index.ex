@@ -6,7 +6,7 @@ defmodule FanCanWeb.ElectionLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :elections, Public.list_elections())}
+    {:ok, stream(socket, :elections, Public.list_elections_and_ballots())}
   end
 
   @impl true

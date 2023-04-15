@@ -130,18 +130,28 @@ Repo.insert_all(Candidate, [
       party: :Republican, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "55f7e3e6-883a-4c4a-b04c-b69bcc741273", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: nil, l_name: "Shelton", f_name: "Alicia",
       party: :Democrat, cpvi: "EVEN", education: ["Xavier University", "Bellevus University"], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      # NE State Senate Contenders
+      %{id: "7460e15c-64ab-42d1-b536-8116e87acfbe", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 2, l_name: "Slattery", f_name: "Sarah",
+      party: :Democrat, cpvi: "EVEN", education: [], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "13bf326e-8d5b-4ddf-9de7-49508481a57b", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 4, l_name: "Maxwell-Ostdiek", f_name: "Cindy",
+      party: :Independent, cpvi: "EVEN", education: [], birth_state: :IA, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "09f131ac-818c-4058-b9ce-dc3b91794416", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 6, l_name: "Mirch", f_name: "Christian",
+      party: :Republican, cpvi: "EVEN", education: ["Creighton University"], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "0423af0e-4b1e-43d4-9a47-559ce17cdd4f", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 10, l_name: "Goding", f_name: "Lou Ann",
+      party: :Non_Partisan, cpvi: "EVEN", education: ["Bob Jones University"], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      
       # NE State Senators
       %{id: "0e33778f-503f-4218-a801-c8bb7ff9498b", prefix: nil, suffix: nil, incumbent_since: ~D[2019-01-09], dob: ~D[1996-05-02], attachments: ["a1f44367-e031-44f1-aae6-972d7aabbb49"], district: 1, l_name: "Slama", f_name: "Julie",
       party: :Republican, cpvi: "EVEN", education: ["Yale University"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 2, l_name: "Clements", f_name: "Robert",
-      party: :Republican, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "7460e15c-64ab-42d1-b536-8116e82acfbe", prefix: nil, suffix: nil, incumbent_since: ~D[2017-01-04], dob: nil, attachments: nil, district: 2, l_name: "Clements", f_name: "Robert",
+      party: :Republican, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: ~D[2027-01-01], inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 3, l_name: "Blood", f_name: "Carol",
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 4, l_name: "von Gillern", f_name: "Brad",
+      %{id: "f56539b0-e259-498a-afd3-c2c4da769772", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 4, l_name: "von Gillern", f_name: "Brad",
       party: :Republican, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 5, l_name: "McDonnell", f_name: "Mike",
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 6, l_name: "Cavanaugh", f_name: "Machaela",
+      %{id: "5ab8d863-9eca-4ff3-a654-9dfcdab59f7c", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 6, l_name: "Cavanaugh", f_name: "Machaela",
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 7, l_name: "Vargas", f_name: "Tony", 
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
@@ -149,7 +159,7 @@ Repo.insert_all(Candidate, [
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 9, l_name: "Cavanaugh", f_name: "John", 
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 10, l_name: "DeBoer", f_name: "Wendy", 
+      %{id: "5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 10, l_name: "DeBoer", f_name: "Wendy", 
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 11, l_name: "McKinney", f_name: "Terrell", 
       party: :Democrat, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
@@ -239,7 +249,10 @@ Repo.insert_all(Election, [
 
 # Elect % 0.0 for non-race (appointments, emergency positions etc...). Add a notes col or table
 Repo.insert_all(Race, [
-      %{seat: :Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 0.0, elect: "0e91138f-503f-4218-a801-c8bb7ff3398b", district: nil, candidates: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "5ab8d863-9eca-4ff3-a654-9dfcdab59f7c", district: 6, candidates: ["5ab8d863-9eca-4ff3-a654-9dfcdab59f7c", "09f131ac-818c-4058-b9ce-dc3b91794416"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 53.3, elect: "f56539b0-e259-498a-afd3-c2c4da769772", district: 4, candidates: ["f56539b0-e259-498a-afd3-c2c4da769772", "13bf326e-8d5b-4ddf-9de7-49508481a57b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 57.2, elect: "7460e15c-64ab-42d1-b536-8116e82acfbe", district: 2, candidates: ["7460e15c-64ab-42d1-b536-8116e82acfbe", "7460e15c-64ab-42d1-b536-8116e87acfbe"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", district: 10, candidates: ["5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", "0423af0e-4b1e-43d4-9a47-559ce17cdd4f"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :Governor, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 59.7, elect: "0e97798f-503f-4218-a801-c8bb7ff9498b", district: nil, candidates: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # 2024
       %{seat: :Senator, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", elect_percentage: nil, elect: nil, district: nil, candidates: ["9b9b951e-3f3c-4350-8ffb-a36a981e376d", "55f7e3e6-883a-4c4a-b04c-b69bcc741273"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -252,8 +265,8 @@ Repo.insert_all(Forum, [
 ])
 
 Repo.insert_all(Ballot, [
-      %{id: "0bf74d8b-edc4-432c-a1db-732168966ea3", election: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", columns: 3, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election: "a1f44567-e031-44f1-aae6-972d7aabbb45", columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "0bf74d8b-edc4-432c-a1db-732168966ea3", election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", columns: 3, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 # "Follow" = "Subscribe"
 Repo.insert_all(UserFollows, [

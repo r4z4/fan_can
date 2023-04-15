@@ -14,6 +14,18 @@ defmodule FanCanWeb.BallotLive.Template do
     {:ok, socket}
   end
 
+  defp party_class(party) do
+    case party do
+      :Democrat -> "ml-3 text-blue"
+      :Republican -> "ml-3 text-red"
+      :Independent -> "ml-3 text-black"
+      :Now -> "ml-3 text-green"
+      :Libertarian -> "ml-3 text-purple"
+      :Non_Partisan -> "ml-3 text-black"
+      :Other_Party -> "ml-3 text-amber"
+    end
+  end
+
   # @impl true
   # def mount(%{"id" => id}, _session, socket) do
   #   {:ok, stream(socket, :ballots, Election.get_ballot!(id))}
@@ -32,7 +44,9 @@ defmodule FanCanWeb.BallotLive.Template do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:ballot_races, final_ballot_races)}
+     |> assign(:ballot_races, final_ballot_races)
+     |> assign(:desc, List.first(ballot_races).desc)
+     |> assign(:date, List.first(ballot_races).election_date)}
   end
 
   defp page_title(:template), do: "Ballot For ..."
