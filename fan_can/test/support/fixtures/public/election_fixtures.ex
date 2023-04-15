@@ -24,4 +24,22 @@ defmodule FanCan.Public.ElectionFixtures do
 
     race
   end
+
+  @doc """
+  Generate a ballot.
+  """
+  def ballot_fixture(attrs \\ %{}) do
+    {:ok, ballot} =
+      attrs
+      |> Enum.into(%{
+        attachment: "some attachment",
+        columns: 42,
+        races: [],
+        state: "some state",
+        year: 42
+      })
+      |> FanCan.Public.Election.create_ballot()
+
+    ballot
+  end
 end

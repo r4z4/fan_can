@@ -21,6 +21,7 @@ alias FanCan.Public.State
 alias FanCan.Site.Forum
 alias FanCan.Core.Attachment
 alias FanCan.Public.Election.Race
+alias FanCan.Public.Election.Ballot
 
 Repo.insert_all(State, [
       %{id: 1, name: :Alabama, code: :AL, num_districts: 7, governor: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -92,7 +93,8 @@ Repo.insert_all(Attachment, [
       %{id: "a5f44967-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Gov_2018", path: "https://upload.wikimedia.org/wikipedia/commons/b/bd/Sen._Pete_Ricketts_official_portrait%2C_118th_Congress.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "a5f88967-e031-44f1-aae6-972d7aabbb45", type: :image, title: "NE_Gov_2022", path: "https://upload.wikimedia.org/wikipedia/commons/7/72/Jim_Pillen_%28cropped%29.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "a5f44567-e031-44f1-aae6-972d7aabbb49", type: :image, title: "AK_Gov", path: "https://en.wikipedia.org/wiki/Mike_Dunleavy_(politician)#/media/File:Mike_Dunleavy_official_photo.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
-      %{id: "a1f44367-e031-44f1-aae6-972d7aabbb49", type: :image, title: "JulieSlama", path: "https://upload.wikimedia.org/wikipedia/commons/2/21/Julie_Slama_%2851850518231%29.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()}
+      %{id: "a1f44367-e031-44f1-aae6-972d7aabbb49", type: :image, title: "JulieSlama", path: "https://upload.wikimedia.org/wikipedia/commons/2/21/Julie_Slama_%2851850518231%29.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "848dd11c-d924-48e7-bdc2-9db000222365", type: :image, title: "DebF", path: "https://upload.wikimedia.org/wikipedia/commons/9/93/Deb_Fischer_official_Senate_photo.jpg", data: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()}
 ])
 # Removing IDs but will need them for prod likely (binary_id vs. int)
 Repo.insert_all(Candidate, [
@@ -123,6 +125,11 @@ Repo.insert_all(Candidate, [
       %{id: "0e91778f-503f-4218-a801-c8bb7ff9498b", prefix: nil, f_name: "Mike", l_name: "Dunleavy", suffix: nil, incumbent_since: ~D[2018-12-03], dob: ~D[1961-05-06], district: nil, attachments: ["a5f44567-e031-44f1-aae6-972d7aabbb49"],
       party: :Republican, cpvi: "R+30", education: ["Misericordia University", "University of Alaska Fairbanks"], birth_state: :PA, state: :AK, seat: :Governor, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
 
+      # Senators
+      %{id: "9b9b951e-3f3c-4350-8ffb-a36a981e376d", prefix: nil, suffix: nil, incumbent_since: ~D[2012-01-05], dob: ~D[1951-03-01], attachments: ["848dd11c-d924-48e7-bdc2-9db000222365"], district: nil, l_name: "Fischer", f_name: "Deb",
+      party: :Republican, cpvi: "EVEN", education: ["University of Nebraska Lincoln"], birth_state: :NE, state: :NE, seat: :Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
+      %{id: "55f7e3e6-883a-4c4a-b04c-b69bcc741273", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: nil, l_name: "Shelton", f_name: "Alicia",
+      party: :Democrat, cpvi: "EVEN", education: ["Xavier University", "Bellevus University"], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       # NE State Senators
       %{id: "0e33778f-503f-4218-a801-c8bb7ff9498b", prefix: nil, suffix: nil, incumbent_since: ~D[2019-01-09], dob: ~D[1996-05-02], attachments: ["a1f44367-e031-44f1-aae6-972d7aabbb49"], district: 1, l_name: "Slama", f_name: "Julie",
       party: :Republican, cpvi: "EVEN", education: ["Yale University"], birth_state: :NE, state: :NE, seat: :State_Senator, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
@@ -227,18 +234,26 @@ Repo.insert_all(Candidate, [
 
 Repo.insert_all(Election, [
       %{id: "a1f44567-e031-44f1-aae6-972d7aabbb45", desc: "2022 Midterm Election", election_date: ~D[2021-11-01], state: :NE, year: 2022, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", desc: "2024 General Election", election_date: ~D[2023-11-01], state: :NE, year: 2024, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", desc: "2024 General Election", election_date: ~D[2023-11-01], state: :NE, year: 2024, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},   
 ])
 
 # Elect % 0.0 for non-race (appointments, emergency positions etc...). Add a notes col or table
 Repo.insert_all(Race, [
       %{seat: :Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 0.0, elect: "0e91138f-503f-4218-a801-c8bb7ff3398b", district: nil, candidates: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{seat: :Governor, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 59.7, elect: "0e97798f-503f-4218-a801-c8bb7ff9498b", district: nil, candidates: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{seat: :Governor, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 59.7, elect: "0e97798f-503f-4218-a801-c8bb7ff9498b", district: nil, candidates: ["0e97798f-503f-4218-a801-c8bb7ff3498b", "0e97798f-503f-4218-a801-c8bb7ff9498b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # 2024
+      %{seat: :Senator, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", elect_percentage: nil, elect: nil, district: nil, candidates: ["9b9b951e-3f3c-4350-8ffb-a36a981e376d", "55f7e3e6-883a-4c4a-b04c-b69bcc741273"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+
 ])
 
 Repo.insert_all(Forum, [
       %{id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", title: "Issues", desc: "Forum for all generic site related issues. All users will be subscribed.", category: :Site, moderator: "a9f44567-e031-44f1-aae6-972d7aabbb45", members: ["a9f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "8d04fd4f-1321-4e9f-911a-7399d57d0b55", title: "2024 Election", desc: "It's almost here.", category: :Politics, moderator: "b5f44567-e031-44f1-aae6-972d7aabbb45", members: ["b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+])
+
+Repo.insert_all(Ballot, [
+      %{id: "0bf74d8b-edc4-432c-a1db-732168966ea3", election: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", columns: 3, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election: "a1f44567-e031-44f1-aae6-972d7aabbb45", columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 # "Follow" = "Subscribe"
 Repo.insert_all(UserFollows, [

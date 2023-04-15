@@ -59,7 +59,7 @@ defmodule FanCan.Accounts do
       # distinct: p.id
       # where: u.age > type(^age, :integer)
 
-    SurfaceApp.Repo.one(query)
+    FanCan.Repo.one(query)
   end
 
   def get_user_by_token(token)

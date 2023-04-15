@@ -77,6 +77,8 @@ defmodule FanCanWeb.Router do
       live "/elections/:id", ElectionLive.Show, :show
       live "/elections/:id/show/edit", ElectionLive.Show, :edit
 
+      live "/elections/live/ballot/:id", BallotLive.Template, :template
+
       live "/states", StateLive.Index, :index
       live "/states/new", StateLive.Index, :new
       live "/states/:id/edit", StateLive.Index, :edit
@@ -99,6 +101,17 @@ defmodule FanCanWeb.Router do
       live "/candidates/:id/show/edit", CandidateLive.Show, :edit
 
       live "/candidates/:page_number", CandidateLive.Index, :nav
+
+      # Keep a Ballot index for admin etc.. Users will not see it though.
+      # Only interact w/ ballots via elections
+      live "/ballots", BallotLive.Index, :index
+      live "/ballots/new", BallotLive.Index, :new
+      live "/ballots/:id/edit", BallotLive.Index, :edit
+
+      live "/ballots/:id", BallotLive.Show, :show
+      live "/ballots/:id/show/edit", BallotLive.Show, :edit
+
+
 
       live "/forums", ForumLive.Index, :index
       live "/forums/new", ForumLive.Index, :new

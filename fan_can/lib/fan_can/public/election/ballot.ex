@@ -1,0 +1,22 @@
+defmodule FanCan.Public.Election.Ballot do
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias FanCan.Core.Utils
+
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+  schema "ballots" do
+    field :attachment, :binary_id
+    field :columns, :integer
+    field :election, :binary_id
+
+    timestamps()
+  end
+
+  @doc false
+  def changeset(ballot, attrs) do
+    ballot
+    |> cast(attrs, [:columns, :attachment])
+    |> validate_required([:columns, :attachment])
+  end
+end
