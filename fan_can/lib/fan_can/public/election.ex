@@ -31,8 +31,8 @@ defmodule FanCan.Public.Election do
 
   @type ballot_map :: %{
    id: binary,
-   candidates: [binary],
    year: integer,
+   candidates: [%Candidate{}],
    election_date: %Date{},
    desc: String.t,
    seat: atom,
@@ -44,8 +44,6 @@ defmodule FanCan.Public.Election do
   @spec get_ballot_races(binary) :: [ballot_map]
   def get_ballot_races(ballot_id) do
     query = from r in Race,
-      join: c in Candidate,
-      on: c.id in r.candidates,
       join: e in Election,
       on: r.election_id == e.id,
       join: b in Ballot,
@@ -53,7 +51,21 @@ defmodule FanCan.Public.Election do
       where: b.id == ^ballot_id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => r.id, :candidates => [{c}], :seat => r.seat, :state => e.state, :desc => e.desc, :election_date => e.election_date, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
+      select: %{:id => r.id, :candidates => [], :seat => r.seat, :state => e.state, :desc => e.desc, :election_date => e.election_date, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+    FanCan.Repo.all(query)
+  end
+
+  def get_candidates(race_id) do
+    query = from c in Candidate,
+      join: r in Race,
+      where: c.id in r.candidates,
+      where: r.id == ^race_id
+      # FIXME Change this to confirmed_at > inserted_at
+      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id

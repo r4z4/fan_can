@@ -22,11 +22,17 @@ defmodule FanCanWeb.BallotLive.Template do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     ballot_races = Election.get_ballot_races(id)
-    IO.inspect(ballot_races, label: "Ballot Races")
+    final_ballot_races = 
+      for ballot_race <- ballot_races do
+        candidates = Election.get_candidates(ballot_race.id)
+        IO.inspect(candidates, label: "Candidates")
+        new = Map.replace(ballot_race, :candidates, candidates)
+      end
+    IO.inspect(final_ballot_races, label: "Final Ballot Races")
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:ballot_races, ballot_races)}
+     |> assign(:ballot_races, final_ballot_races)}
   end
 
   defp page_title(:template), do: "Ballot For ..."
