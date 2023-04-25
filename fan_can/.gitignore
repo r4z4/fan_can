@@ -41,4 +41,6 @@ npm-debug.log
 *.tar
 *.lock
 
+/priv/static/images/ne_districts
+
 

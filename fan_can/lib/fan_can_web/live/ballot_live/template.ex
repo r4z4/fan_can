@@ -37,13 +37,17 @@ defmodule FanCanWeb.BallotLive.Template do
     final_ballot_races = 
       for ballot_race <- ballot_races do
         candidates = Election.get_candidates(ballot_race.id)
+        image_path = "/images/ne_districts/District#{ballot_race.district}.png"
         IO.inspect(candidates, label: "Candidates")
-        new = Map.replace(ballot_race, :candidates, candidates)
+        new = 
+          Map.replace(ballot_race, :candidates, candidates)
+          |> Map.put(:image_path, image_path)
       end
     IO.inspect(final_ballot_races, label: "Final Ballot Races")
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:ballot_form, nil)
      |> assign(:ballot_races, final_ballot_races)
      |> assign(:desc, List.first(ballot_races).desc)
      |> assign(:date, List.first(ballot_races).election_date)}

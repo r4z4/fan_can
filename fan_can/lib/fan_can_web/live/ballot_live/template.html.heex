@@ -8,19 +8,36 @@
     <h4 class="text-center text-indigo-500"><%= @date %></h4>
 
     <div class="grid justify-center md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-7 my-10">
+      <.simple_form
+        for={@ballot_form}
+        id="ballot-form"
+        phx-change="validate"
+        phx-submit="save"
+      >
         <!-- Card -->
         <div :for={ballot_race <- @ballot_races} class="bg-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
-            <img class="h-56 lg:h-60 w-full object-cover" src="https://upload.wikimedia.org/wikipedia/commons/3/35/Adobe_Help_CS5_icon.png" alt="" />
+            <img class="h-56 lg:h-60 w-full object-cover" src={ballot_race.image_path} alt="" />
             <div class="p-3">
                 <h3 class="font-semibold text-xl leading-6 text-gray-700 my-2">
                     <%= ballot_race.seat %> <span class="ml-3 text-purple" :if={ballot_race.district}>||  District: <%= ballot_race.district %></span>
                 </h3>
                 <ul :for={candidate <- ballot_race.candidates} class="border-solid border-2 border-sky-500">
-                  <li><%= candidate.l_name %>, <%= candidate.f_name %>  <span class={party_class(candidate.party)} :if={ballot_race.district}>||   <%= candidate.party %></span></li>
+                  <li>
+                    <%= candidate.l_name %>, <%= candidate.f_name %>  <span class={party_class(candidate.party)} :if={ballot_race.district}>||   <%= candidate.party %></span>
+                    <.input
+                      field={@ballot_form[{ballot_race.district}]}
+                      type="checkbox"
+                      name={ballot_race.district}
+                      value={}
+                      label="Vote"
+                      options={[]}
+                    />
+                  </li>
                 </ul>
                 <a href={~p"/races/inspect/#{ballot_race.id}"}>Inspect >></a>
             </div>
         </div>
+      </.simple_form>
     </div>
 </section>
 

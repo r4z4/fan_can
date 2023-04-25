@@ -14,7 +14,7 @@ defmodule FanCanWeb.BallotLive.FormComponent do
 
       <.simple_form
         for={@form}
-        id="ballot-form"
+        id="ballot-index-form"
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
