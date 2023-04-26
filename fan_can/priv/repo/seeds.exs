@@ -19,7 +19,8 @@ alias FanCan.Public.Candidate
 alias FanCan.Public.Election
 alias FanCan.Public.State
 alias FanCan.Site.Forum
-alias FanCan.Site.Post
+alias FanCan.Site.Forum.Post
+alias FanCan.Site.Forum.Thread
 alias FanCan.Core.Attachment
 alias FanCan.Public.Election.Race
 alias FanCan.Public.Election.Ballot
@@ -351,22 +352,42 @@ Repo.insert_all(Forum, [
 
 ])
 
+Repo.insert_all(Thread, [
+      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Issues Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+            content: "This is the test of the Issues Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "f254a438-f49b-4f42-9f72-ba76951c3846", title: "No Posts In Here", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+            content: "This is the 2nd test of the Issues Thread. We're giving this one some upvotes and downvotes as well :)", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Election Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+            content: "This is the test of the Elections Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "dd9ea23d-00ca-4f64-9226-dd95b86747b6", title: "User Forum Thread One", creator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "This is the test of the User Forum Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "8a186b37-06d9-4853-86d2-9363fa78eab4", title: "General Forum Guidelines", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "acc8123d-d79e-416c-890f-7e56a51ffe32", 
+            content: "Please read the following guideliens before ...", upvotes: 3, downvotes: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "7e37664a-b475-4a92-a354-8d95a7d66abc", title: "Second User", creator: "b5f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "This is the test of the Elections Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "00411e71-e465-43c5-8521-66edbee07171", title: "Misc Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+            content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "208272e9-1765-451f-9acb-79699ce5fc25", title: "Anders' Turn Here", creator: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "Need some different users coming in now", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+
+])
+
 Repo.insert_all(Post, [
-      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Issues Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+      %{id: Ecto.UUID.generate(), title: "Issues Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
             content: "This is the test of the Issues Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Issues Post #2", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+      %{id: Ecto.UUID.generate(), title: "Issues Post #2", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
             content: "This is the 2nd test of the Issues Post. We're giving this one some likes and shares as well :)", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Election Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+      %{id: Ecto.UUID.generate(), title: "Election Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread: "70a4ea60-9bbc-4755-b249-d39db020c683", 
             content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "User Forum Post One", author: "df18d5eb-e99e-4481-9e16-4d2f434a3711", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+      %{id: Ecto.UUID.generate(), title: "User Forum Post One", author: "df18d5eb-e99e-4481-9e16-4d2f434a3711", thread: "dd9ea23d-00ca-4f64-9226-dd95b86747b6", 
             content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "General Forum Guidelines", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "acc8123d-d79e-416c-890f-7e56a51ffe32", 
+      %{id: Ecto.UUID.generate(), title: "General Forum Guidelines", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread: "8a186b37-06d9-4853-86d2-9363fa78eab4", 
             content: "Please read the following guideliens before ...", likes: 3, shares: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+      %{id: Ecto.UUID.generate(), title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
             content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+      %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread: "00411e71-e465-43c5-8521-66edbee07171", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Anders' Turn Here", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+      %{id: Ecto.UUID.generate(), title: "Anders' Turn Here", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread: "208272e9-1765-451f-9acb-79699ce5fc25", 
             content: "Need some different users coming in now", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
 ])

@@ -7,7 +7,8 @@ defmodule FanCan.Site do
   alias FanCan.Repo
 
   alias FanCan.Site.Forum
-  alias FanCan.Site.Post
+  alias FanCan.Site.Forum.Post
+  alias FanCan.Site.Forum.Thread
 
   @doc """
   Returns the list of forums.

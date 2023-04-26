@@ -1,16 +1,16 @@
-defmodule FanCan.Site.Post do
+defmodule FanCan.Site.Forum.Post do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "posts" do
-    field :author, :binary
+    field :author, :binary_id
     field :content, :string
     field :likes, :integer
     field :shares, :integer
     field :title, :string
-    field :forum, :binary_id
+    field :thread, :binary_id
 
     timestamps()
   end

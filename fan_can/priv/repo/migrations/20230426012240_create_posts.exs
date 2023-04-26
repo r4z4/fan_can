@@ -9,11 +9,11 @@ defmodule FanCan.Repo.Migrations.CreatePosts do
       add :content, :string
       add :likes, :integer
       add :shares, :integer
-      add :forum, references(:forums, type: :binary_id, on_delete: :nothing)
+      add :thread, references(:threads, type: :binary_id, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:posts, [:forum])
+    create index(:posts, [:thread])
   end
 end
