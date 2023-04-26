@@ -7,6 +7,7 @@ defmodule FanCan.Site do
   alias FanCan.Repo
 
   alias FanCan.Site.Forum
+  alias FanCan.Site.Post
 
   @doc """
   Returns the list of forums.
@@ -19,6 +20,28 @@ defmodule FanCan.Site do
   """
   def list_forums do
     Repo.all(Forum)
+  end
+
+  @doc """
+  Returns the posts for a particular forum based on forum_id.
+
+  ## Examples
+
+      iex> get_forum_posts(id)
+      [%Post{}, ...]
+
+  """
+  def get_forum_posts(id) do
+    query = from p in Post,
+      where: p.forum == ^id,
+      # FIXME Change this to confirmed_at > inserted_at
+      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
+      select: %{:id => p.id, :title => p.title, :content => p.content, :author => p.author, :likes => p.likes, :shares => p.shares, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+    FanCan.Repo.all(query)
   end
 
   @doc """

@@ -9,18 +9,17 @@
     id="post-form"
     phx-submit="save"
   >
-    <h1 class="text-center font-bold text-2xl text-indigo-500">Ballot For <%= @desc %> </h1>
-    <h4 class="text-center text-indigo-500"><%= @date %></h4>
+    <h1 class="text-center font-bold text-2xl text-indigo-500">Forum Title Here</h1>
 
     <div class="grid justify-center md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-5 my-10">
       <!-- Card -->
         <div :for={post <- @posts} class="bg-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
-            <img class="h-56 lg:h-60 w-full object-cover" src={post.image_path} alt="" />
             <div class="p-3">
                 <h3 class="font-semibold text-xl leading-6 text-gray-700 my-2">
-                    <%= post.seat %>
+                    <%= post.title %>
                 </h3>
-                <div><p>Post Content Here</p></div>
+                <div><p class="text-xs"><%= post.author %></p></div>
+                <div><p><%= post.content %></p></div>
                 <a href={~p"/races/inspect/#{post.id}"}>Inspect >></a>
             </div>
         </div>

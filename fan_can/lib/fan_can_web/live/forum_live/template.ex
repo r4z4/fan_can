@@ -2,6 +2,8 @@ defmodule FanCanWeb.ForumLive.Template do
   use FanCanWeb, :live_view
 
   alias FanCan.Site.Forum
+  alias FanCan.Site.Post
+  alias FanCan.Site
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -26,24 +28,13 @@ defmodule FanCanWeb.ForumLive.Template do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    ballot_races = Election.get_ballot_races(id)
-    final_ballot_races = 
-      for ballot_race <- ballot_races do
-        candidates = Election.get_candidates(ballot_race.id)
-        image_path = "/images/ne_districts/District#{ballot_race.district}.png"
-        IO.inspect(candidates, label: "Candidates")
-        new = 
-          Map.replace(ballot_race, :candidates, candidates)
-          |> Map.put(:image_path, image_path)
-      end
-    IO.inspect(final_ballot_races, label: "Final Ballot Races")
+    posts = Site.get_forum_posts(id)
+    IO.inspect(posts, label: "Posts")
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post_form, nil)
-     |> assign(:posts, final_ballot_races)
-     |> assign(:desc, List.first(ballot_races).desc)
-     |> assign(:date, List.first(ballot_races).election_date)}
+     |> assign(:posts, posts)}
   end
 
   defp page_title(:template), do: "Forum Title Here"
