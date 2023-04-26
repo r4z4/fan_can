@@ -1,8 +1,7 @@
-defmodule FanCanWeb.BallotLive.Template do
+defmodule FanCanWeb.ForumLive.Template do
   use FanCanWeb, :live_view
 
-  alias FanCan.Public.Election
-  alias FanCan.Public.Election.BallotRace
+  alias FanCan.Site.Forum
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -12,18 +11,6 @@ defmodule FanCanWeb.BallotLive.Template do
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
-  end
-
-  defp party_class(party) do
-    case party do
-      :Democrat -> "ml-3 text-blue"
-      :Republican -> "ml-3 text-red"
-      :Independent -> "ml-3 text-black"
-      :Now -> "ml-3 text-green"
-      :Libertarian -> "ml-3 text-purple"
-      :Non_Partisan -> "ml-3 text-black"
-      :Other_Party -> "ml-3 text-amber"
-    end
   end
 
   defp candidate_class(candidate) do
@@ -53,11 +40,11 @@ defmodule FanCanWeb.BallotLive.Template do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:ballot_form, nil)
-     |> assign(:ballot_races, final_ballot_races)
+     |> assign(:post_form, nil)
+     |> assign(:posts, final_ballot_races)
      |> assign(:desc, List.first(ballot_races).desc)
      |> assign(:date, List.first(ballot_races).election_date)}
   end
 
-  defp page_title(:template), do: "Ballot For ..."
+  defp page_title(:template), do: "Forum Title Here"
 end
