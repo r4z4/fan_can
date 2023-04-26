@@ -80,8 +80,8 @@ Repo.insert_all(State, [
 Repo.insert_all(User, [
       %{id: "a9f44567-e031-44f1-aae6-972d7aabbb45", username: "admin", state: :NE, district: nil, email: "admin@admin.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "b5f44567-e031-44f1-aae6-972d7aabbb45", username: "jim_the_og", state: :NE, district: nil, email: "jim@jim.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "b3f44567-e031-44f1-aae6-972d7aabbb45", username: "aaron", state: :NE, district: nil, email: "aaron@aaron.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "b1f44567-e031-44f1-aae6-972d7aabbb45", username: "TheMan98", state: :NE, district: nil, email: "User@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", username: "aaron", state: :NE, district: nil, email: "aaron@aaron.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", username: "TheMan98", state: :NE, district: nil, email: "User@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "b2f44567-e031-44f1-aae6-972d7aabbb45", username: "Anders01", state: :KS, district: nil, email: "User2@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
@@ -340,15 +340,35 @@ Repo.insert_all(Race, [
 ])
 
 Repo.insert_all(Forum, [
-      %{id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", title: "Issues", desc: "Forum for all generic site related issues. All users will be subscribed.", category: :Site, moderator: "a9f44567-e031-44f1-aae6-972d7aabbb45", members: ["a9f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "a837b808-b122-4b07-9cbd-576473165fcb", title: "2024 Election", desc: "It's almost here.", category: :Politics, moderator: "b5f44567-e031-44f1-aae6-972d7aabbb45", members: ["b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", title: "Issues", desc: "Forum for all generic site related issues. All users will be subscribed.", category: :Site, moderator: "a9f44567-e031-44f1-aae6-972d7aabbb45", 
+            members: ["a9f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "a837b808-b122-4b07-9cbd-576473165fcb", title: "2024 Election", desc: "It's almost here.", category: :Politics, moderator: "b5f44567-e031-44f1-aae6-972d7aabbb45", 
+            members: ["b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "3f826aed-ab18-47d3-80b5-b20328db4e0f", title: "User's Forum", desc: "Forum moderated by non-admin member", category: :Politics, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
+            members: ["67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", "df18d5eb-e99e-4481-9e16-4d2f434a3711"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "acc8123d-d79e-416c-890f-7e56a51ffe32", title: "General Forum", desc: "General Forum", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
+            members: ["df18d5eb-e99e-4481-9e16-4d2f434a3711", "b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+
 ])
 
 Repo.insert_all(Post, [
-      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Issues Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", content: "This is the test of the Issues Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Issues Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+            content: "This is the test of the Issues Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Issues Post #2", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
             content: "This is the 2nd test of the Issues Post. We're giving this one some likes and shares as well :)", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "f74d5ccd-69fd-43bf-b078-0ce1639adc0e", title: "Election Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Election Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+            content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "User Forum Post One", author: "df18d5eb-e99e-4481-9e16-4d2f434a3711", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "General Forum Guidelines", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "acc8123d-d79e-416c-890f-7e56a51ffe32", 
+            content: "Please read the following guideliens before ...", likes: 3, shares: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum: "a837b808-b122-4b07-9cbd-576473165fcb", 
+            content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "Anders' Turn Here", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "Need some different users coming in now", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+
 ])
 
 Repo.insert_all(Ballot, [
@@ -359,20 +379,20 @@ Repo.insert_all(Ballot, [
 Repo.insert_all(UserFollows, [
       # All need to follow admin
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b1f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "b2f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Set up some initial candidate follows
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
                                                                                         "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", 
+      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", 
                                                                                         "4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
                                                                                         "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Set up some initial election follows
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :election, follow_ids: ["a1f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Set up some initial forum follows
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b3f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55", "8d04fd4f-1321-4e9f-911a-7399d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55", "8d04fd4f-1321-4e9f-911a-7399d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
 # Ecto.UUID.bingenerate()

@@ -21,7 +21,7 @@
 
 <.modal :if={@live_action in [:new, :edit]} id="forum-modal" show on_cancel={JS.patch(~p"/forums")}>
   <.live_component
-    module={FanCanWeb.ForumLive.FormComponent}
+    module={FanCanWeb.ForumLive.PostFormComponent}
     id={@forum.id || :new}
     title={@page_title}
     user={@current_user}
