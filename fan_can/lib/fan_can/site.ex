@@ -154,7 +154,7 @@ defmodule FanCan.Site do
       ** (Ecto.NoResultsError)
 
   """
-  def get_post!(id), do: Repo.get!(post, id)
+  def get_post!(id), do: Repo.get!(Post, id)
 
   @doc """
   Creates a post.

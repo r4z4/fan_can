@@ -1,4 +1,4 @@
-defmodule FanCanWeb.postLive.PostFormComponent do
+defmodule FanCanWeb.ForumLive.PostFormComponent do
   use FanCanWeb, :live_component
 
   alias FanCan.Site

@@ -1,14 +1,6 @@
-<.header>
-  Ballot
-  <:subtitle>Template</:subtitle>
-</.header>
+<.header>Forum Posts</.header>
 
 <section class="h-screen w-screen bg-gradient-to-br from-pink-50 to-indigo-100 p-8">
-  <.simple_form
-    for={@post_form}
-    id="post-form"
-    phx-submit="save"
-  >
     <h1 class="text-center font-bold text-2xl text-indigo-500">Forum Title Here</h1>
 
     <div class="grid justify-center md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-5 my-10">
@@ -20,20 +12,19 @@
                 </h3>
                 <div><p class="text-xs"><%= post.author %></p></div>
                 <div><p><%= post.content %></p></div>
-                <a href={~p"/races/inspect/#{post.id}"}>Inspect >></a>
             </div>
         </div>
     </div>
-  </.simple_form>
 </section>
 
-<.modal :if={@live_action in [:new, :edit]} id="race-modal" show on_cancel={JS.patch(~p"/races")}>
+<.modal :if={@live_action in [:new, :edit]} id="post-modal" show on_cancel={JS.patch(~p"/main/forums")}>
   <.live_component
-    module={FanCanWeb.RaceLive.FormComponent}
-    id={@race.id || :new}
+    module={FanCanWeb.ForumLive.PostFormComponent}
+    id={@post.id || :new}
     title={@page_title}
+    user={@current_user}
     action={@live_action}
-    race={@race}
-    patch={~p"/races"}
+    post={@post}
+    patch={~p"/main/forums"}
   />
 </.modal>
