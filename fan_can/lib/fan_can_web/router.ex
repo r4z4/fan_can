@@ -120,7 +120,9 @@ defmodule FanCanWeb.Router do
       live "/forums/:id/edit", ForumLive.Index, :edit
       # Order matters. Need this before /:id or 'main' gets interpreted as an id
       live "/forums/main", ForumLive.Main, :main
-      live "/forums/main/:id", ForumLive.Template, :template
+      live "/forums/main/:id", ForumLive.ThreadLive.Main, :main
+      # Main pages will be list of those items
+      live "/forums/main/:id/thread/:id", ForumLive.PostLive.Main, :main
 
       live "/forums/:id", ForumLive.Show, :show
       live "/forums/:id/show/edit", ForumLive.Show, :edit

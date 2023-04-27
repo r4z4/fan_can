@@ -10,7 +10,7 @@ defmodule FanCan.Site.Forum.Post do
     field :likes, :integer
     field :shares, :integer
     field :title, :string
-    field :thread, :binary_id
+    field :thread_id, :binary_id
 
     timestamps()
   end

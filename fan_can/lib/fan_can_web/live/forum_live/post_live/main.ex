@@ -1,9 +1,10 @@
-defmodule FanCanWeb.ForumLive.Template do
+defmodule FanCanWeb.ForumLive.PostLive.Main do
   use FanCanWeb, :live_view
 
-  alias FanCan.Site.Forum
-  alias FanCan.Site.Post
   alias FanCan.Site
+  alias FanCan.Site.Forum
+  alias FanCan.Site.Forum.Post
+  alias FanCan.Site.Forum.Thread
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -28,7 +29,7 @@ defmodule FanCanWeb.ForumLive.Template do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    posts = Site.get_forum_posts(id)
+    posts = Site.get_thread_posts(id)
     IO.inspect(posts, label: "Posts")
     {:noreply,
      socket
@@ -37,5 +38,5 @@ defmodule FanCanWeb.ForumLive.Template do
      |> assign(:posts, posts)}
   end
 
-  defp page_title(:template), do: "Forum Title Here"
+  defp page_title(:main), do: "Forum Title Here"
 end

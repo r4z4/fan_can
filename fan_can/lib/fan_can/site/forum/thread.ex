@@ -10,7 +10,7 @@ defmodule FanCan.Site.Forum.Thread do
     field :downvotes, :integer
     field :title, :string
     field :upvotes, :integer
-    field :forum, :binary_id
+    field :forum_id, :binary_id
 
     timestamps()
   end
