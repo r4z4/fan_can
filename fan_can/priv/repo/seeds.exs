@@ -349,7 +349,7 @@ Repo.insert_all(Forum, [
             members: ["67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", "df18d5eb-e99e-4481-9e16-4d2f434a3711"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "acc8123d-d79e-416c-890f-7e56a51ffe32", title: "General Forum", desc: "General Forum", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
             members: ["df18d5eb-e99e-4481-9e16-4d2f434a3711", "b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", title: "General Forum", desc: "General Forum", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
+      %{id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", title: "The Nebraska Unicameral", desc: "A place to discuss the system of government unique to the State of Nebraska.", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
             members: ["df18d5eb-e99e-4481-9e16-4d2f434a3711", "b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
 ])
@@ -360,7 +360,7 @@ Repo.insert_all(Thread, [
             upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "f254a438-f49b-4f42-9f72-ba76951c3846", title: "No Posts In Here", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
             content: "This is the 2nd test of the Issues Thread. We're giving this one some upvotes and downvotes as well :)", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Election Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "a837b808-b122-4b07-9cbd-576473165fcb", 
+      %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Who Do You Think is Going to Win for Governor?", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "a837b808-b122-4b07-9cbd-576473165fcb", 
             content: "This is the test of the Elections Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "dd9ea23d-00ca-4f64-9226-dd95b86747b6", title: "User Forum Thread One", creator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", forum_id: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
             content: "This is the test of the User Forum Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
