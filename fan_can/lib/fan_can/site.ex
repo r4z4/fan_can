@@ -84,6 +84,22 @@ defmodule FanCan.Site do
   def get_forum!(id), do: Repo.get!(Forum, id)
 
   @doc """
+  Gets a single thread.
+
+  Raises `Ecto.NoResultsError` if the Thread does not exist.
+
+  ## Examples
+
+      iex> get_thread!(123)
+      %Thread{}
+
+      iex> get_thread!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_thread!(id), do: Repo.get!(Thread, id)
+
+  @doc """
   Creates a forum.
 
   ## Examples

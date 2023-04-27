@@ -29,14 +29,14 @@ defmodule FanCanWeb.ForumLive.PostLive.Main do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    thread = Site.get_thread!(id)
     posts = Site.get_thread_posts(id)
     IO.inspect(posts, label: "Posts")
     {:noreply,
      socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:page_title, thread.title)
      |> assign(:post_form, nil)
      |> assign(:posts, posts)}
   end
 
-  defp page_title(:main), do: "Forum Title Here"
 end

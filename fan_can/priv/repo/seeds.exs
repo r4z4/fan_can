@@ -348,13 +348,16 @@ Repo.insert_all(Forum, [
       %{id: "3f826aed-ab18-47d3-80b5-b20328db4e0f", title: "User's Forum", desc: "Forum moderated by non-admin member", category: :Politics, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
             members: ["67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", "df18d5eb-e99e-4481-9e16-4d2f434a3711"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "acc8123d-d79e-416c-890f-7e56a51ffe32", title: "General Forum", desc: "General Forum", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
+            members: ["df18d5eb-e99e-4481-9e16-4d2f434a3711", "b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", title: "General Forum", desc: "General Forum", category: :General, moderator: "df18d5eb-e99e-4481-9e16-4d2f434a3711", 
             members: ["df18d5eb-e99e-4481-9e16-4d2f434a3711", "b5f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
 ])
 
 Repo.insert_all(Thread, [
-      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Issues Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
-            content: "This is the test of the Issues Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", title: "Seeking Help with Common Issues", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
+            content: "Welcome to the Issues thread. This is the site admin writing to make sure that everyone knows who to contact if they are having issues with anything on the site. Please visit the ____", 
+            upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "f254a438-f49b-4f42-9f72-ba76951c3846", title: "No Posts In Here", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "8d04fd4f-1321-4e9f-911a-7369d57d0b55", 
             content: "This is the 2nd test of the Issues Thread. We're giving this one some upvotes and downvotes as well :)", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "70a4ea60-9bbc-4755-b249-d39db020c683", title: "Election Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "a837b808-b122-4b07-9cbd-576473165fcb", 
@@ -367,28 +370,37 @@ Repo.insert_all(Thread, [
             content: "This is the test of the Elections Thread", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "00411e71-e465-43c5-8521-66edbee07171", title: "Misc Thread", creator: "a9f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "a837b808-b122-4b07-9cbd-576473165fcb", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "208272e9-1765-451f-9acb-79699ce5fc25", title: "Anders' Turn Here", creator: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
-            content: "Need some different users coming in now", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "208272e9-1765-451f-9acb-79699ce5fc25", title: "The Unicameral Needs to Die!", creator: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", 
+            content: "I know that it is a unique system and that it brings many advantages, but I think that the fact that much of our own population fails to u nderstand seems to have the opposite effect in a lot of our state policies", 
+            upvotes: 0, downvotes: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "4fd6aa47-51da-4277-bca6-3a87b2153c20", title: "Interesting Facts I Learned about the Unicameral", creator: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", 
+            content: "Every now and then I just stumble across intersting facts and just figured that I would have to share them", 
+            upvotes: 4, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
 ])
 
 Repo.insert_all(Post, [
-      %{id: Ecto.UUID.generate(), title: "Issues Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
-            content: "This is the test of the Issues Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Issues Post #2", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
-            content: "This is the 2nd test of the Issues Post. We're giving this one some likes and shares as well :)", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "Reset Password", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
+            content: "Is there a simple way to find instructions on how to get a password reset?", 
+            likes: 7, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
+            content: "This is a follow up post. You can also email the support team at support@fancan.org and they will respond to your inquiries ASAP", 
+            likes: 6, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Election Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "70a4ea60-9bbc-4755-b249-d39db020c683", 
-            content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+            content: "Hello and welcome to the Elections thread.  I wanted to make the first post and just set the stage for the discussion. Please be civil and always keep in mind the goal is the facilitation of public sector knowldge", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "User Forum Post One", author: "df18d5eb-e99e-4481-9e16-4d2f434a3711", thread_id: "dd9ea23d-00ca-4f64-9226-dd95b86747b6", 
-            content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+            content: "This is just to show that each user can create their own thread and then of course comment and post on those or other thread.", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "General Forum Guidelines", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "8a186b37-06d9-4853-86d2-9363fa78eab4", 
             content: "Please read the following guideliens before ...", likes: 3, shares: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
             content: "This is the test of the Elections Post", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "00411e71-e465-43c5-8521-66edbee07171", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Anders' Turn Here", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 
-            content: "Need some different users coming in now", likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: Ecto.UUID.generate(), title: "I Disagree", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 
+            content: "I get what you are saying here, and I have in fact seen some of that myself, but I think that it is something to be overcome instead.", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
 ])
 
