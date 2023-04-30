@@ -19,6 +19,6 @@ defmodule FanCan.Site.Forum.Post do
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:title, :author, :content, :likes, :shares])
-    |> validate_required([:title, :author, :content])
+    |> validate_required([:title, :author, :content, :likes, :shares])
   end
 end

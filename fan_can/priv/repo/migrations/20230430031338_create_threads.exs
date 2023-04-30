@@ -5,7 +5,7 @@ defmodule FanCan.Repo.Migrations.CreateThreads do
     create table(:threads, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :title, :string
-      add :creator, :binary
+      add :creator, :binary_id
       add :content, :string
       add :upvotes, :integer
       add :downvotes, :integer

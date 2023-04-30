@@ -1,7 +1,7 @@
-defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
+defmodule FanCanWeb.PostLive.FormComponent do
   use FanCanWeb, :live_component
 
-  alias FanCan.Site
+  alias FanCan.Site.Forum
 
   @impl true
   def render(assigns) do
@@ -9,6 +9,7 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
     <div>
       <.header>
         <%= @title %>
+        <:subtitle>Use this form to manage post records in your database.</:subtitle>
       </.header>
 
       <.simple_form
@@ -19,9 +20,12 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
         phx-submit="save"
       >
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:content]} type="textarea" label="Content" />
+        <.input field={@form[:author]} type="text" label="Author" />
+        <.input field={@form[:content]} type="text" label="Content" />
+        <.input field={@form[:likes]} type="number" label="Likes" />
+        <.input field={@form[:shares]} type="number" label="Shares" />
         <:actions>
-          <.button phx-disable-with="Saving...">Save post</.button>
+          <.button phx-disable-with="Saving...">Save Post</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -30,7 +34,7 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
 
   @impl true
   def update(%{post: post} = assigns, socket) do
-    changeset = Site.change_post(post)
+    changeset = Forum.change_post(post)
 
     {:ok,
      socket
@@ -42,7 +46,7 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
   def handle_event("validate", %{"post" => post_params}, socket) do
     changeset =
       socket.assigns.post
-      |> Site.change_post(post_params)
+      |> Forum.change_post(post_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign_form(socket, changeset)}
@@ -53,15 +57,13 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
   end
 
   defp save_post(socket, :edit, post_params) do
-    case Site.update_post(socket.assigns.post, post_params) do
+    case Forum.update_post(socket.assigns.post, post_params) do
       {:ok, post} ->
         notify_parent({:saved, post})
-        updated_message = %{type: :post, string: "post #{socket.assigns.post.title} has been edited by #{socket.assigns.user.username}"}
-        FanCanWeb.Endpoint.broadcast!("post_" <> post.id, "new_message", updated_message)
 
         {:noreply,
          socket
-         |> put_flash(:info, "post updated successfully")
+         |> put_flash(:info, "Post updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -70,15 +72,13 @@ defmodule FanCanWeb.ForumLive.PostLive.PostFormComponent do
   end
 
   defp save_post(socket, :new, post_params) do
-    case Site.create_post(post_params) do
+    case Forum.create_post(post_params) do
       {:ok, post} ->
         notify_parent({:saved, post})
-        new_message = %{type: :post, string: "post #{socket.assigns.post.title} has just been added by #{socket.assigns.user.username}"}
-        FanCanWeb.Endpoint.broadcast!("post_" <> post.id, "new_message", new_message)
 
         {:noreply,
          socket
-         |> put_flash(:info, "post created successfully")
+         |> put_flash(:info, "Post created successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

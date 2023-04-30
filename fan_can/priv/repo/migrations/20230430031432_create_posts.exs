@@ -5,7 +5,7 @@ defmodule FanCan.Repo.Migrations.CreatePosts do
     create table(:posts, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :title, :string
-      add :author, :binary
+      add :author, :binary_id
       add :content, :string
       add :likes, :integer
       add :shares, :integer

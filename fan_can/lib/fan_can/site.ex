@@ -259,4 +259,17 @@ defmodule FanCan.Site do
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
   end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking thread changes.
+
+  ## Examples
+
+      iex> change_thread(thread)
+      %Ecto.Changeset{data: %thread{}}
+
+  """
+  def change_thread(%Thread{} = thread, attrs \\ %{}) do
+    Thread.changeset(thread, attrs)
+  end
 end

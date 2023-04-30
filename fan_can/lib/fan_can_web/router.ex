@@ -113,6 +113,19 @@ defmodule FanCanWeb.Router do
       live "/ballots/:id", BallotLive.Show, :show
       live "/ballots/:id/show/edit", BallotLive.Show, :edit
 
+      live "/threads", ThreadLive.Index, :index
+      live "/threads/new", ThreadLive.Index, :new
+      live "/threads/:id/edit", ThreadLive.Index, :edit
+
+      live "/threads/:id", ThreadLive.Show, :show
+      live "/threads/:id/show/edit", ThreadLive.Show, :edit
+
+      live "/posts", PostLive.Index, :index
+      live "/posts/new", PostLive.Index, :new
+      live "/posts/:id/edit", PostLive.Index, :edit
+
+      live "/posts/:id", PostLive.Show, :show
+      live "/posts/:id/show/edit", PostLive.Show, :edit
 
 
       live "/forums", ForumLive.Index, :index
@@ -121,6 +134,7 @@ defmodule FanCanWeb.Router do
       # Order matters. Need this before /:id or 'main' gets interpreted as an id
       live "/forums/main", ForumLive.Main, :main
       live "/forums/main/:id", ForumLive.ThreadLive.Main, :main
+      live "/forums/main/:id/new", ForumLive.ThreadLive.Main, :new
       # Main pages will be list of those items
       live "/forums/main/:id/thread/:id", ForumLive.PostLive.Main, :main
 
