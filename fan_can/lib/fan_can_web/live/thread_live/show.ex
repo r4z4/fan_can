@@ -18,13 +18,16 @@ defmodule FanCanWeb.ThreadLive.Show do
      |> assign(:posts, Forum.get_thread_posts(id))}
   end
 
-  def handle_event("upvote_click", _value, socket) do
-    IO.puts("Upvoted")
+  def handle_event("like_click", %{"id" => id}, socket) do
+    post = Forum.get_post!(id)
+    Forum.update_post(post, %{likes: post.likes + 1})
+    # Add pubsub msg
     {:noreply, socket}
   end
 
-  def handle_event("downvote_click", _value, socket) do
-    IO.puts("Downvoted")
+  def handle_event("share_click", %{"id" => id}, socket) do
+    post = Forum.get_post!(id)
+    Forum.update_post(post, %{shares: post.shares + 1})
     {:noreply, socket}
   end
 
