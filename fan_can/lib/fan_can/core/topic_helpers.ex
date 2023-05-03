@@ -8,7 +8,7 @@ defmodule FanCan.Core.TopicHelpers do
   """
   # user_234234sf-sdf34-sdfasdf-435435345 or candidate_234234sf-sdf34-sdfasdf-435435345 etc..
   def subscribe_to_followers(type, list \\ []) do
-    string = type <> "_" <> "32453453-sdf4-sdf4-sdfs3"
+    # string = type <> "_" <> "32453453-sdf4-sdf4-sdfs3"
     # IO.inspect(string, label: "String")
     for i <- list, do: FanCanWeb.Endpoint.subscribe(type <> "_" <> i)
     # for i <- list do 

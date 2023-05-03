@@ -22,6 +22,9 @@ defmodule FanCanWeb.ThreadLive.Show do
     post = Forum.get_post!(id)
     Forum.update_post(post, %{likes: post.likes + 1})
     # Add pubsub msg
+    liked_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} liked your post :)"}
+    IO.inspect(liked_message, label: "liked_message")
+    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", liked_message)
     {:noreply, socket}
   end
 

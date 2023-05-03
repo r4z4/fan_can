@@ -21,6 +21,7 @@ defmodule FanCanWeb.HomeLive do
   def mount(_params, _session, socket) do
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
       IO.inspect(follow, label: "Type")
+      # Subscribe to user_follows
       case follow.type do
         :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
         :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
@@ -28,6 +29,8 @@ defmodule FanCanWeb.HomeLive do
         :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
       end
     end
+    # Subscribe to user's pwn items
+    FanCanWeb.Endpoint.subscribe("posts_" <> socket.assigns.current_user.id)
     # FanCanWeb.Endpoint.subscribe("topic")
     IO.inspect(socket, label: "Socket")
     {:ok, 
