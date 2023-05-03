@@ -18,6 +18,16 @@ defmodule FanCanWeb.ThreadLive.Show do
      |> assign(:posts, Forum.get_thread_posts(id))}
   end
 
+  def handle_event("upvote_click", _value, socket) do
+    IO.puts("Upvoted")
+    {:noreply, socket}
+  end
+
+  def handle_event("downvote_click", _value, socket) do
+    IO.puts("Downvoted")
+    {:noreply, socket}
+  end
+
   defp page_title(:show), do: "Posts for Thread"
   defp page_title(:edit), do: "Edit Thread"
 end

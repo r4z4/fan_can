@@ -18,6 +18,16 @@ defmodule FanCanWeb.ForumLive.Page do
      |> assign(:threads, Forum.get_forum_threads(id))}
   end
 
+  def handle_event("star_click", _value, socket) do
+    IO.puts("Starred")
+    {:noreply, socket}
+  end
+
+  def handle_event("share_click", _value, socket) do
+    IO.puts("Shared")
+    {:noreply, socket}
+  end
+
   defp page_title(:page), do: "Show Forum"
   defp page_title(:edit), do: "Edit Forum"
 end
