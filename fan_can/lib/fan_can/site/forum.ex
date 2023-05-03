@@ -1,7 +1,9 @@
 defmodule FanCan.Site.Forum do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query, warn: false
   alias FanCan.Core.Utils
+  alias FanCan.Repo
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -23,6 +25,28 @@ defmodule FanCan.Site.Forum do
   end
 
   alias FanCan.Site.Forum.Thread
+
+  @doc """
+  Returns the threads for a particular forum based on forum_id.
+
+  ## Examples
+
+      iex> get_forum_threads(id)
+      [%Post{}, ...]
+
+  """
+  def get_forum_threads(id) do
+    query = from t in Thread,
+      where: t.forum_id == ^id,
+      # FIXME Change this to confirmed_at > inserted_at
+      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
+      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :upvotes => t.upvotes, :downvotes => t.downvotes, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+    FanCan.Repo.all(query)
+  end
 
   @doc """
   Returns the list of threads.
@@ -119,6 +143,28 @@ defmodule FanCan.Site.Forum do
   end
 
   alias FanCan.Site.Forum.Post
+
+  @doc """
+  Returns the posts for a particular thread based on thread_id.
+
+  ## Examples
+
+      iex> get_thread_posts(id)
+      [%Post{}, ...]
+
+  """
+  def get_thread_posts(id) do
+    query = from p in Post,
+      where: p.thread_id == ^id,
+      # FIXME Change this to confirmed_at > inserted_at
+      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
+      select: %{:id => p.id, :title => p.title, :content => p.content, :author => p.author, :likes => p.likes, :shares => p.shares, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+    FanCan.Repo.all(query)
+  end
 
   @doc """
   Returns the list of posts.

@@ -1,8 +1,8 @@
-defmodule FanCanWeb.ThreadLive.Show do
+defmodule FanCanWeb.ForumLive.Page do
   use FanCanWeb, :live_view
 
+  alias FanCan.Site
   alias FanCan.Site.Forum
-  alias FanCan.Site.Forum.Thread
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,10 +14,10 @@ defmodule FanCanWeb.ThreadLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:thread, Forum.get_thread!(id))
-     |> assign(:posts, Forum.get_thread_posts(id))}
+     |> assign(:forum, Site.get_forum!(id))
+     |> assign(:threads, Forum.get_forum_threads(id))}
   end
 
-  defp page_title(:show), do: "Posts for Thread"
-  defp page_title(:edit), do: "Edit Thread"
+  defp page_title(:page), do: "Show Forum"
+  defp page_title(:edit), do: "Edit Forum"
 end
