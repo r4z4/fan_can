@@ -18,22 +18,22 @@ defmodule FanCanWeb.ThreadLive.Show do
      |> assign(:posts, Forum.get_thread_posts(id))}
   end
 
-  def handle_event("like_click", %{"id" => id}, socket) do
+  def handle_event("upvote_click", %{"id" => id}, socket) do
     post = Forum.get_post!(id)
-    Forum.update_post(post, %{likes: post.likes + 1})
+    Forum.update_post(post, %{upvotes: post.upvotes + 1})
     # Add pubsub msg
     upvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} upvoted your post :)"}
-    IO.inspect(liked_message, label: "liked_message")
-    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", liked_message)
+    IO.inspect(upvoted_message, label: "upvoted_message")
+    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", upvoted_message)
     {:noreply, socket}
   end
 
-  def handle_event("share_click", %{"id" => id}, socket) do
+  def handle_event("downvote_click", %{"id" => id}, socket) do
     post = Forum.get_post!(id)
-    Forum.update_post(post, %{shares: post.shares + 1})
+    Forum.update_post(post, %{downvotes: post.downvotes + 1})
     # Add pubsub msg
     downvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} downvoted your post :)"}
-    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", liked_message)
+    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", downvoted_message)
     {:noreply, socket}
   end
 

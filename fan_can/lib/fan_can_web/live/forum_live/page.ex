@@ -18,21 +18,21 @@ defmodule FanCanWeb.ForumLive.Page do
      |> assign(:threads, Forum.get_forum_threads(id))}
   end
 
-  def handle_event("upvote_click", %{"id" => id}, socket) do
+  def handle_event("like_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
-    Site.update_thread(thread, %{upvotes: thread.upvotes + 1})
+    Site.update_thread(thread, %{likes: thread.likes + 1})
     # Add pubsub msg
-    upvoted_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} upvoted your thread :)"}
-    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", upvoted_message)
+    liked_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} liked your thread :)"}
+    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", liked_message)
     {:noreply, socket}
   end
 
-  def handle_event("downvote_click", %{"id" => id}, socket) do
+  def handle_event("share_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
-    Site.update_thread(thread, %{shares: thread.downvotes + 1})
+    Site.update_thread(thread, %{shares: thread.shares + 1})
     # Add pubsub msg
-    downvoted_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} downvoted your thread :)"}
-    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", downvoted_message)
+    shared_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} shared your thread :)"}
+    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", shared_message)
     {:noreply, socket}
   end
 
