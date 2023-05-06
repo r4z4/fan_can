@@ -18,7 +18,7 @@ defmodule FanCanWeb.ForumLive.Page do
      |> assign(:threads, Forum.get_forum_threads(id))}
   end
 
-  def handle_event("star_click", _value, socket) do
+  def handle_event("upvote_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
     Site.update_thread(thread, %{upvotes: thread.upvotes + 1})
     # Add pubsub msg
@@ -27,12 +27,12 @@ defmodule FanCanWeb.ForumLive.Page do
     {:noreply, socket}
   end
 
-  def handle_event("share_click", _value, socket) do
+  def handle_event("downvote_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
-    Site.update_thread(thread, %{shares: thread.shares + 1})
+    Site.update_thread(thread, %{shares: thread.downvotes + 1})
     # Add pubsub msg
-    shared_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} shared your thread :)"}
-    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", shared_message)
+    downvoted_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} downvoted your thread :)"}
+    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", downvoted_message)
     {:noreply, socket}
   end
 

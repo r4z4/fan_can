@@ -7,9 +7,9 @@ defmodule FanCan.Site.Forum.Thread do
   schema "threads" do
     field :content, :string
     field :creator, :binary_id
-    field :downvotes, :integer
+    field :likes, :integer
     field :title, :string
-    field :upvotes, :integer
+    field :shares, :integer
     field :forum_id, :binary_id
 
     timestamps()
@@ -18,7 +18,7 @@ defmodule FanCan.Site.Forum.Thread do
   @doc false
   def changeset(thread, attrs) do
     thread
-    |> cast(attrs, [:title, :creator, :content, :upvotes, :downvotes])
-    |> validate_required([:title, :creator, :content, :upvotes, :downvotes])
+    |> cast(attrs, [:title, :creator, :content, :likes, :shares])
+    |> validate_required([:title, :creator, :content, :likes, :shares])
   end
 end

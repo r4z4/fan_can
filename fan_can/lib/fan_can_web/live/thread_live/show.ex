@@ -22,7 +22,7 @@ defmodule FanCanWeb.ThreadLive.Show do
     post = Forum.get_post!(id)
     Forum.update_post(post, %{likes: post.likes + 1})
     # Add pubsub msg
-    liked_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} liked your post :)"}
+    upvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} upvoted your post :)"}
     IO.inspect(liked_message, label: "liked_message")
     FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", liked_message)
     {:noreply, socket}
@@ -31,6 +31,9 @@ defmodule FanCanWeb.ThreadLive.Show do
   def handle_event("share_click", %{"id" => id}, socket) do
     post = Forum.get_post!(id)
     Forum.update_post(post, %{shares: post.shares + 1})
+    # Add pubsub msg
+    downvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} downvoted your post :)"}
+    FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", liked_message)
     {:noreply, socket}
   end
 

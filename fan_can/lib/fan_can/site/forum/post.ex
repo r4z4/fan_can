@@ -7,8 +7,8 @@ defmodule FanCan.Site.Forum.Post do
   schema "posts" do
     field :author, :binary_id
     field :content, :string
-    field :likes, :integer
-    field :shares, :integer
+    field :upvotes, :integer
+    field :downvotes, :integer
     field :title, :string
     field :thread_id, :binary_id
 
@@ -18,7 +18,7 @@ defmodule FanCan.Site.Forum.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :author, :content, :likes, :shares])
-    |> validate_required([:title, :author, :content, :likes, :shares])
+    |> cast(attrs, [:title, :author, :content, :upvotes, :downvotes])
+    |> validate_required([:title, :author, :content, :upvotes, :downvotes])
   end
 end
