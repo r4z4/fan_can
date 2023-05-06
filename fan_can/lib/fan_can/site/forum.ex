@@ -40,7 +40,7 @@ defmodule FanCan.Site.Forum do
       where: t.forum_id == ^id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :upvotes => t.upvotes, :downvotes => t.downvotes, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
+      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -158,7 +158,7 @@ defmodule FanCan.Site.Forum do
       where: p.thread_id == ^id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => p.id, :title => p.title, :content => p.content, :author => p.author, :likes => p.likes, :shares => p.shares, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
+      select: %{:id => p.id, :title => p.title, :content => p.content, :author => p.author, :upvotes => p.upvotes, :downvotes => p.downvotes, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id

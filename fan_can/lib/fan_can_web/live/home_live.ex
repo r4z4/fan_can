@@ -74,7 +74,7 @@ defmodule FanCanWeb.HomeLive do
             href={~p"/forums"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
-            <Heroicons.LiveView.icon name="chat-bubble-left-right" type="outline" class="h-5 w-5 text-black" />
+            <Heroicons.LiveView.icon name="chat-bubble-left-right" type="outline" class="h-10 w-10 text-black" />
             Forums
           </.link>
         </div>
