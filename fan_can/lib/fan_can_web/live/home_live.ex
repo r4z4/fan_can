@@ -29,8 +29,9 @@ defmodule FanCanWeb.HomeLive do
         :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
       end
     end
-    # Subscribe to user's pwn items
+    # Subscribe to user's own items
     FanCanWeb.Endpoint.subscribe("posts_" <> socket.assigns.current_user.id)
+    FanCanWeb.Endpoint.subscribe("threads_" <> socket.assigns.current_user.id)
     # FanCanWeb.Endpoint.subscribe("topic")
     IO.inspect(socket, label: "Socket")
     {:ok, 
@@ -53,7 +54,7 @@ defmodule FanCanWeb.HomeLive do
             href={~p"/candidates"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
-            <Heroicons.LiveView.icon name="home" type="outline" class="h-5 w-5 text-black" />
+            <Heroicons.LiveView.icon name="users" type="outline" class="h-10 w-10 text-emerald" />
             Candidates
           </.link>
         </div>
@@ -63,7 +64,7 @@ defmodule FanCanWeb.HomeLive do
             href={~p"/elections"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
-            <Heroicons.LiveView.icon name="user-group" type="outline" class="h-5 w-5 text-black" />
+            <Heroicons.LiveView.icon name="check-badge" type="outline" class="h-10 w-10 text-red" />
             Elections
           </.link>
         </div>

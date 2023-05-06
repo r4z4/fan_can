@@ -19,12 +19,20 @@ defmodule FanCanWeb.ForumLive.Page do
   end
 
   def handle_event("star_click", _value, socket) do
-    IO.puts("Starred")
+    thread = Site.get_thread!(id)
+    Site.update_thread(thread, %{upvotes: thread.upvotes + 1})
+    # Add pubsub msg
+    upvoted_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} upvoted your thread :)"}
+    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", upvoted_message)
     {:noreply, socket}
   end
 
   def handle_event("share_click", _value, socket) do
-    IO.puts("Shared")
+    thread = Site.get_thread!(id)
+    Site.update_thread(thread, %{shares: thread.shares + 1})
+    # Add pubsub msg
+    shared_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} shared your thread :)"}
+    FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", shared_message)
     {:noreply, socket}
   end
 

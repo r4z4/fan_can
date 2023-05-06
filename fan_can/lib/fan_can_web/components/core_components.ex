@@ -105,6 +105,7 @@ defmodule FanCanWeb.CoreComponents do
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
+  # Lime, Violet, Indigo, Cyan, Zinc, Fuchsia
   def flash(assigns) do
     ~H"""
     <div
@@ -119,6 +120,7 @@ defmodule FanCanWeb.CoreComponents do
         @kind == :forum && "bg-orange-50 text-orange-800 ring-orange-500 fill-orange-900",
         @kind == :election && "bg-amber-50 text-amber-800 ring-amber-500 fill-amber-900",
         @kind == :post && "bg-teal-50 text-teal-800 ring-teal-500 fill-teal-900",
+        @kind == :thread && "bg-fuchsia-50 text-fuchsia-800 ring-fuchsia-500 fill-fuchsia-900",
         @kind == :user && "bg-purple-50 text-purple-800 ring-purple-500 fill-purple-900",
         @kind == :error && "bg-rose-50 text-rose-900 shadow-md ring-rose-500 fill-rose-900"
       ]}
@@ -130,7 +132,8 @@ defmodule FanCanWeb.CoreComponents do
         <.icon :if={@kind == :user} name="hero-information-user" class="h-4 w-4" />
         <.icon :if={@kind == :forum} name="hero-information-megaphone" class="h-4 w-4" />
         <.icon :if={@kind == :post} name="hero-information-scale" class="h-4 w-4" />
-        <.icon :if={@kind == :election} name="hero-information-scale" class="h-4 w-4" />
+        <.icon :if={@kind == :thread} name="book-open" class="h-4 w-4" />
+        <.icon :if={@kind == :election} name="academic-cap" class="h-4 w-4" />
         <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
         <%= @title %>
       </p>
@@ -157,6 +160,7 @@ defmodule FanCanWeb.CoreComponents do
     <.flash kind={:candidate} title="Candidate" flash={@flash} />
     <.flash kind={:election} title="Election" flash={@flash} />
     <.flash kind={:post} title="Post" flash={@flash} />
+    <.flash kind={:thread} title="Thread" flash={@flash} />
     <.flash kind={:forum} title="Forum" flash={@flash} />
     <.flash kind={:user} title="User" flash={@flash} />
     <.flash kind={:error} title="Error!" flash={@flash} />
