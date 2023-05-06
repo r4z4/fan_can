@@ -15,8 +15,8 @@
   <:col :let={{_id, post}} label="Title"><%= post.title %></:col>
   <:col :let={{_id, post}} label="Author"><%= post.author %></:col>
   <:col :let={{_id, post}} label="Content"><%= post.content %></:col>
-  <:col :let={{_id, post}} label="Likes"><%= post.likes %></:col>
-  <:col :let={{_id, post}} label="Shares"><%= post.shares %></:col>
+  <:col :let={{_id, post}} label="Upvotes"><%= post.upvotes %></:col>
+  <:col :let={{_id, post}} label="Downvotes"><%= post.downvotes %></:col>
   <:action :let={{_id, post}}>
     <div class="sr-only">
       <.link navigate={~p"/posts/#{post}"}>Show</.link>
