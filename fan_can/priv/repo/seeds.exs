@@ -396,6 +396,8 @@ Repo.insert_all(Post, [
             content: "Please read the following guideliens before ...", upvotes: 3, downvotes: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
             content: "This is the test of the Elections Post", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: Ecto.UUID.generate(), title: "Query Test", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
+            content: "Needed two posts from Jim to test a query", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "00411e71-e465-43c5-8521-66edbee07171", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "I Disagree", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 

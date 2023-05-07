@@ -2,6 +2,7 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
   use FanCanWeb, :live_component
 
   alias FanCan.Site.Forum
+  alias FanCan.Site.Forum.Post
 
   @impl true
   def render(assigns) do
@@ -19,11 +20,12 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input field={@form[:thread_id]} type="hidden" />
         <.input field={@form[:title]} type="text" label="Title" />
         <.input field={@form[:author]} type="text" label="Author" />
         <.input field={@form[:content]} type="text" label="Content" />
-        <.input field={@form[:likes]} type="number" label="Likes" />
-        <.input field={@form[:shares]} type="number" label="Shares" />
+        <.input field={@form[:upvotes]} type="number" label="Upvotes" />
+        <.input field={@form[:downvotes]} type="number" label="Downvotes" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Post</.button>
         </:actions>
@@ -33,13 +35,14 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
   end
 
   @impl true
-  def update(%{thread: thread} = assigns, socket) do
-    changeset = Forum.change_thread(thread)
-
+  def update(%{thread: thread, current_user: current_user} = assigns, socket) do
+    post = %Post{thread_id: thread.id, author: current_user.id}
+    changeset = Forum.change_post(post)
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_form(changeset)}
+     |> assign_form(changeset)
+     |> assign(:post, post)}
   end
 
   @impl true
@@ -71,7 +74,7 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
     end
   end
 
-  defp save_post(socket, :new, post_params) do
+  defp save_post(socket, :new_post, post_params) do
     case Forum.create_post(post_params) do
       {:ok, post} ->
         notify_parent({:saved, post})
@@ -79,7 +82,7 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Post created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_patch(to: ~p"/threads/#{socket.assigns.thread.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
@@ -90,5 +93,12 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
     assign(socket, :form, to_form(changeset))
   end
 
-  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+  defp notify_parent(msg) do 
+    send(self(), {__MODULE__, msg})
+    with {_, post = %Post{}} <- msg do
+      # Add pubsub msg
+      new_thread_post_message = %{type: :new_post, string: "New post added to thread #{post.thread_id} :)"}
+      FanCanWeb.Endpoint.broadcast!("threads_" <> post.thread_id, "new_message", new_thread_post_message)
+    end
+  end
 end

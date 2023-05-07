@@ -7,6 +7,8 @@ defmodule FanCan.Accounts do
   alias FanCan.Repo
 
   alias FanCan.Accounts.{User, UserToken, UserNotifier, UserFollows}
+  alias FanCan.Site.Forum.Post
+  alias FanCan.Site.Forum.Thread
 
   ## Database getters
 
@@ -84,10 +86,34 @@ defmodule FanCan.Accounts do
           # Repo.all returns a list
     uf_rows = Repo.all(query)
   end
+
+  def get_user_thread_ids_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: t in Thread, on: t.creator == u.id
+    query = from [u, ut, t] in query,
+          where: ut.token == ^token,
+          select: t.id
+          # Repo.all returns a list
+    thread_id_rows = Repo.all(query)
+  end
+
+  def get_user_post_ids_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: p in Post, on: p.author == u.id
+    query = from [u, ut, p] in query,
+          where: ut.token == ^token,
+          select: p.id
+          # Repo.all returns a list
+    post_id_rows = Repo.all(query)
+  end
   
 
   @doc """
-  Gets a user by user token/
+  Gets a user by user token
 
   ## Examples
 
