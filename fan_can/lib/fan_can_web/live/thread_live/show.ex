@@ -3,10 +3,18 @@ defmodule FanCanWeb.ThreadLive.Show do
 
   alias FanCan.Site.Forum
   alias FanCan.Site.Forum.Thread
+  alias FanCan.Site.Forum.Post
 
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
+  end
+
+  defp apply_action(socket, :new_post, _params) do
+    socket
+    |> assign(:page_title, "New Post Son")
+    |> assign(:thread, %Thread{})
+    |> assign(:post, %Post{})
   end
 
   @impl true
@@ -39,4 +47,5 @@ defmodule FanCanWeb.ThreadLive.Show do
 
   defp page_title(:show), do: "Posts for Thread"
   defp page_title(:edit), do: "Edit Thread"
+  defp page_title(:new_post), do: "New Post"
 end
