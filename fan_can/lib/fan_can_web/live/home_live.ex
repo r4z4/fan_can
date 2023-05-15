@@ -19,26 +19,26 @@ defmodule FanCanWeb.HomeLive do
 #   end
 
   def mount(_params, _session, socket) do
-    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
-      IO.inspect(follow, label: "Type")
-      # Subscribe to user_follows. E.g. forums that user subscribes to
-      case follow.type do
-        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
-      end
-    end
+    # for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+    #   IO.inspect(follow, label: "Type")
+    #   # Subscribe to user_follows. E.g. forums that user subscribes to
+    #   case follow.type do
+    #     :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+    #     :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+    #     :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+    #     :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+    #   end
+    # end
 
-    with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
-      IO.inspect(thread_ids, label: "thread_ids_b")
-      for post_id <- post_ids do
-        FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
-      end
-      for thread_id <- thread_ids do
-        FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
-      end
-    end
+    # with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
+    #   IO.inspect(thread_ids, label: "thread_ids_b")
+    #   for post_id <- post_ids do
+    #     FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
+    #   end
+    #   for thread_id <- thread_ids do
+    #     FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
+    #   end
+    # end
     # FanCanWeb.Endpoint.subscribe("topic")
     IO.inspect(socket, label: "Socket")
     {:ok, 
@@ -126,15 +126,4 @@ defmodule FanCanWeb.HomeLive do
   # def handle_event("new_message", params, socket) do
   #   {:noreply, socket}
   # end
-  @impl true
-  def handle_info(%{event: "new_message", payload: new_message}, socket) do
-    IO.inspect(new_message.type, label: "New Message.type")
-    updated_messages = socket.assigns[:messages] ++ [new_message]
-    IO.inspect(new_message, label: "New Message")
-
-    {:noreply, 
-     socket 
-     |> assign(:messages, updated_messages)
-     |> put_flash(new_message.type, "PubSub: #{new_message.string}")}
-  end
 end
