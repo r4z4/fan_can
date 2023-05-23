@@ -156,7 +156,8 @@ defmodule FanCanWeb.UserAuth do
     # socket = mount_current_user_post_ids(session, socket)
     
     if socket.assigns.current_user do
-      subscribe_all(socket)
+      # IO.puts("subscribing")
+      # subscribe_all(socket)
       {:cont, socket}
     else
       socket =
@@ -198,26 +199,29 @@ defmodule FanCanWeb.UserAuth do
   end
 
   defp subscribe_all(socket) do
-    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
-      IO.inspect(follow, label: "Type")
-      # Subscribe to user_follows. E.g. forums that user subscribes to
-      case follow.type do
-        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
-      end
-    end
+    IO.puts("casing casting")
+    GenServer.cast(FanCanWeb.SubscriptionServer, {:subscribe_user_follows, socket.assigns.current_user_follows})
+    GenServer.cast(FanCanWeb.SubscriptionServer, {:subscribe_user_published, socket.assigns.current_user_published_ids})
+    # for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+    #   IO.inspect(follow, label: "Type")
+    #   # Subscribe to user_follows. E.g. forums that user subscribes to
+    #   case follow.type do
+    #     :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+    #     :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+    #     :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+    #     :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+    #   end
+    # end
 
-    with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
-      IO.inspect(thread_ids, label: "thread_ids_b")
-      for post_id <- post_ids do
-        FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
-      end
-      for thread_id <- thread_ids do
-        FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
-      end
-    end
+    # with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
+    #   IO.inspect(thread_ids, label: "thread_ids_b")
+    #   for post_id <- post_ids do
+    #     FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
+    #   end
+    #   for thread_id <- thread_ids do
+    #     FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
+    #   end
+    # end
   end
 
   # defp mount_current_user_post_ids(session, socket) do

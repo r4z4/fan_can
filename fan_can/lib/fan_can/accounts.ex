@@ -124,24 +124,24 @@ defmodule FanCan.Accounts do
       nil
 
   """
-  def get_user_data_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id
-    query = from [u, ut] in query,
-          where: ut.token == ^token,
-          select: {u.email, u.username}
-          # Repo.all returns a list
-    {user_email, username} = Repo.one(query)
-  end
+  # def get_user_data_by_token(token)
+  #     when is_binary(token) do
+  #   query = from u in User,
+  #       join: ut in UserToken, on: u.id == ut.user_id
+  #   query = from [u, ut] in query,
+  #         where: ut.token == ^token,
+  #         select: {u.email, u.username}
+  #         # Repo.all returns a list
+  #   {user_email, username} = Repo.one(query)
+  # end
 
-  def get_user_data_by_id(id) do
-    query = from u in User,
-          where: u.id == ^id,
-          select: {u.email, u.id, u.username, u.user_follows, u.user_post_likes}
-          # Repo.all returns a list
-    {user_email, id, username, user_follows, user_post_likes} = Repo.one(query)
-  end
+  # def get_user_data_by_id(id) do
+  #   query = from u in User,
+  #         where: u.id == ^id,
+  #         select: {u.email, u.id, u.username, u.user_follows, u.user_post_likes}
+  #         # Repo.all returns a list
+  #   {user_email, id, username, user_follows, user_post_likes} = Repo.one(query)
+  # end
 
 
 

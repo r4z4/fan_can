@@ -41,6 +41,10 @@ defmodule FanCanWeb.HomeLive do
     # end
     # FanCanWeb.Endpoint.subscribe("topic")
     IO.inspect(socket, label: "Socket")
+    pid = spawn(FanCanWeb.SubscriptionServer, :start, [])
+    IO.inspect(pid, label: "SubscriptionSupervisor PIN =>=>=>=>")
+    send pid, {:subscribe_user_follows, socket.assigns.current_user_follows}
+    send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
     {:ok, 
      socket
      |> assign(:messages, [])}
