@@ -12,7 +12,7 @@ config :fan_can,
 
 # Configures the endpoint
 config :fan_can, FanCanWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "0.0.0.0"],
   render_errors: [
     formats: [html: FanCanWeb.ErrorHTML, json: FanCanWeb.ErrorJSON],
     layout: false
