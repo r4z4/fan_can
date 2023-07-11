@@ -23,7 +23,6 @@ defmodule FanCan.Public.Election do
 
   alias FanCan.Public.Election.Race
   alias FanCan.Public.Election.Ballot
-  alias FanCan.Public.Election.BallotRace
   alias FanCan.Public.Election  
   alias FanCan.Public.Candidate  
   import Ecto.Query, warn: false

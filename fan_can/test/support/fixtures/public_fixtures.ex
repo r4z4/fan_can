@@ -21,7 +21,7 @@ defmodule FanCan.PublicFixtures do
         party: :republican,
         prefix: "some prefix",
         residence: "some residence",
-        state: "some state",
+        state: :MN,
         suffix: "some suffix",
         type: "some type"
       })
@@ -39,7 +39,7 @@ defmodule FanCan.PublicFixtures do
       |> Enum.into(%{
         desc: "some desc",
         election_date: ~D[2023-04-06],
-        state: "some state",
+        state: :MN,
         year: 42
       })
       |> FanCan.Public.create_election()

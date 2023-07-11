@@ -5,6 +5,7 @@ defmodule FanCanWeb.UserRegistrationLive do
   alias FanCan.Accounts.User
   alias FanCan.Core.Utils
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -58,6 +59,7 @@ defmodule FanCanWeb.UserRegistrationLive do
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign(:messages, [])
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}
@@ -90,6 +92,17 @@ defmodule FanCanWeb.UserRegistrationLive do
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_registration(%User{}, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns.messages ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do

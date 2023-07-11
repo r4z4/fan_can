@@ -3,6 +3,7 @@ defmodule FanCanWeb.UserResetPasswordLive do
 
   alias FanCan.Accounts
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -38,6 +39,7 @@ defmodule FanCanWeb.UserResetPasswordLive do
     """
   end
 
+  @impl true
   def mount(params, _session, socket) do
     socket = assign_user_and_token(socket, params)
 
@@ -50,11 +52,15 @@ defmodule FanCanWeb.UserResetPasswordLive do
           %{}
       end
 
-    {:ok, assign_form(socket, form_source), temporary_assigns: [form: nil]}
+    {:ok, 
+      socket
+      |> assign_form(form_source), temporary_assigns: [form: nil]
+      |> assign(:messages, [])}
   end
 
   # Do not log in the user after reset password to avoid a
   # leaked token giving the user access to the account.
+  @impl true
   def handle_event("reset_password", %{"user" => user_params}, socket) do
     case Accounts.reset_user_password(socket.assigns.user, user_params) do
       {:ok, _} ->
@@ -68,11 +74,13 @@ defmodule FanCanWeb.UserResetPasswordLive do
     end
   end
 
+  @impl true
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_password(socket.assigns.user, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 
+  @impl true
   defp assign_user_and_token(socket, %{"token" => token}) do
     if user = Accounts.get_user_by_reset_password_token(token) do
       assign(socket, user: user, token: token)
@@ -83,6 +91,18 @@ defmodule FanCanWeb.UserResetPasswordLive do
     end
   end
 
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns.messages ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
+  end
+
+  @impl true
   defp assign_form(socket, %{} = source) do
     assign(socket, :form, to_form(source, as: "user"))
   end

@@ -52,6 +52,7 @@ defmodule FanCanWeb.HomeLive do
      |> assign(:messages, [])}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
@@ -87,7 +88,7 @@ defmodule FanCanWeb.HomeLive do
             href={~p"/forums"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
-            <Heroicons.LiveView.icon name="chat-bubble-left-right" type="outline" class="h-10 w-10 text-black" />
+            <Heroicons.LiveView.icon name="chat-bubble-left-right" type="outline" class="h-10 w-10 text-white" />
             Forums
           </.link>
         </div>
@@ -97,6 +98,7 @@ defmodule FanCanWeb.HomeLive do
     """
   end
 
+  @impl true
   def handle_event("validate_email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 
@@ -109,6 +111,7 @@ defmodule FanCanWeb.HomeLive do
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
   end
 
+  @impl true
   def handle_event("update_email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user

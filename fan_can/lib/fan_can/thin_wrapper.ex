@@ -1,4 +1,4 @@
-defmodule Fancan.ThinWrapper do
+defmodule FanCan.ThinWrapper do
     use GenServer
   
     def start_link(_) do

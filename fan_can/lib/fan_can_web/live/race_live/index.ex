@@ -3,10 +3,36 @@ defmodule FanCanWeb.RaceLive.Index do
 
   alias FanCan.Public.Election
   alias FanCan.Public.Election.Race
+  alias FanCan.Core.TopicHelpers
+  alias FanCan.Accounts.UserFollows
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :races, Election.list_races())}
+    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+      IO.inspect(follow, label: "Type")
+      # Subscribe to user_follows. E.g. forums that user subscribes to
+      case follow.type do
+        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+      end
+    end
+
+    with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
+      IO.inspect(thread_ids, label: "thread_ids_b")
+      for post_id <- post_ids do
+        FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
+      end
+      for thread_id <- thread_ids do
+        FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
+      end
+    end
+
+    {:ok, socket
+          |> stream(:races, Election.list_races())
+          # Use streams, but for something we display always. Not a flash. Keep flash with assigns below.
+          |> stream(:stream_messages, [])}
   end
 
   @impl true
@@ -29,12 +55,24 @@ defmodule FanCanWeb.RaceLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Races")
+    |> assign(:messages, [])
     |> assign(:race, nil)
   end
 
   @impl true
   def handle_info({FanCanWeb.RaceLive.FormComponent, {:saved, race}}, socket) do
     {:noreply, stream_insert(socket, :races, race)}
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns.messages ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
   @impl true

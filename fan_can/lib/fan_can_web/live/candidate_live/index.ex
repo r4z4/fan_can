@@ -4,6 +4,8 @@ defmodule FanCanWeb.CandidateLive.Index do
   alias FanCan.Public
   alias FanCan.Public.Candidate
   alias FanCan.Accounts
+  alias FanCan.Core.TopicHelpers
+  alias FanCan.Accounts.UserFollows
   # @impl Phoenix.LiveView
   @impl true
   def mount(_params, session, socket) do
@@ -21,10 +23,31 @@ defmodule FanCanWeb.CandidateLive.Index do
 
     IO.inspect(result, label: "Result")
 
+    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+      IO.inspect(follow, label: "Type")
+      # Subscribe to user_follows. E.g. forums that user subscribes to
+      case follow.type do
+        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+      end
+    end
+
+    with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
+      IO.inspect(thread_ids, label: "thread_ids_b")
+      for post_id <- post_ids do
+        FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
+      end
+      for thread_id <- thread_ids do
+        FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
+      end
+    end
+
     {:ok, 
      socket
      |> stream(:candidates, result.entries)
-     |> stream(:messages, [])
+     |> stream(:stream_messages, [])
      |> assign(:page_number, result.page_number || 0)
      |> assign(:page_size, result.page_size || 0)
      |> assign(:total_entries, result.total_entries || 0)
@@ -52,6 +75,7 @@ defmodule FanCanWeb.CandidateLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Candidates")
+    |> assign(:messages, [])
     |> assign(:candidate, nil)
   end
 

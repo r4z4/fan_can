@@ -72,7 +72,8 @@ defmodule FanCan.Accounts do
           where: ut.token == ^token,
           select: {u}
           # Repo.all returns a list
-    {u} = Repo.one(query)
+    # {u} = Repo.one(query)
+    Repo.one(query)
   end
 
   def get_user_follows_by_token(token)
@@ -84,7 +85,7 @@ defmodule FanCan.Accounts do
           where: ut.token == ^token,
           select: uf
           # Repo.all returns a list
-    uf_rows = Repo.all(query)
+    Repo.all(query)
   end
 
   def get_user_thread_ids_by_token(token)
@@ -96,7 +97,7 @@ defmodule FanCan.Accounts do
           where: ut.token == ^token,
           select: t.id
           # Repo.all returns a list
-    thread_id_rows = Repo.all(query)
+   Repo.all(query)
   end
 
   def get_user_post_ids_by_token(token)
@@ -108,7 +109,7 @@ defmodule FanCan.Accounts do
           where: ut.token == ^token,
           select: p.id
           # Repo.all returns a list
-    post_id_rows = Repo.all(query)
+    Repo.all(query)
   end
   
 

@@ -3,6 +3,7 @@ defmodule FanCanWeb.UserSettingsLive do
 
   alias FanCan.Accounts
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-2xl"> 
@@ -75,6 +76,7 @@ defmodule FanCanWeb.UserSettingsLive do
     """
   end
 
+  @impl true
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
@@ -85,9 +87,13 @@ defmodule FanCanWeb.UserSettingsLive do
           put_flash(socket, :error, "Email change link is invalid or it has expired.")
       end
 
-    {:ok, push_navigate(socket, to: ~p"/users/settings")}
+    {:ok, 
+      socket
+      |> push_navigate(to: ~p"/users/settings")
+      |> assign(:messages, [])}
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
@@ -147,6 +153,17 @@ defmodule FanCanWeb.UserSettingsLive do
       |> to_form()
 
     {:noreply, assign(socket, password_form: password_form, current_password: password)}
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns.messages ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
   def handle_event("update_password", params, socket) do

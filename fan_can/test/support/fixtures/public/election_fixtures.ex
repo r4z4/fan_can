@@ -17,7 +17,7 @@ defmodule FanCan.Public.ElectionFixtures do
         elect_percentage: 42,
         election_date: ~D[2023-04-06],
         seat: "some seat",
-        state: "some state",
+        state: :MN,
         year: 42
       })
       |> FanCan.Public.Election.create_race()
@@ -35,7 +35,7 @@ defmodule FanCan.Public.ElectionFixtures do
         attachment: "some attachment",
         columns: 42,
         races: [],
-        state: "some state",
+        state: :NE,
         year: 42
       })
       |> FanCan.Public.Election.create_ballot()
