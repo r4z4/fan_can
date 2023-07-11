@@ -16,6 +16,7 @@ defmodule FanCan.Application do
       {Phoenix.PubSub, name: FanCan.PubSub},
       # Start Finch
       {Finch, name: FanCan.Finch},
+      FanCan.ThinWrapper,
       # Start the Endpoint (http/https)
       FanCanWeb.Endpoint
       # Start a worker by calling: FanCan.Worker.start_link(arg)

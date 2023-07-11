@@ -75,6 +75,8 @@ defmodule FanCanWeb.PostLive.FormComponent do
     case Forum.create_post(post_params) do
       {:ok, post} ->
         notify_parent({:saved, post})
+        new_message = %{type: :forum, string: "Post has just been added by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("forum_" <> "ugh", "new_message", new_message)
 
         {:noreply,
          socket

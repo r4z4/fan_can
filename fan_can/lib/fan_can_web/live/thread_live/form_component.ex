@@ -75,6 +75,8 @@ defmodule FanCanWeb.ThreadLive.FormComponent do
     case Forum.create_thread(thread_params) do
       {:ok, thread} ->
         notify_parent({:saved, thread})
+        new_message = %{type: :forum, string: "Thread __ has just been added by #{socket.assigns.user.username}"}
+        FanCanWeb.Endpoint.broadcast!("forum_" <> "ugh", "new_message", new_message)
 
         {:noreply,
          socket

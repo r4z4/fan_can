@@ -12,7 +12,7 @@ config :fan_can,
 
 # Configures the endpoint
 config :fan_can, FanCanWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "0.0.0.0"],
   render_errors: [
     formats: [html: FanCanWeb.ErrorHTML, json: FanCanWeb.ErrorJSON],
     layout: false
@@ -28,6 +28,8 @@ config :fan_can, FanCanWeb.Endpoint,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :fan_can, FanCan.Mailer, adapter: Swoosh.Adapters.Local
+
+config :propcheck, counter_examples: "propcheck_counter_examples"
 
 config :ex_heroicons, type: "outline"
 

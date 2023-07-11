@@ -1,19 +1,13 @@
 <header class="px-4 sm:px-6 lg:px-8">
   <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
     <div class="flex items-center gap-4">
-      <a href="/">
-        <img src={~p"/images/logo.svg"} width="36" />
-      </a>
       <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:phoenix, :vsn) %>
-      </p>
-      <p class="bg-sky/5 text-sky rounded-full px-2 font-medium leading-6">
         <a href="/" class="hover:text-zinc-700">
           Main Site
         </a>
       </p>
     </div>
-    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+    <div class="flex items-center gap-4 font-semibold leading-6 text-white">
       <a href="/home" class="hover:text-zinc-700">
         Home
       </a>
@@ -31,7 +25,7 @@
       </a>
       <a
         href="/home"
-        class="rounded-lg bg-zinc-100 px-2 py-1 hover:bg-zinc-200/80"
+        class="rounded-lg bg-zinc-100 px-2 py-1 text-black hover:bg-zinc-200/80"
       >
         Home <span aria-hidden="true">&rarr;</span>
       </a>
