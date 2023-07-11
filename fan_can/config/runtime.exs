@@ -16,13 +16,14 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-if System.get_env("PHX_SERVER") do
-  config :fan_can, FanCanWeb.Endpoint, server: true
-end
+# # # if System.get_env("PHX_SERVER") do
+# # #   config :fan_can, FanCanWeb.Endpoint, server: true
+# # # end
+
+# # # DATABASE_URL = "ecto://postgres:postgres@db/fan_can"
 
 if config_env() == :prod do
-  database_url =
-    System.get_env("DATABASE_URL") ||
+  database_url = DATABASE_URL ||
       raise """
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
@@ -30,11 +31,11 @@ if config_env() == :prod do
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
-  config :fan_can, FanCan.Repo,
-    # ssl: true,
-    url: database_url,
-    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
-    socket_options: maybe_ipv6
+  # # # config :fan_can, FanCan.Repo,
+  # # #   # ssl: true,
+  # # #   url: "ecto://postgres:postgres@db/fan_can",
+  # # #   pool_size: String.to_integer("10" || "10"),
+  # # #   socket_options: maybe_ipv6
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

@@ -1,6 +1,7 @@
 defmodule FanCanWeb.SubscriptionServer do
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserFollows
+  
   def start do
     initial_state = []
     receive_messages(initial_state)

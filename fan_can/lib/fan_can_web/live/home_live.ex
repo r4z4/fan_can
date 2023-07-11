@@ -19,32 +19,34 @@ defmodule FanCanWeb.HomeLive do
 #   end
 
   def mount(_params, _session, socket) do
-    # for follow = %UserFollows{} <- socket.assigns.current_user_follows do
-    #   IO.inspect(follow, label: "Type")
-    #   # Subscribe to user_follows. E.g. forums that user subscribes to
-    #   case follow.type do
-    #     :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-    #     :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-    #     :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-    #     :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
-    #   end
-    # end
+    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+      IO.inspect(follow, label: "Type")
+      # Subscribe to user_follows. E.g. forums that user subscribes to
+      case follow.type do
+        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+      end
+    end
 
-    # with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
-    #   IO.inspect(thread_ids, label: "thread_ids_b")
-    #   for post_id <- post_ids do
-    #     FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
-    #   end
-    #   for thread_id <- thread_ids do
-    #     FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
-    #   end
-    # end
-    # FanCanWeb.Endpoint.subscribe("topic")
-    IO.inspect(socket, label: "Socket")
-    pid = spawn(FanCanWeb.SubscriptionServer, :start, [])
-    IO.inspect(pid, label: "SubscriptionSupervisor PIN =>=>=>=>")
-    send pid, {:subscribe_user_follows, socket.assigns.current_user_follows}
-    send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
+    with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
+      IO.inspect(thread_ids, label: "thread_ids_b")
+      for post_id <- post_ids do
+        FanCanWeb.Endpoint.subscribe("posts_" <> post_id)
+      end
+      for thread_id <- thread_ids do
+        FanCanWeb.Endpoint.subscribe("threads_" <> thread_id)
+      end
+    end
+    # # FanCanWeb.Endpoint.subscribe("topic")
+    # IO.inspect(socket, label: "Socket")
+    # pid = spawn(FanCanWeb.SubscriptionServer, :start, [])
+    # IO.inspect(pid, label: "SubscriptionSupervisor PIN =>=>=>=>")
+    # send pid, {:subscribe_user_follows, socket.assigns.current_user_follows}
+    # send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
+    # # ThinWrapper.put("game_data", game_data)
+    # # game_data = ThinWrapper.get("game_data")
     {:ok, 
      socket
      |> assign(:messages, [])}
@@ -58,7 +60,7 @@ defmodule FanCanWeb.HomeLive do
         <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
       </.header>
 
-      <div class="mx-auto">
+      <div class="mx-auto text-white">
       
         <div>
           <.link 
@@ -125,6 +127,17 @@ defmodule FanCanWeb.HomeLive do
       {:error, changeset} ->
         {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
     end
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns[:messages] ++ [new_message]
+    IO.inspect(new_message, label: "New Message")
+
+    {:noreply, 
+     socket 
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
   # def handle_event("new_message", params, socket) do
