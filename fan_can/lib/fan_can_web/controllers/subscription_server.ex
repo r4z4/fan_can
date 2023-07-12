@@ -1,4 +1,5 @@
 defmodule FanCanWeb.SubscriptionServer do
+  use GenServer
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserFollows
   
@@ -46,6 +47,30 @@ defmodule FanCanWeb.SubscriptionServer do
     IO.puts "Updated"
     {:ok, []}
   end
+
+  def handle_info(_) do
+    IO.puts "Info Handler"
+    {:ok, []}
+  end
+
+  def handle_cast(_) do
+    IO.puts "Info Handler"
+    {:noreply, []}
+  end
+
+  def handle_cast({:new_message, element}, state) do
+    IO.inspect(state, label: "Concuerror - State var")
+    IO.inspect(element, label: "Concuerror - Element var")
+    if String.contains?(element, "b") do
+      String.upcase(element)
+    end
+    {:noreply, [element | state]}
+  end
+
+  # def handle_cast(_, state) do
+  #   IO.puts "Info Handler"
+  #   {:noreply, state}
+  # end
 
   def handle_message({:send_all_values, pid}, state) do
     send(pid, {:all_values, state})

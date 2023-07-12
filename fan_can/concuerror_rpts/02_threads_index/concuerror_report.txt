@@ -1,0 +1,211 @@
+Concuerror 0.21.0+build.2371.refaf91d78 started at 12 Jul 2023 04:14:24
+ Options:
+  [{after_timeout,infinity},
+   {assertions_only,false},
+   {assume_racing,true},
+   {depth_bound,500},
+   {disable_sleep_sets,false},
+   {dpor,optimal},
+   {entry_point,{'Elixir.FanCan.ConcurrencyTest',test,[]}},
+   {exclude_module,[]},
+   {first_process_errors_only,false},
+   {ignore_error,[]},
+   {instant_delivery,true},
+   {interleaving_bound,infinity},
+   {keep_going,false},
+   {log_all,false},
+   {non_racing_system,[]},
+   {pa,"/usr/local/lib/elixir/lib/elixir/ebin"},
+   {pa,"/usr/local/lib/elixir/lib/ex_unit/ebin"},
+   {pa,"_build/test/lib/fan_can/ebin/"},
+   {print_depth,20},
+   {scheduling,round_robin},
+   {scheduling_bound_type,none},
+   {show_races,false},
+   {strict_scheduling,false},
+   {symbolic_names,true},
+   {timeout,5000},
+   {treat_as_normal,[]},
+   {use_receive_patterns,true}]
+################################################################################
+Interleaving #1
+--------------------------------------------------------------------------------
+Errors found:
+* At step 45 process <P.1> exited abnormally
+    Reason:
+      {undef,
+          [{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},
+           {gen_server,init_it,2,[{file,"gen_server.erl"},{line,851}]},
+           {gen_server,init_it,6,[{file,"gen_server.erl"},{line,814}]},
+           {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]},
+           {concuerror_callback,wrapper,4,
+               [{file,"/Concuerror/src/concuerror_callback.erl"},
+                {line,1653}]}]}
+    Stacktrace:
+      [{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},
+       {gen_server,init_it,2,[{file,"gen_server.erl"},{line,851}]},
+       {gen_server,init_it,6,[{file,"gen_server.erl"},{line,814}]},
+       {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]}]
+* At step 47 process <P> exited abnormally
+    Reason:
+      {undef,
+          [{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},
+           {gen_server,init_it,2,[{file,"gen_server.erl"},{line,851}]},
+           {gen_server,init_it,6,[{file,"gen_server.erl"},{line,814}]},
+           {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]},
+           {concuerror_callback,wrapper,4,
+               [{file,"/Concuerror/src/concuerror_callback.erl"},
+                {line,1653}]}]}
+    Stacktrace:
+      []
+--------------------------------------------------------------------------------
+Event trace:
+   1: <P>: [] = erlang:process_info(<P>, registered_name)
+    in proc_lib.erl line {767,5}
+   2: <P>: <P.1> = erlang:spawn_opt(proc_lib, init_p, [<P>,[],gen,init_it,[gen_server,<P>,<P>,'Elixir.FanCanWeb.ThreadLive.Index',[],[]]], [link])
+    in proc_lib.erl line {191,5}
+   3: <P.1>: <P.code_server/code_server> = erlang:whereis(code_server)
+    in error_handler.erl line {120,10}
+   4: <P.1>: true = erlang:module_loaded('Elixir.FanCanWeb.ThreadLive.Index')
+    in code.erl line {192,10}
+   5: <P.1>: {ack,<P.1>,{error,{undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}}} = <P> ! {ack,<P.1>,{error,{undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}}}
+    in proc_lib.erl line {425,12}
+   6: <P.1>: undefined = persistent_term:get({logger_config,proc_lib}, undefined)
+    in logger_config.erl line {55,14}
+   7: <P.1>: 5 = persistent_term:get({logger_config,'$primary_config$'}, 5)
+    in logger_config.erl line {88,5}
+   8: <P.1>: true = persistent_term:put({logger_config,proc_lib}, 5)
+    in logger_config.erl line {64,17}
+   9: <P.1>: [] = erlang:process_info(<P.1>, registered_name)
+    in proc_lib.erl line {767,5}
+  10: <P.1>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.ThreadLive.Index',init,1}},{'$ancestors',[<P>]},{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[242760005821070614|184649499271648046]}}]} = erlang:process_info(<P.1>, dictionary)
+    in proc_lib.erl line {767,5}
+  11: <P.1>: {message_queue_len,0} = erlang:process_info(<P.1>, message_queue_len)
+    in proc_lib.erl line {767,5}
+  12: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  13: <P.1>: {messages,[]} = erlang:process_info(<P.1>, messages)
+    in proc_lib.erl line {767,5}
+  14: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  15: <P.1>: {links,[<P>]} = erlang:process_info(<P.1>, links)
+    in proc_lib.erl line {767,5}
+  16: <P.1>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.ThreadLive.Index',init,1}},{'$ancestors',[<P>]},{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[212460856306430811|85318714053179538]}}]} = erlang:process_info(<P.1>, dictionary)
+    in proc_lib.erl line {767,5}
+  17: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  18: <P.1>: {trap_exit,false} = erlang:process_info(<P.1>, trap_exit)
+    in proc_lib.erl line {767,5}
+  19: <P.1>: {status,running} = erlang:process_info(<P.1>, status)
+    in proc_lib.erl line {767,5}
+  20: <P.1>: {heap_size,42} = erlang:process_info(<P.1>, heap_size)
+    in proc_lib.erl line {767,5}
+  21: <P.1>: {stack_size,42} = erlang:process_info(<P.1>, stack_size)
+    in proc_lib.erl line {767,5}
+  22: <P.1>: {reductions,42} = erlang:process_info(<P.1>, reductions)
+    in proc_lib.erl line {767,5}
+  23: <P.1>: {links,[<P>]} = erlang:process_info(<P.1>, links)
+    in proc_lib.erl line {767,5}
+  24: <P.1>: {trap_exit,false} = erlang:process_info(<P>, trap_exit)
+    in proc_lib.erl line {767,5}
+  25: <P.1>: {links,[<P.1>]} = erlang:process_info(<P>, links)
+    in proc_lib.erl line {767,5}
+  26: <P.1>: {trap_exit,false} = erlang:process_info(<P.1>, trap_exit)
+    in proc_lib.erl line {767,5}
+  27: <P.1>: [] = erlang:process_info(<P>, registered_name)
+    in proc_lib.erl line {767,5}
+  28: <P.1>: {dictionary,[{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[212460856306430811|85318714053179538]}}]} = erlang:process_info(<P>, dictionary)
+    in proc_lib.erl line {767,5}
+  29: <P.1>: {initial_call,{'Elixir.FanCan.ConcurrencyTest',test,0}} = erlang:process_info(<P>, initial_call)
+    in proc_lib.erl line {767,5}
+  30: <P.1>: {current_function,{'Elixir.FanCan.ConcurrencyTest',test,0}} = erlang:process_info(<P>, current_function)
+    in proc_lib.erl line {767,5}
+  31: <P.1>: {dictionary,[{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[212460856306430811|85318714053179538]}}]} = erlang:process_info(<P>, dictionary)
+    in proc_lib.erl line {767,5}
+  32: <P.1>: {message_queue_len,1} = erlang:process_info(<P>, message_queue_len)
+    in proc_lib.erl line {767,5}
+  33: <P.1>: {links,[<P.1>]} = erlang:process_info(<P>, links)
+    in proc_lib.erl line {767,5}
+  34: <P.1>: {trap_exit,false} = erlang:process_info(<P>, trap_exit)
+    in proc_lib.erl line {767,5}
+  35: <P.1>: {status,running} = erlang:process_info(<P>, status)
+    in proc_lib.erl line {767,5}
+  36: <P.1>: {heap_size,42} = erlang:process_info(<P>, heap_size)
+    in proc_lib.erl line {767,5}
+  37: <P.1>: {stack_size,42} = erlang:process_info(<P>, stack_size)
+    in proc_lib.erl line {767,5}
+  38: <P.1>: {reductions,42} = erlang:process_info(<P>, reductions)
+    in proc_lib.erl line {767,5}
+  39: <P.1>: {current_stacktrace,[]} = erlang:process_info(<P>, current_stacktrace)
+    in proc_lib.erl line {767,5}
+  40: <P.1>: #Ref<0.1402514586.3645243393.75247> = ets:whereis(logger)
+    in logger.erl line {1179,5}
+  41: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.1402514586.3645243393.75247>, '$primary_config$')
+    in logger_config.erl line {91,10}
+  42: <P.1>: <P.user/user> = erlang:group_leader()
+    in logger.erl line {1213,16}
+  43: <P.1>: 1689135269015419 = os:system_time(microsecond)
+    in logger.erl line {366,5}
+  44: <P.1>: undefined = persistent_term:get({logger_config,{'$handler_config$',default}}, undefined)
+    in logger_config.erl line {100,10}
+  45: <P.1>: exits abnormally ({undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110,95,115,101,114,118|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101,110,95,115,101,114|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+  46: <P.1>: true = erlang:exit(<P>, {undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110,95,115,101,114,118|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101,110,95,115,101,114|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+    (while exiting)
+  47: <P>: exits abnormally ({undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110,95,115,101,114,118|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101,110,95,115,101,114|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+  48: <P>: true = erlang:exit(<P.1>, {undef,[{'Elixir.FanCanWeb.ThreadLive.Index',init,[[]],[]},{gen_server,init_it,2,[{file,[103,101,110,95,115,101,114,118|...]},{line,851}]},{gen_server,init_it,6,[{file,[103,101,110,95,115,101,114|...]},{line,814}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+    (while exiting)
+################################################################################
+Exploration completed!
+################################################################################
+Errors:
+--------------------------------------------------------------------------------
+* Stop testing on first error. (Check '-h keep_going').
+
+################################################################################
+Warnings:
+--------------------------------------------------------------------------------
+* Concuerror does not properly support erlang:process_info(_, messages), returning an empty list instead.
+* Concuerror does not properly support erlang:process_info(_, status), returning always 'running' instead.
+* Concuerror does not properly support erlang:process_info(_, heap_size), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(_, stack_size), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(_, reductions), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(Other, current_function), returning the initial call instead.
+* Concuerror does not properly support erlang:process_info(Other, current_stacktrace), returning an empty list instead.
+
+################################################################################
+Tips:
+--------------------------------------------------------------------------------
+* Running without a scheduling_bound corresponds to verification and may take a long time.
+* Increase '--print_depth' if output/graph contains "...".
+* An abnormal exit signal killed a process. This is probably the worst thing that can happen race-wise, as any other side-effecting operation races with the arrival of the signal. If the test produces too many interleavings consider refactoring your code.
+
+################################################################################
+Info:
+--------------------------------------------------------------------------------
+* Showing progress ('-h progress', for details)
+* Writing results in concuerror_report.txt
+* Writing graph in my_graph.dot
+* Only logging errors ('--log_all false')
+* Automatically instrumented module io_lib
+* Showing PIDs as "<symbolic name(/last registered name)>" ('-h symbolic_names').
+* Automatically instrumented module error_handler
+* Automatically instrumented module 'Elixir.FanCan.ConcurrencyTest'
+* Automatically instrumented module 'Elixir.GenServer'
+* Automatically instrumented module 'Elixir.Keyword'
+* Automatically instrumented module gen
+* Automatically instrumented module proc_lib
+* Automatically instrumented module gen_server
+* Automatically instrumented module 'Elixir.FanCanWeb.ThreadLive.Index'
+* Automatically instrumented module code
+* Automatically instrumented module logger
+* Automatically instrumented module logger_config
+* Automatically instrumented module error_logger
+* Automatically instrumented module application
+* Automatically instrumented module application_controller
+* Automatically instrumented module lists
+* Automatically instrumented module logger_backend
+* Automatically instrumented module maps
+
+################################################################################
+Done at 12 Jul 2023 04:14:29 (Exit status: error)
+  Summary: 1 errors, 1/1 interleavings explored

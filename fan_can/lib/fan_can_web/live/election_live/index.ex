@@ -8,6 +8,7 @@ defmodule FanCanWeb.ElectionLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    IO.inspect(socket, label: "Election Socket")
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_follows. E.g. forums that user subscribes to

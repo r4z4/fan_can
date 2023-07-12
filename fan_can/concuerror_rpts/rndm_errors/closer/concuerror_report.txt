@@ -1,0 +1,351 @@
+Concuerror 0.21.0+build.2371.refaf91d78 started at 12 Jul 2023 17:48:59
+ Options:
+  [{after_timeout,1000},
+   {assertions_only,false},
+   {assume_racing,true},
+   {depth_bound,500},
+   {disable_sleep_sets,false},
+   {dpor,optimal},
+   {entry_point,{'Elixir.FanCan.ConcurrencyTest',test,[]}},
+   {exclude_module,[]},
+   {first_process_errors_only,false},
+   {ignore_error,[]},
+   {instant_delivery,true},
+   {interleaving_bound,infinity},
+   {keep_going,true},
+   {log_all,false},
+   {non_racing_system,[]},
+   {pa,"/usr/local/lib/elixir/lib/elixir/ebin"},
+   {pa,"/usr/local/lib/elixir/lib/ex_unit/ebin"},
+   {pa,"_build/test/lib/fan_can/ebin/"},
+   {print_depth,20},
+   {scheduling,round_robin},
+   {scheduling_bound_type,none},
+   {show_races,false},
+   {strict_scheduling,false},
+   {symbolic_names,true},
+   {timeout,5000},
+   {treat_as_normal,[shutdown]},
+   {use_receive_patterns,true}]
+################################################################################
+Interleaving #1
+--------------------------------------------------------------------------------
+Errors found:
+* At step 66 process <P.1> exited abnormally
+    Reason:
+      {#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',
+         message =>
+             <<"attempted to cast GenServer #PID<0.123.0> but no handle_cast/2 claus"...>>},
+       [{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,
+            [{file,"/usr/local/src/elixir/lib/elixir/lib/gen_server.ex"},
+             {line,832},
+             {error_info,#{module => 'Elixir.Exception'}}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,1123}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,1200}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]},
+        {concuerror_callback,wrapper,4,
+            [{file,"/Concuerror/src/concuerror_callback.erl"},{line,1653}]}]}
+    Stacktrace:
+      [{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,
+           [{file,"/usr/local/src/elixir/lib/elixir/lib/gen_server.ex"},
+            {line,832},
+            {error_info,#{module => 'Elixir.Exception'}}]},
+       {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,1123}]},
+       {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,1200}]},
+       {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]}]
+* At step 70 process <P> exited abnormally
+    Reason:
+      {#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',
+         message =>
+             <<"attempted to cast GenServer #PID<0.123.0> but no handle_cast/2 claus"...>>},
+       [{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,
+            [{file,"/usr/local/src/elixir/lib/elixir/lib/gen_server.ex"},
+             {line,832},
+             {error_info,#{module => 'Elixir.Exception'}}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,1123}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,1200}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,240}]},
+        {concuerror_callback,wrapper,4,
+            [{file,"/Concuerror/src/concuerror_callback.erl"},{line,1653}]}]}
+    Stacktrace:
+      []
+--------------------------------------------------------------------------------
+Event trace:
+   1: <P>: [] = erlang:process_info(<P>, registered_name)
+    in proc_lib.erl line {767,5}
+   2: <P>: <P.1> = erlang:spawn_opt(proc_lib, init_p, [<P>,[],gen,init_it,[gen_server,<P>,<P>,'Elixir.FanCanWeb.SubscriptionServer',[],[]]], [link])
+    in proc_lib.erl line {191,5}
+   3: <P.1>: {ack,<P.1>,{ok,<P.1>}} = <P> ! {ack,<P.1>,{ok,<P.1>}}
+    in proc_lib.erl line {425,12}
+   4: <P>: receives message ({ack,<P.1>,{ok,<P.1>}})
+    in proc_lib.erl line {352,5}
+   5: <P>: {'$gen_cast',{new_message,<<97>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<97>>}})
+    in gen_server.ex line 1104
+   6: <P>: {'$gen_cast',{new_message,<<98>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<98>>}})
+    in gen_server.ex line 1104
+   7: <P>: {'$gen_cast',{new_message,<<99>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<99>>}})
+    in gen_server.ex line 1104
+   8: <P>: {'$gen_cast',{new_message,<<100>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<100>>}})
+    in gen_server.ex line 1104
+   9: <P>: {'$gen_cast',{new_message,<<101>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<101>>}})
+    in gen_server.ex line 1104
+  10: <P>: {'$gen_cast',{new_message,<<102>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<102>>}})
+    in gen_server.ex line 1104
+  11: <P>: {'$gen_cast',{new_message,<<103>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<103>>}})
+    in gen_server.ex line 1104
+  12: <P>: #Ref<0.3116065274.2429026305.165208> = erlang:monitor(process, <P.1>)
+    in proc_lib.erl line {1079,12}
+  13: <P>: -576460748489 = erlang:monotonic_time(millisecond)
+    in proc_lib.erl line {1080,10}
+  14: <P>: #Ref<0.3116065274.2429026305.165269> = erlang:monitor(process, <P.1>)
+    in gen.erl line {233,12}
+  15: <P>: {system,{<P>,#Ref<0.3116065274.2429026305.165269>},{terminate,normal}} = <P.1> ! {system,{<P>,#Ref<0.3116065274.2429026305.165269>},{terminate,normal}}
+    in gen.erl line {237,13}
+  16: <P.1>: receives message ({'$gen_cast',{new_message,<<97>>}})
+    in gen_server.erl line {880,2}
+  17: <P.1>: [] = erlang:process_info(<P.1>, registered_name)
+    in process.ex line 765
+  18: <P.1>: #Fun<'Elixir.Inspect'.inspect.2> = persistent_term:get({'Elixir.Inspect.Opts',inspect_fun}, #Fun<'Elixir.Inspect'.inspect.2>)
+    in algebra.ex line 128
+  19: <P.1>: undefined = persistent_term:get({logger_config,gen_server}, undefined)
+    in logger_config.erl line {55,14}
+  20: <P.1>: 5 = persistent_term:get({logger_config,'$primary_config$'}, 5)
+    in logger_config.erl line {88,5}
+  21: <P.1>: true = persistent_term:put({logger_config,gen_server}, 5)
+    in logger_config.erl line {64,17}
+  22: <P.1>: #Ref<0.3116065274.2429157377.164035> = ets:whereis(logger)
+    in logger.erl line {1179,5}
+  23: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.3116065274.2429157377.164035>, '$primary_config$')
+    in logger_config.erl line {91,10}
+  24: <P.1>: <P.user/user> = erlang:group_leader()
+    in logger.erl line {1213,16}
+  25: <P.1>: 1689184144441699 = os:system_time(microsecond)
+    in logger.erl line {366,5}
+  26: <P.1>: undefined = persistent_term:get({logger_config,{'$handler_config$',default}}, undefined)
+    in logger_config.erl line {100,10}
+  27: <P.1>: undefined = persistent_term:get({logger_config,proc_lib}, undefined)
+    in logger_config.erl line {55,14}
+  28: <P.1>: 5 = persistent_term:get({logger_config,'$primary_config$'}, 5)
+    in logger_config.erl line {88,5}
+  29: <P.1>: true = persistent_term:put({logger_config,proc_lib}, 5)
+    in logger_config.erl line {64,17}
+  30: <P.1>: [] = erlang:process_info(<P.1>, registered_name)
+    in proc_lib.erl line {767,5}
+  31: <P.1>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.SubscriptionServer',init,1}},{'$ancestors',[<P>]},{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[184649499271648046|118977511060550247]}}]} = erlang:process_info(<P.1>, dictionary)
+    in proc_lib.erl line {767,5}
+  32: <P.1>: {message_queue_len,7} = erlang:process_info(<P.1>, message_queue_len)
+    in proc_lib.erl line {767,5}
+  33: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  34: <P.1>: {messages,[]} = erlang:process_info(<P.1>, messages)
+    in proc_lib.erl line {767,5}
+  35: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  36: <P.1>: {links,[<P>]} = erlang:process_info(<P.1>, links)
+    in proc_lib.erl line {767,5}
+  37: <P.1>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.SubscriptionServer',init,1}},{'$ancestors',[<P>]},{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[85318714053179538|158046952050828921]}}]} = erlang:process_info(<P.1>, dictionary)
+    in proc_lib.erl line {767,5}
+  38: <P.1>: [] = ets:lookup(ac_tab, {env,kernel,error_logger_format_depth})
+    in application_controller.erl line {346,10}
+  39: <P.1>: {trap_exit,false} = erlang:process_info(<P.1>, trap_exit)
+    in proc_lib.erl line {767,5}
+  40: <P.1>: {status,running} = erlang:process_info(<P.1>, status)
+    in proc_lib.erl line {767,5}
+  41: <P.1>: {heap_size,42} = erlang:process_info(<P.1>, heap_size)
+    in proc_lib.erl line {767,5}
+  42: <P.1>: {stack_size,42} = erlang:process_info(<P.1>, stack_size)
+    in proc_lib.erl line {767,5}
+  43: <P.1>: {reductions,42} = erlang:process_info(<P.1>, reductions)
+    in proc_lib.erl line {767,5}
+  44: <P.1>: {links,[<P>]} = erlang:process_info(<P.1>, links)
+    in proc_lib.erl line {767,5}
+  45: <P.1>: {trap_exit,false} = erlang:process_info(<P>, trap_exit)
+    in proc_lib.erl line {767,5}
+  46: <P.1>: {links,[<P.1>]} = erlang:process_info(<P>, links)
+    in proc_lib.erl line {767,5}
+  47: <P.1>: {trap_exit,false} = erlang:process_info(<P.1>, trap_exit)
+    in proc_lib.erl line {767,5}
+  48: <P.1>: [] = erlang:process_info(<P>, registered_name)
+    in proc_lib.erl line {767,5}
+  49: <P.1>: {dictionary,[{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[85318714053179538|158046952050828921]}}]} = erlang:process_info(<P>, dictionary)
+    in proc_lib.erl line {767,5}
+  50: <P.1>: {initial_call,{'Elixir.FanCan.ConcurrencyTest',test,0}} = erlang:process_info(<P>, initial_call)
+    in proc_lib.erl line {767,5}
+  51: <P.1>: {current_function,{'Elixir.FanCan.ConcurrencyTest',test,0}} = erlang:process_info(<P>, current_function)
+    in proc_lib.erl line {767,5}
+  52: <P.1>: {dictionary,[{rand_seed,{#{jump => #Fun<rand.exsplus_jump.1>,max => 288230376151711743,next => #Fun<rand.exsp_next.1>,type => exsplus},[85318714053179538|158046952050828921]}}]} = erlang:process_info(<P>, dictionary)
+    in proc_lib.erl line {767,5}
+  53: <P.1>: {message_queue_len,0} = erlang:process_info(<P>, message_queue_len)
+    in proc_lib.erl line {767,5}
+  54: <P.1>: {links,[<P.1>]} = erlang:process_info(<P>, links)
+    in proc_lib.erl line {767,5}
+  55: <P.1>: {trap_exit,false} = erlang:process_info(<P>, trap_exit)
+    in proc_lib.erl line {767,5}
+  56: <P.1>: {status,running} = erlang:process_info(<P>, status)
+    in proc_lib.erl line {767,5}
+  57: <P.1>: {heap_size,42} = erlang:process_info(<P>, heap_size)
+    in proc_lib.erl line {767,5}
+  58: <P.1>: {stack_size,42} = erlang:process_info(<P>, stack_size)
+    in proc_lib.erl line {767,5}
+  59: <P.1>: {reductions,42} = erlang:process_info(<P>, reductions)
+    in proc_lib.erl line {767,5}
+  60: <P.1>: {current_stacktrace,[]} = erlang:process_info(<P>, current_stacktrace)
+    in proc_lib.erl line {767,5}
+  61: <P.1>: #Ref<0.3116065274.2429157377.164035> = ets:whereis(logger)
+    in logger.erl line {1179,5}
+  62: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.3116065274.2429157377.164035>, '$primary_config$')
+    in logger_config.erl line {91,10}
+  63: <P.1>: <P.user/user> = erlang:group_leader()
+    in logger.erl line {1213,16}
+  64: <P.1>: 1689184145436482 = os:system_time(microsecond)
+    in logger.erl line {366,5}
+  65: <P.1>: undefined = persistent_term:get({logger_config,{'$handler_config$',default}}, undefined)
+    in logger_config.erl line {100,10}
+  66: <P.1>: exits abnormally ({#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,32,99,97,115,116,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114,47,108,111,99,97|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110,95,115,101,114,118|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101,110,95,115,101,114|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+  67: <P.1>: true = erlang:exit(<P>, {#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,32,99,97,115,116,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114,47,108,111,99,97|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110,95,115,101,114,118|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101,110,95,115,101,114|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+    (while exiting)
+  68: <P.1>: {'DOWN',#Ref<0.3116065274.2429026305.165208>,process,<P.1>,{#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}} = erlang:send(<P>, {'DOWN',#Ref<0.3116065274.2429026305.165208>,process,<P.1>,{#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}})
+    (while exiting)
+  69: <P.1>: {'DOWN',#Ref<0.3116065274.2429026305.165269>,process,<P.1>,{#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}} = erlang:send(<P>, {'DOWN',#Ref<0.3116065274.2429026305.165269>,process,<P.1>,{#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[...]},{line,...}]}]}})
+    (while exiting)
+  70: <P>: exits abnormally ({#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,32,99,97,115,116,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114,47,108,111,99,97|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110,95,115,101,114,118|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101,110,95,115,101,114|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+  71: <P>: true = erlang:exit(<P.1>, {#{'__exception__' => true,'__struct__' => 'Elixir.RuntimeError',message => <<97,116,116,101,109,112,116,101,100,32,116,111,32,99,97,115,116,...>>},[{'Elixir.FanCanWeb.SubscriptionServer',handle_cast,2,[{file,[47,117,115,114,47,108,111,99,97|...]},{line,832},{error_info,#{module => 'Elixir.Exception'}}]},{gen_server,try_dispatch,4,[{file,[103,101,110,95,115,101,114,118|...]},{line,1123}]},{gen_server,handle_msg,6,[{file,[103,101,110,95,115,101,114|...]},{line,1200}]},{proc_lib,init_p_do_apply,3,[{file,[112,114,111,99,95,108|...]},{line,240}]},{concuerror_callback,wrapper,4,[{file,[47,67,111,110,99|...]},{line,1653}]}]})
+    (while exiting)
+################################################################################
+Interleaving #2
+--------------------------------------------------------------------------------
+Errors found:
+* Concuerror crashed
+--------------------------------------------------------------------------------
+Event trace:
+   1: <P>: [] = erlang:process_info(<P>, registered_name)
+    in proc_lib.erl line {767,5}
+   2: <P>: <P.1> = erlang:spawn_opt(proc_lib, init_p, [<P>,[],gen,init_it,[gen_server,<P>,<P>,'Elixir.FanCanWeb.SubscriptionServer',[],[]]], [link])
+    in proc_lib.erl line {191,5}
+   3: <P.1>: {ack,<P.1>,{ok,<P.1>}} = <P> ! {ack,<P.1>,{ok,<P.1>}}
+    in proc_lib.erl line {425,12}
+   4: <P>: receives message ({ack,<P.1>,{ok,<P.1>}})
+    in proc_lib.erl line {352,5}
+   5: <P>: {'$gen_cast',{new_message,<<97>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<97>>}})
+    in gen_server.ex line 1104
+   6: <P>: {'$gen_cast',{new_message,<<98>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<98>>}})
+    in gen_server.ex line 1104
+   7: <P>: {'$gen_cast',{new_message,<<99>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<99>>}})
+    in gen_server.ex line 1104
+   8: <P>: {'$gen_cast',{new_message,<<100>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<100>>}})
+    in gen_server.ex line 1104
+   9: <P>: {'$gen_cast',{new_message,<<101>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<101>>}})
+    in gen_server.ex line 1104
+  10: <P>: {'$gen_cast',{new_message,<<102>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<102>>}})
+    in gen_server.ex line 1104
+  11: <P>: {'$gen_cast',{new_message,<<103>>}} = erlang:send(<P.1>, {'$gen_cast',{new_message,<<103>>}})
+    in gen_server.ex line 1104
+  12: <P>: #Ref<0.3116065274.2429026305.165208> = erlang:monitor(process, <P.1>)
+    in proc_lib.erl line {1079,12}
+  13: <P>: -576460748489 = erlang:monotonic_time(millisecond)
+    in proc_lib.erl line {1080,10}
+  14: <P>: #Ref<0.3116065274.2429026305.165269> = erlang:monitor(process, <P.1>)
+    in gen.erl line {233,12}
+  15: <P.1>: receives message ({'$gen_cast',{new_message,<<97>>}})
+    in gen_server.erl line {880,2}
+  16: <P.1>: [] = erlang:process_info(<P.1>, registered_name)
+    in process.ex line 765
+  17: <P.1>: #Fun<'Elixir.Inspect'.inspect.2> = persistent_term:get({'Elixir.Inspect.Opts',inspect_fun}, #Fun<'Elixir.Inspect'.inspect.2>)
+    in algebra.ex line 128
+  18: <P.1>: undefined = persistent_term:get({logger_config,gen_server}, undefined)
+    in logger_config.erl line {55,14}
+  19: <P.1>: 5 = persistent_term:get({logger_config,'$primary_config$'}, 5)
+    in logger_config.erl line {88,5}
+  20: <P.1>: true = persistent_term:put({logger_config,gen_server}, 5)
+    in logger_config.erl line {64,17}
+  21: <P.1>: #Ref<0.3116065274.2429157377.164035> = ets:whereis(logger)
+    in logger.erl line {1179,5}
+  22: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.3116065274.2429157377.164035>, '$primary_config$')
+    in logger_config.erl line {91,10}
+  23: <P.1>: <P.user/user> = erlang:group_leader()
+    in logger.erl line {1213,16}
+  24: <P.1>: 1689184144441699 = os:system_time(microsecond)
+    in logger.erl line {366,5}
+  25: <P.1>: undefined = persistent_term:get({logger_config,{'$handler_config$',default}}, undefined)
+    in logger_config.erl line {100,10}
+  26: <P.1>: undefined = persistent_term:get({logger_config,proc_lib}, undefined)
+    in logger_config.erl line {55,14}
+  27: <P.1>: 5 = persistent_term:get({logger_config,'$primary_config$'}, 5)
+    in logger_config.erl line {88,5}
+  28: <P.1>: true = persistent_term:put({logger_config,proc_lib}, 5)
+    in logger_config.erl line {64,17}
+  29: <P.1>: [] = erlang:process_info(<P.1>, registered_name)
+    in proc_lib.erl line {767,5}
+################################################################################
+Exploration completed!
+################################################################################
+Errors:
+--------------------------------------------------------------------------------
+* On step 30, replaying a built-in returned a different result than expected:
+  original:
+    <0.123.0>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.SubscriptionServer',init,1}},{'$ancestors',[<0.112.0>]},{rand_seed,{#{jump => #Fun<rand.3.34006561>,max => 288230376151711743,next => #Fun<rand.5.34006561>,type => exsplus},[184649499271648046|118977511060550247]}}]} = erlang:process_info(<0.123.0>, dictionary)
+    in proc_lib.erl line {767,5}
+  new:
+    <0.123.0>: {dictionary,[{'$initial_call',{'Elixir.FanCanWeb.SubscriptionServer',init,1}},{'$ancestors',[<0.112.0>]}]} = erlang:process_info(<0.123.0>, dictionary)
+    in proc_lib.erl line {767,5}
+ Please notify the developers, as this is a bug of Concuerror.
+
+################################################################################
+Warnings:
+--------------------------------------------------------------------------------
+* Concuerror does not properly support erlang:process_info(_, messages), returning an empty list instead.
+* Concuerror does not properly support erlang:process_info(_, status), returning always 'running' instead.
+* Concuerror does not properly support erlang:process_info(_, heap_size), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(_, stack_size), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(_, reductions), returning 42 instead.
+* Concuerror does not properly support erlang:process_info(Other, current_function), returning the initial call instead.
+* Concuerror does not properly support erlang:process_info(Other, current_stacktrace), returning an empty list instead.
+
+################################################################################
+Tips:
+--------------------------------------------------------------------------------
+* Check `--help attributes' for info on how to pass options via module attributes.
+* Running without a scheduling_bound corresponds to verification and may take a long time.
+* Increase '--print_depth' if output/graph contains "...".
+* An abnormal exit signal killed a process. This is probably the worst thing that can happen race-wise, as any other side-effecting operation races with the arrival of the signal. If the test produces too many interleavings consider refactoring your code.
+
+################################################################################
+Info:
+--------------------------------------------------------------------------------
+* Showing progress ('-h progress', for details)
+* Writing results in concuerror_report.txt
+* Writing graph in my_graph.dot
+* Only logging errors ('--log_all false')
+* Automatically instrumented module io_lib
+* Showing PIDs as "<symbolic name(/last registered name)>" ('-h symbolic_names').
+* Automatically instrumented module error_handler
+* Automatically instrumented module 'Elixir.FanCan.ConcurrencyTest'
+* Automatically instrumented module 'Elixir.GenServer'
+* Automatically instrumented module 'Elixir.Keyword'
+* Automatically instrumented module gen
+* Automatically instrumented module proc_lib
+* Automatically instrumented module gen_server
+* Automatically instrumented module 'Elixir.FanCanWeb.SubscriptionServer'
+* Automatically instrumented module 'Elixir.Enum'
+* Automatically instrumented module lists
+* Automatically instrumented module sys
+* Automatically instrumented module 'Elixir.Process'
+* Automatically instrumented module 'Elixir.Kernel'
+* Automatically instrumented module 'Elixir.Inspect.Opts'
+* Automatically instrumented module 'Elixir.Inspect.Algebra'
+* Automatically instrumented module 'Elixir.Inspect'
+* Automatically instrumented module 'Elixir.Inspect.PID'
+* Automatically instrumented module 'Elixir.RuntimeError'
+* Automatically instrumented module logger
+* Automatically instrumented module logger_config
+* Automatically instrumented module maps
+* Automatically instrumented module logger_backend
+* Automatically instrumented module error_logger
+* Automatically instrumented module application
+* Automatically instrumented module application_controller
+* Continuing after error (-k)
+* You can see pairs of racing instructions (in the report and '--graph') with '--show_races true'
+
+################################################################################
+Done at 12 Jul 2023 17:49:05 (Exit status: fail)
+  Summary: 2 errors, 2/2 interleavings explored

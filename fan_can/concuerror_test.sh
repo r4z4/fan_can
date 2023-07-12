@@ -11,4 +11,4 @@ concuerror \
   --pa "${elixir_path}/lib/ex_unit/ebin" \
   --pa "_build/test/lib/${project_name}/ebin/" \
   -m "Elixir.${module}" \
-  "${@:2}"
+  "${@:2}" --graph my_graph.dot --after_timeout 1000 --treat_as_normal shutdown

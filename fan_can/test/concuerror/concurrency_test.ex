@@ -1,10 +1,7 @@
 defmodule FanCan.ConcurrencyTest do
-alias FanCanWeb.SubscriptionServer
 
   def push(pid, n) do
-    Task.async(fn -> 
-      GenServer.cast(pid, {:push, n})
-    end)
+      GenServer.cast(pid, {:new_message, n})
   end
 
   @doc """
@@ -18,10 +15,17 @@ alias FanCanWeb.SubscriptionServer
   the test fail.
   """
   def test do
-    {:ok, pid} = GenServer.start_link(SubscriptionServer, [])
+    # {:ok, pid} = GenServer.start_link(FanCanWeb.ThreadLive.Index, [])
+    {:ok, pid} = GenServer.start_link(FanCanWeb.SubscriptionServer, [])
 
     # If you generate numbers from 1 to 4 only, the test should pass
-    1..5 |> Enum.each(fn i -> push(pid, i) end)
+    ["a","b","c","d","e","f","g"] |> Enum.each(fn ltr -> push(pid, ltr) end)
+
+    ["h","i","j","k","l","m","n"] |> Enum.each(fn ltr -> push(pid, ltr) end)
+
+    ["o","p","q","r","s","t","u"] |> Enum.each(fn ltr -> push(pid, ltr) end)
+
+    ["u","v","w","x","y","z","!"] |> Enum.each(fn ltr -> push(pid, ltr) end)
 
     # This is necessary. Even if there was no crash of the GenServer,
     # not stopping it would make Concuerror believe that the process
