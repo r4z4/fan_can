@@ -7,6 +7,8 @@ defmodule FanCan.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
+      test_pattern: "*_test.ex*",
+      warn_test_pattern: nil,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -24,7 +26,7 @@ defmodule FanCan.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test), do: ["lib", "test/support", "test/concuerror"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
