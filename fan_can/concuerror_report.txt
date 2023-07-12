@@ -1,4 +1,4 @@
-Concuerror 0.21.0+build.2371.refaf91d78 started at 12 Jul 2023 03:29:08
+Concuerror 0.21.0+build.2371.refaf91d78 started at 12 Jul 2023 03:45:32
  Options:
   [{after_timeout,infinity},
    {assertions_only,false},
@@ -138,13 +138,13 @@ Event trace:
     in proc_lib.erl line {767,5}
   39: <P.1>: {current_stacktrace,[]} = erlang:process_info(<P>, current_stacktrace)
     in proc_lib.erl line {767,5}
-  40: <P.1>: #Ref<0.1948082054.416940033.37150> = ets:whereis(logger)
+  40: <P.1>: #Ref<0.3574205058.2566520833.175903> = ets:whereis(logger)
     in logger.erl line {1179,5}
-  41: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.1948082054.416940033.37150>, '$primary_config$')
+  41: <P.1>: [{'$primary_config$',#{filter_default => log,filters => [],handlers => [default],level => notice,metadata => #{}}}] = ets:lookup(#Ref<0.3574205058.2566520833.175903>, '$primary_config$')
     in logger_config.erl line {91,10}
   42: <P.1>: <P.user/user> = erlang:group_leader()
     in logger.erl line {1213,16}
-  43: <P.1>: 1689132552719735 = os:system_time(microsecond)
+  43: <P.1>: 1689133536592443 = os:system_time(microsecond)
     in logger.erl line {366,5}
   44: <P.1>: undefined = persistent_term:get({logger_config,{'$handler_config$',default}}, undefined)
     in logger_config.erl line {100,10}
@@ -176,14 +176,15 @@ Warnings:
 Tips:
 --------------------------------------------------------------------------------
 * Running without a scheduling_bound corresponds to verification and may take a long time.
-* An abnormal exit signal killed a process. This is probably the worst thing that can happen race-wise, as any other side-effecting operation races with the arrival of the signal. If the test produces too many interleavings consider refactoring your code.
 * Increase '--print_depth' if output/graph contains "...".
+* An abnormal exit signal killed a process. This is probably the worst thing that can happen race-wise, as any other side-effecting operation races with the arrival of the signal. If the test produces too many interleavings consider refactoring your code.
 
 ################################################################################
 Info:
 --------------------------------------------------------------------------------
 * Showing progress ('-h progress', for details)
 * Writing results in concuerror_report.txt
+* Writing graph in my_graph
 * Only logging errors ('--log_all false')
 * Automatically instrumented module io_lib
 * Showing PIDs as "<symbolic name(/last registered name)>" ('-h symbolic_names').
@@ -206,5 +207,5 @@ Info:
 * Automatically instrumented module maps
 
 ################################################################################
-Done at 12 Jul 2023 03:29:12 (Exit status: error)
+Done at 12 Jul 2023 03:45:36 (Exit status: error)
   Summary: 1 errors, 1/1 interleavings explored
