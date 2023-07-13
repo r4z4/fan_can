@@ -42,7 +42,7 @@ defmodule FanCan.Core.Utils do
     end
 
     def follows_types do
-        [:user, :candidate, :election, :forum]
+        [:user, :candidate, :election, :forum, :race, :ballot]
     end
 
     def forum_categories do

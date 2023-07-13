@@ -24,12 +24,7 @@ defmodule FanCanWeb.HomeLive do
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_follows. E.g. forums that user subscribes to
-      case follow.type do
-        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
-      end
+      sub_and_add(follow, socket)
     end
 
     with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
@@ -52,6 +47,24 @@ defmodule FanCanWeb.HomeLive do
     {:ok, 
      socket
      |> assign(:messages, [])}
+  end
+
+  defp sub_and_add(follow, socket) do
+    case follow.type do
+      :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
+      :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
+      :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
+      :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+      :races -> TopicHelpers.subscribe_to_followers("races", follow.follow_ids)
+    end
+  end
+
+  defp get_races(follows) do
+    Enum.filter(follows, fn x -> x.type == :races end)
+  end
+
+  defp get_elections(follows) do
+    Enum.filter(follows, fn x -> x.type == :election end)
   end
 
   @impl true
@@ -96,6 +109,33 @@ defmodule FanCanWeb.HomeLive do
         </div>
 
       </div>
+
+        <div class="grid justify-center md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
+          <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
+            <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
+              <div class="text-white">
+                <div :for={race <- get_races(@current_user_follows)} class="">
+                  race.id
+                </div>
+              </div>
+          </div>
+
+          <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
+            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> Your List of Favorites</div>
+              <div class="text-white">
+                 Map Over (Diff Icon for Each Type (Race, Ballot, Candidate etc)
+              </div>
+          </div>
+
+          <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
+            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> Your Shred Items</div>
+              <div class="text-white">
+                <div :for={election <- get_elections(@current_user_follows)} class="">
+                  election.id
+                </div>
+              </div>
+          </div>
+        </div>
     </div>
     """
   end
