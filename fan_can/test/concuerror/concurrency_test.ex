@@ -1,7 +1,9 @@
 defmodule FanCan.ConcurrencyTest do
 
   def push(pid, n) do
+    Task.async(fn -> 
       GenServer.cast(pid, {:new_message, n})
+    end)
   end
 
   @doc """
