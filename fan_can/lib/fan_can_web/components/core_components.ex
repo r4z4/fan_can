@@ -316,6 +316,30 @@ defmodule FanCanWeb.CoreComponents do
     """
   end
 
+    def input(%{type: "radio", value: value} = assigns) do
+    assigns =
+      assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
+
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <label class="flex items-center gap-2 text-sm leading-6 text-white">
+        <input type="hidden" name={@name} value="false" />
+        <input
+          type="radio"
+          id={@id}
+          name={@name}
+          value="true"
+          checked={@checked}
+          class="rounded border-zinc-300 focus:ring-0"
+          {@rest}
+        />
+        <%= @label %>
+      </label>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div phx-feedback-for={@name}>
@@ -482,7 +506,7 @@ defmodule FanCanWeb.CoreComponents do
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
+                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-slate-700 sm:rounded-l-xl" />
                 <span class={["relative", i == 0 && "font-semibold text-white"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
@@ -490,7 +514,7 @@ defmodule FanCanWeb.CoreComponents do
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-slate-700 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold leading-6 text-white hover:text-zinc-700"
@@ -548,7 +572,7 @@ defmodule FanCanWeb.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="text-sm font-semibold leading-6 text-white hover:text-zinc-700"
       >
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>

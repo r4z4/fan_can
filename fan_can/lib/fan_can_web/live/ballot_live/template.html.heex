@@ -3,7 +3,54 @@
   <:subtitle>Template</:subtitle>
 </.header>
 
-<section class="h-screen w-screen bg-gradient-to-br from-pink-50 to-indigo-100 p-8">
+<div class="text-center w-min m-auto border-solid border-2 border-white rounded-lg p-2">
+  <h6 class="text-white">Legend</h6>
+    <div class="flex text-white">
+      <!-- The top tooltip -->
+      <div class="">
+        <a href="#" class="group relative hover:text-zinc-500 duration-300">
+          <Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 text-white-300 m-2" />  Inspect
+            <span
+              class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
+              Inspect this race further. Research the candidates and view their platforms.</span>
+        </a>
+      </div>
+      <div class="mx-2">
+        <a href="#" class="group relative hover:text-zinc-500 duration-300">
+          <Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300 m-2" />  Favorite
+            <span
+              class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
+              Mark this as one you will return to. This will make sure that it is noticeable on your dashboard.</span>
+        </a>
+      </div>
+      <div class="mx-2">
+        <a href="#" class="group relative hover:text-zinc-500 duration-300">
+          <Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white m-2" />  Share
+            <span
+              class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
+              For the races that you want to discuss with others. You can use these via shorthand in the chat and forum as well.</span>
+        </a>
+      </div>
+      <div class="mx-2">
+        <a href="#" class="group relative hover:text-zinc-500 duration-300">
+          <Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300 m-2" />  Alert
+            <span
+              class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
+              Set a system alert for this particular race. Use this for when you have a need to return and finalize the ballot.</span>
+        </a>
+      </div>
+      <div class="mx-2">
+        <a href="#" class="group relative hover:text-zinc-500 duration-300">
+          <Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200 m-2" />  Bookmark
+            <span
+              class="absolute hidden group-hover:flex -left-5 -top-2 -translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:top-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-b-transparent after:border-t-gray-700">
+              Mark this as one to return to at a later time. This will move it to the top of your current "To Watch" list.</span>
+        </a>
+      </div>
+    </div>
+</div>
+
+<section class="h-screen w-8/9 bg-slate-800">
   <.simple_form
     for={@ballot_form}
     id="ballot-form"
@@ -12,18 +59,18 @@
     <h1 class="text-center font-bold text-2xl text-indigo-500">Ballot For <%= @desc %> </h1>
     <h4 class="text-center text-indigo-500"><%= @date %></h4>
 
-    <div class="grid justify-center md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-5 my-10">
+    <div class="grid justify-center md:grid-cols-4 lg:grid-cols-6 gap-3 lg:gap-5 my-10">
       <!-- Card -->
-        <div :for={ballot_race <- @ballot_races} class="bg-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
-            <img class="h-56 lg:h-60 w-full object-cover" src={ballot_race.image_path} alt="" />
-            <div class="p-3">
-                <h3 class="font-semibold text-xl leading-6 text-gray-700 my-2">
+        <div :for={ballot_race <- @ballot_races} class="bg-slate-700 text-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
+            <!--<img class="h-56 lg:h-60 w-full object-cover" src={ballot_race.image_path} alt="" />-->
+            <div class="p-2">
+                <h3 class="font-semibold text-lg leading-6 text-white my-2">
                     <%= ballot_race.seat %> <span class="ml-3 text-purple" :if={ballot_race.district}>||  District: <%= ballot_race.district %></span>
                 </h3>
-                <ul :for={candidate <- ballot_race.candidates} class="border-solid border-2 border-sky-500">
-                  <li class="grid grid-cols-3 gap-0">
-                    <div class="col-span-1"><%= candidate.l_name %>, <%= candidate.f_name %><span class="text-xs text-orange" :if={candidate.incumbent_since}>(<%= String.slice(Date.to_string(candidate.incumbent_since), 0..3) %>)</span></div>
-                    <div class="col-span-1"><span class={party_class(candidate.party)} :if={ballot_race.district}>|| <%= candidate.party %></span></div>
+                <ul :for={candidate <- ballot_race.candidates} class="">
+                  <li class="grid grid-cols-6 gap-0">
+                    <div class="col-span-5"><%= candidate.l_name %>, <%= candidate.f_name %><span class="text-xs text-orange" :if={candidate.incumbent_since}>(<%= String.slice(Date.to_string(candidate.incumbent_since), 0..3) %>)</span>
+                    <span class={party_class(candidate.party)} :if={ballot_race.district}>|| <%= party_name(candidate.party) %></span></div>
                     <div class="col-span-1">
                     <.input
                       field={@ballot_form[{ballot_race.district}]}
@@ -36,7 +83,13 @@
                     </div>
                   </li>
                 </ul>
-                <a href={~p"/races/inspect/#{ballot_race.id}"}>Inspect >></a>
+                <a href={~p"/races/inspect/#{ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
+                <div class="inline w-auto bg-slate-700 rounded-md">
+                  <button phx-click="like_click"><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+                  <button phx-click="share_click"><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
+                  <button phx-click="share_click"><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+                  <button phx-click="share_click"><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
+                </div>
             </div>
         </div>
     </div>

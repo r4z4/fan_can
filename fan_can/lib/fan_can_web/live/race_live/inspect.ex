@@ -10,10 +10,12 @@ defmodule FanCanWeb.RaceLive.Inspect do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    race = Election.get_race!(id)
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:race, Election.get_race!(id))}
+     |> assign(:race, race)
+     |> assign(:image_path, "/images/ne_districts/District#{race.district}.png")}
   end
 
   defp page_title(:inspect), do: "Inspect the Race. Do Your Homework."

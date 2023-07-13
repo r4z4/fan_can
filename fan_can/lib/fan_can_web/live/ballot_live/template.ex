@@ -16,13 +16,25 @@ defmodule FanCanWeb.BallotLive.Template do
 
   defp party_class(party) do
     case party do
-      :Democrat -> "ml-3 text-blue"
-      :Republican -> "ml-3 text-red"
-      :Independent -> "ml-3 text-black"
+      :Democrat -> "ml-3 text-sky-300"
+      :Republican -> "ml-3 text-pink-300"
+      :Independent -> "ml-3 text-emerald-300"
       :Now -> "ml-3 text-green"
-      :Libertarian -> "ml-3 text-purple"
-      :Non_Partisan -> "ml-3 text-black"
+      :Libertarian -> "ml-3 text-purple-200"
+      :Non_Partisan -> "ml-3 text-fuchsia-300"
       :Other_Party -> "ml-3 text-amber"
+    end
+  end
+
+  defp party_name(party) do
+    case party do
+      :Democrat -> "Dem"
+      :Republican -> "Rep"
+      :Independent -> "Ind"
+      :Now -> "Now"
+      :Libertarian -> "Lib"
+      :Non_Partisan -> "Non-P"
+      :Other_Party -> "Other"
     end
   end
 
@@ -43,11 +55,9 @@ defmodule FanCanWeb.BallotLive.Template do
     final_ballot_races = 
       for ballot_race <- ballot_races do
         candidates = Election.get_candidates(ballot_race.id)
-        image_path = "/images/ne_districts/District#{ballot_race.district}.png"
         IO.inspect(candidates, label: "Candidates")
         new = 
           Map.replace(ballot_race, :candidates, candidates)
-          |> Map.put(:image_path, image_path)
       end
     IO.inspect(final_ballot_races, label: "Final Ballot Races")
     {:noreply,
