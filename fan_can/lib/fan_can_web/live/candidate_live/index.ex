@@ -6,22 +6,16 @@ defmodule FanCanWeb.CandidateLive.Index do
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserFollows
+  alias FanCan.Core.Utils
+
   # @impl Phoenix.LiveView
   @impl true
   def mount(_params, session, socket) do
     # {email, username} = Accounts.get_user_data_by_token(session["user_token"])
     # %{entries: entries, page_number: page_number, page_size: page_size, total_entries: total_entries, total_pages: total_pages}
+    g_candidates = api_query(socket.assigns.current_user.state)
     FanCanWeb.Endpoint.subscribe("topic")
     result = if connected?(socket), do: Public.paginate_candidates(), else: %Scrivener.Page{}
-    # assigns = [
-    #   candidates: result.entries,
-    #   page_number: result.page_number || 0,
-    #   page_size: result.page_size || 0,
-    #   total_entries: result.total_entries || 0,
-    #   total_pages: result.total_pages || 0
-    # ]
-
-    IO.inspect(result, label: "Result")
 
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
       IO.inspect(follow, label: "Type")
@@ -48,10 +42,35 @@ defmodule FanCanWeb.CandidateLive.Index do
      socket
      |> stream(:candidates, result.entries)
      |> stream(:stream_messages, [])
+     |> assign(:g_candidates, g_candidates)
+     # |> assign(:g_can_zip, Enum.zip(g_candidates["offices"], g_candidates["officials"]))
      |> assign(:page_number, result.page_number || 0)
      |> assign(:page_size, result.page_size || 0)
      |> assign(:total_entries, result.total_entries || 0)
      |> assign(:total_pages, result.total_pages || 0)}
+  end
+
+
+  def get_str(state) do
+    Enum.zip(Utils.states, Utils.state_names ++ Utils.territories)
+      |> Enum.find(fn {abbr,name} -> abbr == state end)
+      |> Kernel.elem(1)
+      |> Atom.to_string()
+  end
+
+  def api_query(state) do
+    state_str = get_str(state)
+    IO.inspect(state_str, label: "State")
+    {:ok, resp} = 
+      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_API_KEY")}") 
+      |> Finch.request(FanCan.Finch)
+
+    {:ok, body} = Jason.decode(resp.body)
+
+    IO.inspect(body["offices"], label: "Offices")
+    IO.inspect(body["officials"], label: "Officials")
+
+    %{"offices" => body["offices"], "officials" => body["officials"]}
   end
 
   @impl true

@@ -22,6 +22,14 @@ import Config
 
 # # # DATABASE_URL = "ecto://postgres:postgres@db/fan_can"
 
+if Config.config_env() == :dev do
+  DotenvParser.load_file(".env")
+end
+
+# # Now variables from `.env` are loaded into system env
+# config :your_project,
+#   database_url: System.fetch_env!("DB_URL")
+
 if config_env() == :prod do
   database_url = DATABASE_URL ||
       raise """

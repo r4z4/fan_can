@@ -7,6 +7,7 @@ defmodule FanCan.Application do
 
   @impl true
   def start(_type, _args) do
+
     children = [
       # Start the Telemetry supervisor
       FanCanWeb.Telemetry,
@@ -26,6 +27,7 @@ defmodule FanCan.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: FanCan.Supervisor]
+    Supervisor.child_spec(%{id: Goth, start: {Goth, :start_link, []}}, id: Goth)
     Supervisor.start_link(children, opts)
   end
 

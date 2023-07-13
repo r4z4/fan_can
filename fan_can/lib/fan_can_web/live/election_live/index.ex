@@ -9,7 +9,6 @@ defmodule FanCanWeb.ElectionLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     IO.inspect(socket, label: "Election Socket")
-    api_query()
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_follows. E.g. forums that user subscribes to
@@ -35,15 +34,6 @@ defmodule FanCanWeb.ElectionLive.Index do
           |> stream(:elections, Public.list_elections_and_ballots())
           # Use streams, but for something we display always. Not a flash. Keep flash with assigns below.
           |> stream(:stream_messages, [])}
-  end
-
-  @impl true
-  def api_query() do
-    resp = 
-      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=Nebraska&key=AIzaSyApBMZzpBD8L2Jx4dEUGSsUfDhQPCV3SJI") 
-      |> Finch.request(FanCan.Finch)
-    IO.inspect(resp, label: "Resp")
-    {:ok, resp}
   end
 
   @impl true

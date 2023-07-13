@@ -60,5 +60,6 @@ defmodule FanCanWeb.ConnCase do
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
+    |> Plug.Conn.put_session(:remote_ip, conn.remote_ip)
   end
 end

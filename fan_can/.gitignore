@@ -43,4 +43,7 @@ npm-debug.log
 
 /priv/static/images/ne_districts
 
+.env
+application_default_credentials.json
+
 

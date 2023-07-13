@@ -8,6 +8,45 @@
 </.header>
 
 <.table
+  id="g_candidates"
+  rows={@g_candidates["officials"]}
+  row_click={fn candidate -> JS.navigate(List.first(candidate["urls"])) end}
+>
+  <:col :let={candidate} label="First name"><%= candidate["name"] %></:col>
+  <:col :let={candidate} label="Last name"><%= candidate["party"] %></:col>
+  <:col :let={candidate} label="Phones">
+    <ul>
+      <%= for item <- candidate["phones"] do %>
+        <li><%= item %></li>
+      <%= end %>
+    </ul>
+  </:col>
+  <:col :let={candidate} label="Channels">
+    <ul :if={candidate["channels"]}>
+      <%= for item <- candidate["channels"] do %>
+        <li><%= item["type"] %></li>
+      <%= end %>
+    </ul>
+  </:col>
+
+
+  <:action :let={candidate}>
+    <div class="sr-only">
+      <.link navigate={~p"/candidates/#{candidate["name"]}"}>Show</.link>
+    </div>
+    <.link patch={~p"/candidates/#{candidate["name"]}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={candidate}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: candidate["name"]}) |> hide("##{candidate["name"]}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.table
   id="candidates"
   rows={@streams.candidates}
   row_click={fn {_id, candidate} -> JS.navigate(~p"/candidates/#{candidate}") end}
