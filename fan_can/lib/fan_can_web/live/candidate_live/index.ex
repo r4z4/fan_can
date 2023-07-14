@@ -62,8 +62,8 @@ defmodule FanCanWeb.CandidateLive.Index do
         Map.has_key?(contest, "candidates")
       end)
 
-    IO.inspect(body, label: "Body")
-    IO.inspect(filtered, label: "Filtered")
+    # IO.inspect(body, label: "Body")
+    # IO.inspect(filtered, label: "Filtered")
     filtered
   end
 

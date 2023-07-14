@@ -7,8 +7,8 @@ defmodule FanCan.Repo.Migrations.CreateThreads do
       add :title, :string
       add :creator, :binary_id
       add :content, :string
-      add :likes, :integer
-      add :shares, :integer
+      add :likes, :integer, null: false, default: 0
+      add :shares, :integer, null: false, default: 0
       add :forum_id, references(:forums, type: :binary_id, on_delete: :nothing)
 
       timestamps()

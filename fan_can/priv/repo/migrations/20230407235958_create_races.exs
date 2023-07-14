@@ -12,6 +12,10 @@ defmodule FanCan.Repo.Migrations.CreateRaces do
       add :attachments, {:array, :binary_id}
       add :elect, references(:candidates, type: :binary_id, on_delete: :nothing)
 
+      add :alerts, :integer, null: false, default: 0
+      add :shares, :integer, null: false, default: 0
+      add :bookmarks, :integer, null: false, default: 0
+
       timestamps()
     end
 

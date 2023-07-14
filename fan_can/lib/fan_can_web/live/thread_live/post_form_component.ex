@@ -22,8 +22,8 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
       >
         <.input field={@form[:thread_id]} type="hidden" />
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:author]} type="text" label="Author" />
-        <.input field={@form[:content]} type="text" label="Content" />
+        <.input field={@form[:author]} type="text" label="Author" disabled />
+        <.input field={@form[:content]} type="textarea" label="Content" />
         <.input field={@form[:upvotes]} type="number" label="Upvotes" />
         <.input field={@form[:downvotes]} type="number" label="Downvotes" />
         <:actions>

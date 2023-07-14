@@ -11,6 +11,9 @@ defmodule FanCan.Public.Election.Race do
     field :candidates, {:array, :binary_id}
     field :election_id, :binary_id
     field :district, :integer
+    field :shares, :integer
+    field :bookmarks, :integer
+    field :alerts, :integer
     field :elect_percentage, :float
     field :seat, Ecto.Enum, values: Utils.seats
     field :elect, :binary_id
@@ -20,7 +23,7 @@ defmodule FanCan.Public.Election.Race do
   @doc false
   def changeset(race, attrs) do
     race
-    |> cast(attrs, [:candidates, :seat, :elect_percentage, :district, :attachments])
+    |> cast(attrs, [:candidates, :seat, :elect_percentage, :alerts, :bookmarks, :shares, :district, :attachments])
     |> validate_required([:candidates, :seat, :elect_percentage, :district, :attachments])
   end
 end

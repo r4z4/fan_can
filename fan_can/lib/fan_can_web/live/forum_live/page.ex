@@ -20,7 +20,7 @@ defmodule FanCanWeb.ForumLive.Page do
 
   def handle_event("like_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
-    Site.update_thread(thread, %{likes: thread.likes + 1})
+    Forum.update_thread(thread, %{likes: thread.likes + 1})
     # Add pubsub msg
     liked_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} liked your thread :)"}
     FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", liked_message)
@@ -29,7 +29,7 @@ defmodule FanCanWeb.ForumLive.Page do
 
   def handle_event("share_click", %{"id" => id}, socket) do
     thread = Site.get_thread!(id)
-    Site.update_thread(thread, %{shares: thread.shares + 1})
+    Forum.update_thread(thread, %{shares: thread.shares + 1})
     # Add pubsub msg
     shared_message = %{type: :thread, string: "Hey! User #{socket.assigns.current_user.id} shared your thread :)"}
     FanCanWeb.Endpoint.broadcast!("threads_" <> thread.creator, "new_message", shared_message)

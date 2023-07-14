@@ -47,8 +47,8 @@ defmodule FanCanWeb.HomeLive do
     # send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
     # # ThinWrapper.put("game_data", game_data)
     # # game_data = ThinWrapper.get("game_data")
-    
-    {:ok, 
+
+    {:ok,
      socket
      |> assign(:messages, [])
      |> assign(:g_candidates, g_candidates)}
@@ -82,9 +82,9 @@ defmodule FanCanWeb.HomeLive do
       </.header>
 
       <div class="mx-auto text-white">
-      
+
         <div>
-          <.link 
+          <.link
             href={~p"/candidates"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
@@ -94,7 +94,7 @@ defmodule FanCanWeb.HomeLive do
         </div>
 
         <div>
-          <.link 
+          <.link
             href={~p"/elections"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
@@ -104,8 +104,8 @@ defmodule FanCanWeb.HomeLive do
         </div>
 
         <div>
-          <.link 
-            href={~p"/forums"}
+          <.link
+            href={~p"/forums/main"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
             <Heroicons.LiveView.icon name="chat-bubble-left-right" type="outline" class="h-10 w-10 text-white" />
@@ -161,10 +161,10 @@ defmodule FanCanWeb.HomeLive do
   end
 
   # def get_loc_info(ip) do
-  #   {:ok, resp} = 
-  #   #   Finch.build(:get, "https://ip.city/api.php?ip=#{ip}&key=#{System.fetch_env!("IP_CITY_API_KEY")}") 
+  #   {:ok, resp} =
+  #   #   Finch.build(:get, "https://ip.city/api.php?ip=#{ip}&key=#{System.fetch_env!("IP_CITY_API_KEY")}")
   #   #   |> Finch.request(FanCan.Finch)
-  #       Finch.build(:get, "https://ipinfo.io/#{ip}?token=#{System.fetch_env!("IP_INFO_TOKEN")}") 
+  #       Finch.build(:get, "https://ipinfo.io/#{ip}?token=#{System.fetch_env!("IP_INFO_TOKEN")}")
   #       |> Finch.request(FanCan.Finch)
   #   IO.inspect(resp, label: "Loc Info Resp")
   #   resp
@@ -180,14 +180,14 @@ defmodule FanCanWeb.HomeLive do
   def api_query(state) do
     state_str = get_str(state)
     IO.inspect(state_str, label: "State")
-    {:ok, resp} = 
-      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_PROJECT")}") 
+    {:ok, resp} =
+      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_PROJECT")}")
       |> Finch.request(FanCan.Finch)
 
     {:ok, body} = Jason.decode(resp.body)
 
-    IO.inspect(body["offices"], label: "Offices")
-    IO.inspect(body["officials"], label: "Officials")
+    # IO.inspect(body["offices"], label: "Offices")
+    # IO.inspect(body["officials"], label: "Officials")
 
     %{"offices" => body["offices"], "officials" => body["officials"]}
   end
@@ -218,8 +218,8 @@ defmodule FanCanWeb.HomeLive do
     updated_messages = socket.assigns[:messages] ++ [new_message]
     IO.inspect(new_message, label: "New Message")
 
-    {:noreply, 
-     socket 
+    {:noreply,
+     socket
      |> assign(:messages, updated_messages)
      |> put_flash(:info, "PubSub: #{new_message.string}")}
   end

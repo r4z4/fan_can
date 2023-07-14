@@ -5,6 +5,7 @@ defmodule FanCan.Repo.Migrations.CreateBallots do
     create table(:ballots, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :columns, :integer
+      add :complete, :boolean, null: false, default: false
       add :attachment, references(:attachments, type: :binary_id, on_delete: :nothing)
       add :election_id, references(:elections, type: :binary_id, on_delete: :nothing)
 

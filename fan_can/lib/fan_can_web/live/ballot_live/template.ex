@@ -3,6 +3,8 @@ defmodule FanCanWeb.BallotLive.Template do
 
   alias FanCan.Public.Election
   alias FanCan.Public.Election.BallotRace
+  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -55,11 +57,9 @@ defmodule FanCanWeb.BallotLive.Template do
     final_ballot_races = 
       for ballot_race <- ballot_races do
         candidates = Election.get_candidates(ballot_race.id)
-        IO.inspect(candidates, label: "Candidates")
         new = 
           Map.replace(ballot_race, :candidates, candidates)
       end
-    IO.inspect(final_ballot_races, label: "Final Ballot Races")
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -67,6 +67,22 @@ defmodule FanCanWeb.BallotLive.Template do
      |> assign(:ballot_races, final_ballot_races)
      |> assign(:desc, List.first(ballot_races).desc)
      |> assign(:date, List.first(ballot_races).election_date)}
+  end
+
+  def handle_event("bell_click", %{"id" => id}, socket) do
+    race = Election.get_race!(id)
+    Election.update_race(race, %{alerts: race.alerts + 1})
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :race, follow_ids: [id]}
+      case Accounts.register_user_follows(attrs) do
+        {:ok, user_follows} -> IO.inspect(user_follows, label: "User Follows: ")
+        {:error, err} -> IO.puts "User Follows Registration Error #{err}"
+      end
+    {:noreply, socket}
+  end
+
+  def handle_event("save", _vals, socket) do
+    IO.puts("Handler")
+    {:noreply, socket}
   end
 
   defp page_title(:template), do: "Ballot For ..."
