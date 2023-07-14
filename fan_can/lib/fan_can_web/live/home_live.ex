@@ -4,6 +4,8 @@ defmodule FanCanWeb.HomeLive do
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserFollows
+  alias FanCanWeb.Components.StateSnapshot
+  alias FanCan.Core.Utils
 
 #   def mount(%{"token" => token}, _session, socket) do
 #     socket =
@@ -18,7 +20,8 @@ defmodule FanCanWeb.HomeLive do
 #     {:ok, push_navigate(socket, to: ~p"/users/settings")}
 #   end
 
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    g_candidates = api_query(socket.assigns.current_user.state)
     IO.inspect(self(), label: "Self")
     IO.inspect(socket, label: "Home Socket")
     for follow = %UserFollows{} <- socket.assigns.current_user_follows do
@@ -44,9 +47,11 @@ defmodule FanCanWeb.HomeLive do
     # send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
     # # ThinWrapper.put("game_data", game_data)
     # # game_data = ThinWrapper.get("game_data")
+    
     {:ok, 
      socket
-     |> assign(:messages, [])}
+     |> assign(:messages, [])
+     |> assign(:g_candidates, g_candidates)}
   end
 
   defp sub_and_add(follow, socket) do
@@ -136,6 +141,8 @@ defmodule FanCanWeb.HomeLive do
               </div>
           </div>
         </div>
+
+        <StateSnapshot.display g_candidates={@g_candidates}/>
     </div>
     """
   end
@@ -151,6 +158,38 @@ defmodule FanCanWeb.HomeLive do
       |> to_form()
 
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
+  end
+
+  # def get_loc_info(ip) do
+  #   {:ok, resp} = 
+  #   #   Finch.build(:get, "https://ip.city/api.php?ip=#{ip}&key=#{System.fetch_env!("IP_CITY_API_KEY")}") 
+  #   #   |> Finch.request(FanCan.Finch)
+  #       Finch.build(:get, "https://ipinfo.io/#{ip}?token=#{System.fetch_env!("IP_INFO_TOKEN")}") 
+  #       |> Finch.request(FanCan.Finch)
+  #   IO.inspect(resp, label: "Loc Info Resp")
+  #   resp
+  # end
+
+  def get_str(state) do
+    Enum.zip(Utils.states, Utils.state_names ++ Utils.territories)
+      |> Enum.find(fn {abbr,name} -> abbr == state end)
+      |> Kernel.elem(1)
+      |> Atom.to_string()
+  end
+
+  def api_query(state) do
+    state_str = get_str(state)
+    IO.inspect(state_str, label: "State")
+    {:ok, resp} = 
+      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_PROJECT")}") 
+      |> Finch.request(FanCan.Finch)
+
+    {:ok, body} = Jason.decode(resp.body)
+
+    IO.inspect(body["offices"], label: "Offices")
+    IO.inspect(body["officials"], label: "Officials")
+
+    %{"offices" => body["offices"], "officials" => body["officials"]}
   end
 
   @impl true

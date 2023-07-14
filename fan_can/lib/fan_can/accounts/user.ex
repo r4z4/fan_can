@@ -8,6 +8,7 @@ defmodule FanCan.Accounts.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :city, :string
     field :state, Ecto.Enum, values: Utils.states
     field :district, :integer
     field :password, :string, virtual: true, redact: true
@@ -42,7 +43,7 @@ defmodule FanCan.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :username, :state])
+    |> cast(attrs, [:email, :password, :username, :city, :state])
     |> validate_email(opts)
     |> validate_password(opts)
   end

@@ -57,9 +57,12 @@ defmodule FanCanWeb.ConnCase do
   def log_in_user(conn, user) do
     token = FanCan.Accounts.generate_user_session_token(user)
 
+    # Not sure how I need to pass IP
+    ip_str = conn.remote_ip |> :inet_parse.ntoa |> to_string()
+
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
     |> Plug.Conn.put_session(:user_token, token)
-    |> Plug.Conn.put_session(:remote_ip, conn.remote_ip)
+    |> Plug.Conn.put_session(:remote_ip, ip_str)
   end
 end

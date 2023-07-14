@@ -1,11 +1,5 @@
-defmodule FanCanWeb.Components.VoterInfo do
-  use Phoenix.Component
+defmodule FanCanWeb.Layouts do
+  use FanCanWeb, :html
 
-  attr :name, :string, required: true
-
-  def greet(assigns) do
-    ~H"""
-    <p>Hello, <%= @name %>!</p>
-    """
-  end
+  embed_templates "layouts/*"
 end

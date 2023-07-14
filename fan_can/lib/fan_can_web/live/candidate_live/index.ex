@@ -6,14 +6,12 @@ defmodule FanCanWeb.CandidateLive.Index do
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserFollows
-  alias FanCan.Core.Utils
 
   # @impl Phoenix.LiveView
   @impl true
-  def mount(_params, session, socket) do
+  def mount(_params, _session, socket) do
     # {email, username} = Accounts.get_user_data_by_token(session["user_token"])
     # %{entries: entries, page_number: page_number, page_size: page_size, total_entries: total_entries, total_pages: total_pages}
-    g_candidates = api_query(socket.assigns.current_user.state)
     FanCanWeb.Endpoint.subscribe("topic")
     result = if connected?(socket), do: Public.paginate_candidates(), else: %Scrivener.Page{}
 
@@ -38,39 +36,35 @@ defmodule FanCanWeb.CandidateLive.Index do
       end
     end
 
+    loc_info = get_voter_info(socket.assigns.current_user)
+    
     {:ok, 
      socket
      |> stream(:candidates, result.entries)
      |> stream(:stream_messages, [])
-     |> assign(:g_candidates, g_candidates)
-     # |> assign(:g_can_zip, Enum.zip(g_candidates["offices"], g_candidates["officials"]))
+     |> assign(:loc_info, loc_info)
      |> assign(:page_number, result.page_number || 0)
      |> assign(:page_size, result.page_size || 0)
      |> assign(:total_entries, result.total_entries || 0)
      |> assign(:total_pages, result.total_pages || 0)}
   end
 
-
-  def get_str(state) do
-    Enum.zip(Utils.states, Utils.state_names ++ Utils.territories)
-      |> Enum.find(fn {abbr,name} -> abbr == state end)
-      |> Kernel.elem(1)
-      |> Atom.to_string()
-  end
-
-  def api_query(state) do
-    state_str = get_str(state)
-    IO.inspect(state_str, label: "State")
+  defp get_voter_info(user) do
+    IO.inspect(user, label: "User in Voter Info")
     {:ok, resp} = 
-      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_API_KEY")}") 
+      Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/voterinfo?address=12%20M%20#{user.city}%2C%20#{user.state}&electionId=2000&key=#{System.fetch_env!("GCLOUD_PROJECT")}") 
       |> Finch.request(FanCan.Finch)
 
     {:ok, body} = Jason.decode(resp.body)
 
-    IO.inspect(body["offices"], label: "Offices")
-    IO.inspect(body["officials"], label: "Officials")
+    filtered = 
+      Enum.filter(body["contests"], fn(contest) ->
+        Map.has_key?(contest, "candidates")
+      end)
 
-    %{"offices" => body["offices"], "officials" => body["officials"]}
+    IO.inspect(body, label: "Body")
+    IO.inspect(filtered, label: "Filtered")
+    filtered
   end
 
   @impl true

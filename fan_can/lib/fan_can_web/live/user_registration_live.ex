@@ -35,6 +35,7 @@ defmodule FanCanWeb.UserRegistrationLive do
 
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:username]} type="text" label="Username" required />
+        <.input field={@form[:city]} type="text" label="City (For More Accurate Voter Information)" required />
         <.input 
           field={@form[:state]} 
           type="select" 

@@ -79,11 +79,11 @@ Repo.insert_all(State, [
 ])
 
 Repo.insert_all(User, [
-      %{id: "a9f44567-e031-44f1-aae6-972d7aabbb45", username: "admin", state: :NE, district: nil, email: "admin@admin.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "b5f44567-e031-44f1-aae6-972d7aabbb45", username: "jim_the_og", state: :NE, district: nil, email: "jim@jim.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", username: "aaron", state: :NE, district: nil, email: "aaron@aaron.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", username: "TheMan98", state: :NE, district: nil, email: "User@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "b2f44567-e031-44f1-aae6-972d7aabbb45", username: "Anders01", state: :KS, district: nil, email: "User2@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "a9f44567-e031-44f1-aae6-972d7aabbb45", username: "admin", city: "Omaha", state: :NE, district: nil, email: "admin@admin.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "b5f44567-e031-44f1-aae6-972d7aabbb45", username: "jim_the_og", city: "Omaha", state: :NE, district: nil, email: "jim@jim.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", username: "aaron", city: "Chicago", state: :IL, district: nil, email: "aaron@aaron.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", username: "TheMan98", city: "Minneapolis", state: :MN, district: nil, email: "User@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "b2f44567-e031-44f1-aae6-972d7aabbb45", username: "Anders01", city: "Lawrence", state: :KS, district: nil, email: "User2@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
 Repo.insert_all(Attachment, [
