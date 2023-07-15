@@ -25,6 +25,8 @@ defmodule FanCan.Public.Election do
   alias FanCan.Public.Election.Ballot
   alias FanCan.Public.Election  
   alias FanCan.Public.Candidate  
+  alias FanCan.Accounts.{UserHolds, User, UserToken}
+  alias FanCan.Public.Election.{RaceHolds, ElectionHolds}
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
@@ -268,4 +270,92 @@ defmodule FanCan.Public.Election do
   def change_ballot(%Ballot{} = ballot, attrs \\ %{}) do
     Ballot.changeset(ballot, attrs)
   end
+
+  defp extract_key(attrs) do
+    Map.drop(attrs, [:id, :type, :user_id])
+      |> Map.keys()
+      |> List.first()
+  end
+
+
+  @doc """
+  Adds user_holds for type :user and admin id for each new user.
+
+  ## Examples
+
+      iex> register_user_holds(%{field: value})
+      {:ok, %UserHolds{}}
+
+      iex> register_user_holds(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def register_alert(attrs) do
+    IO.inspect(attrs, label: "Attrs")
+    case extract_key(attrs) do
+      :race_id -> 
+        %RaceHolds{}
+          |> RaceHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      :election_id -> 
+        %ElectionHolds{}
+          |> ElectionHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      :user_id_recv -> 
+        %UserHolds{}
+        |> UserHolds.changeset(attrs)
+        |> Repo.insert(returning: true)
+
+      _ -> IO.puts("Ooooooooooooooops")
+    end
+  end
+
+  def register_bookmark(attrs) do
+    IO.inspect(attrs, label: "Attrs")
+    case extract_key(attrs) do
+      :race_id -> 
+        %RaceHolds{}
+          |> RaceHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      :election_id -> 
+        %ElectionHolds{}
+          |> ElectionHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+      # Can you bookmark a user? Probably not
+      :user_id_recv -> 
+        %UserHolds{}
+        |> UserHolds.changeset(attrs)
+        |> Repo.insert(returning: true)
+
+      _ -> IO.puts("Bookmark Ooooooooooooooops")
+    end
+  end
+
+    def get_race_holds_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: rh in RaceHolds, on: u.id == rh.user_id
+    query = from [u, ut, rh] in query,
+          where: ut.token == ^token,
+          select: rh
+          # Repo.all returns a list
+    Repo.all(query)
+  end
+
+  def get_election_holds_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: eh in ElectionHolds, on: u.id == eh.user_id
+    query = from [u, ut, eh] in query,
+          where: ut.token == ^token,
+          select: eh
+          # Repo.all returns a list
+    Repo.all(query)
+  end
+
 end

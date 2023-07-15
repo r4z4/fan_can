@@ -71,7 +71,8 @@ defmodule FanCanWeb.BallotLive.Template do
 
   def handle_event("bell_click", %{"id" => id}, socket) do
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, race_id: id}
-      case Accounts.register_alert(attrs) do
+      # FIXME: Move to RegisterHandlers
+      case Election.register_alert(attrs) do
         {:ok, holds} -> 
           IO.inspect(holds, label: "Holds: ")
           {:noreply,
@@ -83,6 +84,24 @@ defmodule FanCanWeb.BallotLive.Template do
           {:noreply, 
             socket
             |> put_flash(:error, "Error adding alert")}
+      end
+  end
+
+  def handle_event("bookmark_click", %{"id" => id, "desc" => desc}, socket) do
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, race_id: id}
+      # FIXME: Move to RegisterHandlers
+      case Election.register_bookmark(attrs) do
+        {:ok, holds} -> 
+          IO.inspect(holds, label: "Holds: ")
+          {:noreply,
+            socket
+            |> put_flash(:info, "Successfully bookmarked race: #{desc}")}
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          IO.inspect(changeset, label: "Holds Error: ")
+          {:noreply, 
+            socket
+            |> put_flash(:error, "Error adding alert for #{desc}")}
       end
   end
 

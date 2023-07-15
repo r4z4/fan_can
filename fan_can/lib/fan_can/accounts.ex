@@ -8,7 +8,7 @@ defmodule FanCan.Accounts do
 
   alias FanCan.Accounts.{User, UserToken, UserNotifier, UserHolds}
   alias FanCan.Site.Forum.{Post, Thread}
-  alias FanCan.Public.Election.{RaceHolds, ElectionHolds}
+  alias FanCan.Public.Election
 
   ## Database getters
 
@@ -88,35 +88,10 @@ defmodule FanCan.Accounts do
     Repo.all(query)
   end
 
-  def get_race_holds_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id,
-        join: rh in RaceHolds, on: u.id == rh.user_id
-    query = from [u, ut, rh] in query,
-          where: ut.token == ^token,
-          select: rh
-          # Repo.all returns a list
-    Repo.all(query)
-  end
-
-  def get_election_holds_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id,
-        join: eh in ElectionHolds, on: u.id == eh.user_id
-    query = from [u, ut, eh] in query,
-          where: ut.token == ^token,
-          select: eh
-          # Repo.all returns a list
-    Repo.all(query)
-  end
-
-
   def get_all_holds_by_token(token) do
-    race      = get_race_holds_by_token(token)
     user      = get_user_holds_by_token(token)
-    election  = get_election_holds_by_token(token)
+    race      = Election.get_race_holds_by_token(token)
+    election  = Election.get_election_holds_by_token(token)
     
     %{:user_holds => user, :race_holds => race, :election_holds => election}
   end
@@ -213,40 +188,6 @@ defmodule FanCan.Accounts do
     %User{}
     |> User.registration_changeset(attrs)
     |> Repo.insert()
-  end
-
-  defp extract_key(attrs) do
-    Map.drop(attrs, [:id, :type, :user_id])
-      |> Map.keys()
-      |> List.first()
-  end
-  @doc """
-  Adds user_holds for type :user and admin id for each new user.
-
-  ## Examples
-
-      iex> register_user_holds(%{field: value})
-      {:ok, %UserHolds{}}
-
-      iex> register_user_holds(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def register_alert(attrs) do
-    IO.inspect(attrs, label: "Attrs")
-    case extract_key(attrs) do
-      :race_id -> 
-        %RaceHolds{}
-          |> RaceHolds.changeset(attrs)
-          |> Repo.insert(returning: true)
-
-      :user_id_recv -> 
-        %UserHolds{}
-        |> UserHolds.changeset(attrs)
-        |> Repo.insert(returning: true)
-
-      _ -> IO.puts("Ooooooooooooooops")
-    end
   end
 
   @doc """
