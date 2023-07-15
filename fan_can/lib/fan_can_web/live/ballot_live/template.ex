@@ -13,7 +13,19 @@ defmodule FanCanWeb.BallotLive.Template do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    vote_list = 
+      Enum.filter(socket.assigns.current_user_holds.candidate_holds, fn hold -> Map.fetch!(hold, :type) == :vote end)
+      |> comprehend()
+
+    {:ok, 
+      socket
+      |> assign(:vote_list, vote_list)}
+  end
+
+  defp comprehend(list) do
+    for x <- list do
+      x.candidate_id
+    end
   end
 
   defp party_class(party) do

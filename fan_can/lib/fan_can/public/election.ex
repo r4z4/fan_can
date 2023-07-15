@@ -365,7 +365,7 @@ defmodule FanCan.Public.Election do
         join: ch in CandidateHolds, on: u.id == ch.user_id
     query = from [u, ut, ch] in query,
           where: ut.token == ^token,
-          select: ch.candidate_id
+          select: ch
           # Repo.all returns a list
     Repo.all(query)
   end

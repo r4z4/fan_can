@@ -87,7 +87,7 @@
                       phx-change="vote_casted"
                       phx-value-district={ballot_race.district}
                       value="ugh"
-                      checked={voted_for?(candidate.id, assigns.current_user_holds.candidate_holds)}
+                      checked={voted_for?(candidate.id, assigns.vote_list)}
                       label="Vote"
                       options={[]}
                     />
