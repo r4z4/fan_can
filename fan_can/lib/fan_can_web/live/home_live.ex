@@ -3,7 +3,7 @@ defmodule FanCanWeb.HomeLive do
 
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts.UserHolds
   alias FanCanWeb.Components.StateSnapshot
   alias FanCan.Core.Utils
 
@@ -24,9 +24,9 @@ defmodule FanCanWeb.HomeLive do
     g_candidates = api_query(socket.assigns.current_user.state)
     IO.inspect(self(), label: "Self")
     IO.inspect(socket, label: "Home Socket")
-    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
-      # Subscribe to user_follows. E.g. forums that user subscribes to
+      # Subscribe to user_holds. E.g. forums that user subscribes to
       sub_and_add(follow, socket)
     end
 
@@ -43,7 +43,7 @@ defmodule FanCanWeb.HomeLive do
     # IO.inspect(socket, label: "Socket")
     # pid = spawn(FanCanWeb.SubscriptionServer, :start, [])
     # IO.inspect(pid, label: "SubscriptionSupervisor PIN =>=>=>=>")
-    # send pid, {:subscribe_user_follows, socket.assigns.current_user_follows}
+    # send pid, {:subscribe_user_holds, socket.assigns.current_user_holds}
     # send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
     # # ThinWrapper.put("game_data", game_data)
     # # game_data = ThinWrapper.get("game_data")
@@ -54,22 +54,20 @@ defmodule FanCanWeb.HomeLive do
      |> assign(:g_candidates, g_candidates)}
   end
 
-  defp sub_and_add(follow, socket) do
-    case follow.type do
-      :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-      :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-      :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-      :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
-      :races -> TopicHelpers.subscribe_to_followers("races", follow.follow_ids)
-    end
+  defp sub_and_add(holds, socket) do
+    TopicHelpers.subscribe_to_holds("user", Kernel.elem(holds, 0))
+    TopicHelpers.subscribe_to_holds("race", Kernel.elem(holds, 1))
+    # TopicHelpers.subscribe_to_holds("forum", holds["forum_ids"])
+    # TopicHelpers.subscribe_to_holds("election", holds["election_ids"])
   end
 
-  defp get_races(follows) do
-    Enum.filter(follows, fn x -> x.type == :races end)
+  defp get_races(holds) do
+    # Enum.filter(holds, fn x -> x.type == :races end)
+    holds.race_holds
   end
 
-  defp get_elections(follows) do
-    Enum.filter(follows, fn x -> x.type == :election end)
+  defp get_elections(holds) do
+    holds.election_holds
   end
 
   @impl true
@@ -119,7 +117,7 @@ defmodule FanCanWeb.HomeLive do
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
             <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
               <div class="text-white">
-                <div :for={race <- get_races(@current_user_follows)} class="">
+                <div :for={race <- get_races(@current_user_holds)} class="">
                   race.id
                 </div>
               </div>
@@ -135,7 +133,7 @@ defmodule FanCanWeb.HomeLive do
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
             <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> Your Shred Items</div>
               <div class="text-white">
-                <div :for={election <- get_elections(@current_user_follows)} class="">
+                <div :for={election <- get_elections(@current_user_holds)} class="">
                   election.id
                 </div>
               </div>

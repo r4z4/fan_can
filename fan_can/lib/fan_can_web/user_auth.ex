@@ -6,7 +6,8 @@ defmodule FanCanWeb.UserAuth do
 
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts.UserHolds
+  alias FanCan.Public.Election.RaceHolds
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -155,7 +156,7 @@ defmodule FanCanWeb.UserAuth do
 
   def on_mount(:ensure_authenticated, _params, session, socket) do
     socket = mount_current_user(session, socket)
-    socket = mount_current_user_follows(session, socket)
+    socket = mount_current_user_holds(session, socket)
     socket = mount_current_user_published_ids(session, socket)
     # socket = mount_current_user_post_ids(session, socket)
     
@@ -183,10 +184,10 @@ defmodule FanCanWeb.UserAuth do
     end
   end
 
-  defp mount_current_user_follows(session, socket) do
-      Phoenix.Component.assign_new(socket, :current_user_follows, fn ->
+  defp mount_current_user_holds(session, socket) do
+      Phoenix.Component.assign_new(socket, :current_user_holds, fn ->
       if user_token = session["user_token"] do
-        Accounts.get_user_follows_by_token(user_token)
+        Accounts.get_all_holds_by_token(user_token)
       end
     end)
   end
@@ -204,16 +205,16 @@ defmodule FanCanWeb.UserAuth do
 
   defp subscribe_all(socket) do
     IO.puts("casing casting")
-    GenServer.cast(FanCanWeb.SubscriptionServer, {:subscribe_user_follows, socket.assigns.current_user_follows})
+    GenServer.cast(FanCanWeb.SubscriptionServer, {:subscribe_user_holds, socket.assigns.current_user_holds})
     GenServer.cast(FanCanWeb.SubscriptionServer, {:subscribe_user_published, socket.assigns.current_user_published_ids})
-    # for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+    # for follow = %UserHolds{} <- socket.assigns.current_user_holds do
     #   IO.inspect(follow, label: "Type")
-    #   # Subscribe to user_follows. E.g. forums that user subscribes to
+    #   # Subscribe to user_holds. E.g. forums that user subscribes to
     #   case follow.type do
-    #     :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-    #     :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-    #     :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-    #     :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+    #     :candidate -> TopicHelpers.subscribe_to_holds("candidate", follow.follow_ids)
+    #     :user -> TopicHelpers.subscribe_to_holds("user", follow.follow_ids)
+    #     :forum -> TopicHelpers.subscribe_to_holds("forum", follow.follow_ids)
+    #     :election -> TopicHelpers.subscribe_to_holds("election", follow.follow_ids)
     #   end
     # end
 
@@ -231,7 +232,7 @@ defmodule FanCanWeb.UserAuth do
   # defp mount_current_user_post_ids(session, socket) do
   #     Phoenix.Component.assign_new(socket, :current_user_thread_ids, fn ->
   #     if user_token = session["user_token"] do
-  #       Accounts.get_user_follows_by_token(user_token)
+  #       Accounts.get_user_holds_by_token(user_token)
   #     end
   #   end)
   # end

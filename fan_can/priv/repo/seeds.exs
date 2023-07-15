@@ -14,7 +14,7 @@
 
 alias FanCan.Repo
 alias FanCan.Accounts.User
-alias FanCan.Accounts.UserFollows
+alias FanCan.Accounts.UserHolds
 alias FanCan.Public.Candidate
 alias FanCan.Public.Election
 alias FanCan.Public.State
@@ -22,8 +22,7 @@ alias FanCan.Site.Forum
 alias FanCan.Site.Forum.Post
 alias FanCan.Site.Forum.Thread
 alias FanCan.Core.Attachment
-alias FanCan.Public.Election.Race
-alias FanCan.Public.Election.Ballot
+alias FanCan.Public.Election.{Race, Ballot, RaceHolds, ElectionHolds}
 
 Repo.insert_all(State, [
       %{id: 1, name: :Alabama, code: :AL, num_districts: 7, governor: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -312,7 +311,7 @@ Repo.insert_all(Race, [
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 57.2, elect: "7460e15c-64ab-42d1-b536-8116e82acfbe", district: 2, candidates: ["7460e15c-64ab-42d1-b536-8116e82acfbe", "7460e15c-64ab-42d1-b536-8116e87acfbe"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", district: 10, candidates: ["5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", "0423af0e-4b1e-43d4-9a47-559ce17cdd4f"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Starting here we have winner candidate vs. one of the made up contenders
-      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "7e8750c4-2872-4dad-a793-7a6915d8ef75", district: 8, candidates: ["7e8750c4-2872-4dad-a793-7a6915d8ef75", "93f33178-116a-48eb-9033-e599e2525994"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "5d99c305-7d3e-4279-acc6-e90764139bc2", seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "7e8750c4-2872-4dad-a793-7a6915d8ef75", district: 8, candidates: ["7e8750c4-2872-4dad-a793-7a6915d8ef75", "93f33178-116a-48eb-9033-e599e2525994"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "79db9a33-e625-45cc-882d-c8da27a1c756", district: 12, candidates: ["79db9a33-e625-45cc-882d-c8da27a1c756", "cbb9d25d-1f2b-4a84-9968-28b97f90e798"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 53.3, elect: "adea9986-0c90-4196-9512-def9eb0e68e7", district: 14, candidates: ["adea9986-0c90-4196-9512-def9eb0e68e7", "fb85d774-5e3d-4d43-9bfc-a2dfba5b1ab0"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 57.2, elect: "43838b15-1de6-4a08-af0f-995b58dbf142", district: 16, candidates: ["43838b15-1de6-4a08-af0f-995b58dbf142", "9e391259-4f6c-4750-9890-ff4fad514747"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -411,23 +410,42 @@ Repo.insert_all(Ballot, [
       %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 # "Follow" = "Subscribe"
-Repo.insert_all(UserFollows, [
+Repo.insert_all(UserHolds, [
       # All need to follow admin
-      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b2f44567-e031-44f1-aae6-972d7aabbb45", type: :user, follow_ids: ["0e91138f-503f-4218-a801-c8bb7ff3398b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      # Set up some initial candidate follows
-      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
-                                                                                        "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", 
-                                                                                        "4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
-                                                                                        "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      # Set up some initial election follows
-      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :election, follow_ids: ["a1f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      # Set up some initial forum follows
-      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55", "8d04fd4f-1321-4e9f-911a-7399d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{user_id_init: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, user_id_recv: "a9f44567-e031-44f1-aae6-972d7aabbb45", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id_init: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :follow, user_id_recv: "a9f44567-e031-44f1-aae6-972d7aabbb45", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id_init: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", type: :follow, user_id_recv: "a9f44567-e031-44f1-aae6-972d7aabbb45", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id_init: "b2f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, user_id_recv: "a9f44567-e031-44f1-aae6-972d7aabbb45", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # We got two friends - Jim holds Aaron & Aaron holds Jim
+      %{user_id_init: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, user_id_recv: "df18d5eb-e99e-4481-9e16-4d2f434a3711", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id_init: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :follow, user_id_recv: "b5f44567-e031-44f1-aae6-972d7aabbb45", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      # Set up some initial candidate holds
+      # %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :candidate, follow_ids: ["4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
+      #                                                                                   "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :candidate, follow_ids: ["0e97798f-503f-4218-a801-c8bb7ff3498b", 
+      #                                                                                   "4ed97c3a-15ff-45a7-af6c-6e37bcdb943b", 
+      #                                                                                   "0e33778f-503f-4218-a801-c8bb7ff9498b"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # # Set up some initial election holds
+      # %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :election, follow_ids: ["a1f44567-e031-44f1-aae6-972d7aabbb45"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # # Set up some initial forum holds
+      # %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      # %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :forum, follow_ids: ["8d04fd4f-1321-4e9f-911a-7369d57d0b55", "8d04fd4f-1321-4e9f-911a-7399d57d0b55"], updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+])
+
+Repo.insert_all(RaceHolds, [
+      # Jim went to town and chose them all
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, race_id: "5d99c305-7d3e-4279-acc6-e90764139bc2", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :alert, race_id: "5d99c305-7d3e-4279-acc6-e90764139bc2", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :star, race_id: "5d99c305-7d3e-4279-acc6-e90764139bc2", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :bookmark, race_id: "5d99c305-7d3e-4279-acc6-e90764139bc2", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      # Aaron chose 2
+])
+
+Repo.insert_all(ElectionHolds, [
+      # Jim & Aaron subscribe to Pres Election
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :follow, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      # Aaron chose 2
 ])
 
 # Ecto.UUID.bingenerate()

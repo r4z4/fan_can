@@ -4,11 +4,11 @@ defmodule FanCan.Core.TopicHelpers do
   """
 
   @doc """
-  For each user_id in their follows list, subscribe
+  For each user_id in their holds list, subscribe
   """
   # user_234234sf-sdf34-sdfasdf-435435345 or candidate_234234sf-sdf34-sdfasdf-435435345 etc..
-  def subscribe_to_followers(type, list \\ []) do
-    IO.inspect(list, label: "sub follower list")
+  def subscribe_to_holds(type, list \\ []) do
+    IO.inspect(list, label: "sub holds list")
     # string = type <> "_" <> "32453453-sdf4-sdf4-sdfs3"
     # IO.inspect(string, label: "String")
     for i <- list, do: FanCanWeb.Endpoint.subscribe(type <> "_" <> i)

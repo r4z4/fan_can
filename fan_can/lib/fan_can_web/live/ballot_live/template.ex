@@ -3,7 +3,7 @@ defmodule FanCanWeb.BallotLive.Template do
 
   alias FanCan.Public.Election
   alias FanCan.Public.Election.BallotRace
-  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts.UserHolds
   alias FanCan.Accounts
 
 # @type ballot_map :: %{
@@ -70,14 +70,20 @@ defmodule FanCanWeb.BallotLive.Template do
   end
 
   def handle_event("bell_click", %{"id" => id}, socket) do
-    race = Election.get_race!(id)
-    Election.update_race(race, %{alerts: race.alerts + 1})
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :race, follow_ids: [id]}
-      case Accounts.register_user_follows(attrs) do
-        {:ok, user_follows} -> IO.inspect(user_follows, label: "User Follows: ")
-        {:error, err} -> IO.puts "User Follows Registration Error #{err}"
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, race_id: id}
+      case Accounts.register_alert(attrs) do
+        {:ok, holds} -> 
+          IO.inspect(holds, label: "Holds: ")
+          {:noreply,
+            socket
+            |> put_flash(:info, "We have set an alert for Race: #{holds.id}")}
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          IO.inspect(changeset, label: "Holds Error: ")
+          {:noreply, 
+            socket
+            |> put_flash(:error, "Error adding alert")}
       end
-    {:noreply, socket}
   end
 
   def handle_event("save", _vals, socket) do

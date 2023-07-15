@@ -51,6 +51,7 @@ defmodule FanCan.MixProject do
       {:finch, "~> 0.13"},
       {:google_api_civic_info, "~> 0.20.0"},
       {:goth, "~> 1.2.0"},
+      {:pgvector, "~> 0.2.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},

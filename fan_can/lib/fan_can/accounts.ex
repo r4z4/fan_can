@@ -6,9 +6,9 @@ defmodule FanCan.Accounts do
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
-  alias FanCan.Accounts.{User, UserToken, UserNotifier, UserFollows}
-  alias FanCan.Site.Forum.Post
-  alias FanCan.Site.Forum.Thread
+  alias FanCan.Accounts.{User, UserToken, UserNotifier, UserHolds}
+  alias FanCan.Site.Forum.{Post, Thread}
+  alias FanCan.Public.Election.{RaceHolds, ElectionHolds}
 
   ## Database getters
 
@@ -49,7 +49,7 @@ defmodule FanCan.Accounts do
 
   def get_all_user_info(token) do
     query = from u in User,
-      join: uf in UserFollows,
+      join: uf in UserHolds,
       on: uf.user_id == u.id,
       join: ut in UserToken,
       on: ut.user_id == u.id,
@@ -76,16 +76,49 @@ defmodule FanCan.Accounts do
     Repo.one(query)
   end
 
-  def get_user_follows_by_token(token)
+  def get_user_holds_by_token(token)
       when is_binary(token) do
     query = from u in User,
         join: ut in UserToken, on: u.id == ut.user_id,
-        join: uf in UserFollows, on: u.id == uf.user_id
-    query = from [u, ut, uf] in query,
+        join: uh in UserHolds, on: u.id == uh.user_id_init
+    query = from [u, ut, uh] in query,
           where: ut.token == ^token,
-          select: uf
+          select: uh
           # Repo.all returns a list
     Repo.all(query)
+  end
+
+  def get_race_holds_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: rh in RaceHolds, on: u.id == rh.user_id
+    query = from [u, ut, rh] in query,
+          where: ut.token == ^token,
+          select: rh
+          # Repo.all returns a list
+    Repo.all(query)
+  end
+
+  def get_election_holds_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: eh in ElectionHolds, on: u.id == eh.user_id
+    query = from [u, ut, eh] in query,
+          where: ut.token == ^token,
+          select: eh
+          # Repo.all returns a list
+    Repo.all(query)
+  end
+
+
+  def get_all_holds_by_token(token) do
+    race      = get_race_holds_by_token(token)
+    user      = get_user_holds_by_token(token)
+    election  = get_election_holds_by_token(token)
+    
+    %{:user_holds => user, :race_holds => race, :election_holds => election}
   end
 
   def get_user_thread_ids_by_token(token)
@@ -139,9 +172,9 @@ defmodule FanCan.Accounts do
   # def get_user_data_by_id(id) do
   #   query = from u in User,
   #         where: u.id == ^id,
-  #         select: {u.email, u.id, u.username, u.user_follows, u.user_post_likes}
+  #         select: {u.email, u.id, u.username, u.user_holds, u.user_post_likes}
   #         # Repo.all returns a list
-  #   {user_email, id, username, user_follows, user_post_likes} = Repo.one(query)
+  #   {user_email, id, username, user_holds, user_post_likes} = Repo.one(query)
   # end
 
 
@@ -182,23 +215,38 @@ defmodule FanCan.Accounts do
     |> Repo.insert()
   end
 
+  defp extract_key(attrs) do
+    Map.drop(attrs, [:id, :type, :user_id])
+      |> Map.keys()
+      |> List.first()
+  end
   @doc """
-  Adds user_follows for type :user and admin id for each new user.
+  Adds user_holds for type :user and admin id for each new user.
 
   ## Examples
 
-      iex> register_user_follows(%{field: value})
-      {:ok, %UserFollows{}}
+      iex> register_user_holds(%{field: value})
+      {:ok, %UserHolds{}}
 
-      iex> register_user_follows(%{field: bad_value})
+      iex> register_user_holds(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def register_user_follows(attrs) do
+  def register_alert(attrs) do
     IO.inspect(attrs, label: "Attrs")
-    %UserFollows{}
-    |> UserFollows.changeset(attrs)
-    |> Repo.insert()
+    case extract_key(attrs) do
+      :race_id -> 
+        %RaceHolds{}
+          |> RaceHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      :user_id_recv -> 
+        %UserHolds{}
+        |> UserHolds.changeset(attrs)
+        |> Repo.insert(returning: true)
+
+      _ -> IO.puts("Ooooooooooooooops")
+    end
   end
 
   @doc """

@@ -33,6 +33,8 @@ config :propcheck, counter_examples: "propcheck_counter_examples"
 
 config :ex_heroicons, type: "outline"
 
+config :fan_can, FanCan.Repo, types: FanCan.PostgrexTypes
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

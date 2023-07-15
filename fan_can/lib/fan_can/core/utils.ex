@@ -41,8 +41,15 @@ defmodule FanCan.Core.Utils do
         [:image, :pdf]
     end
 
-    def follows_types do
-        [:user, :candidate, :election, :forum, :race, :ballot]
+    # Holds = Things you can only have one of
+    # Event = Can have many
+
+    def hold_types do
+        [:follow, :star, :bookmark, :alert]
+    end
+
+    def event_types do
+        [:share, :like]
     end
 
     def forum_categories do

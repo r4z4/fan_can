@@ -1,7 +1,7 @@
 defmodule FanCanWeb.SubscriptionServer do
   use GenServer
   alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts.UserHolds
   
   def start do
     initial_state = []
@@ -16,15 +16,15 @@ defmodule FanCanWeb.SubscriptionServer do
     end
   end
 
-  def handle_message({:subscribe_user_follows, user_follows}, state) do
-    for follow = %UserFollows{} <- user_follows do
+  def handle_message({:subscribe_user_holds, user_holds}, state) do
+    for follow = %UserHolds{} <- user_holds do
       IO.inspect(follow, label: "Type")
-      # Subscribe to user_follows. E.g. forums that user subscribes to
+      # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do
-        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+        :candidate -> TopicHelpers.subscribe_to_holds("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_holds("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_holds("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_holds("election", follow.follow_ids)
       end
     end
     {:ok, []}
@@ -78,19 +78,19 @@ defmodule FanCanWeb.SubscriptionServer do
   end
 
   # @impl true
-  # def handle_cast({:subscribe_user_follows, user_follows}, _subscriptions) do
+  # def handle_cast({:subscribe_user_holds, user_holds}, _subscriptions) do
   #   IO.puts("CASTCASTCAST")
-  #   for follow = %UserFollows{} <- user_follows do
+  #   for follow = %UserHolds{} <- user_holds do
   #     IO.inspect(follow, label: "Type")
-  #     # Subscribe to user_follows. E.g. forums that user subscribes to
+  #     # Subscribe to user_holds. E.g. forums that user subscribes to
   #     case follow.type do
-  #       :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-  #       :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-  #       :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-  #       :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+  #       :candidate -> TopicHelpers.subscribe_to_holds("candidate", follow.follow_ids)
+  #       :user -> TopicHelpers.subscribe_to_holds("user", follow.follow_ids)
+  #       :forum -> TopicHelpers.subscribe_to_holds("forum", follow.follow_ids)
+  #       :election -> TopicHelpers.subscribe_to_holds("election", follow.follow_ids)
   #     end
   #   end
-  #   {:reply, user_follows}
+  #   {:reply, user_holds}
   # end
 
   # @impl true

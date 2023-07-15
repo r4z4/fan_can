@@ -4,19 +4,19 @@ defmodule FanCanWeb.ElectionLive.Index do
   alias FanCan.Public
   alias FanCan.Public.Election
   alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserFollows
+  alias FanCan.Accounts.UserHolds
 
   @impl true
   def mount(_params, _session, socket) do
     IO.inspect(socket, label: "Election Socket")
-    for follow = %UserFollows{} <- socket.assigns.current_user_follows do
+    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
-      # Subscribe to user_follows. E.g. forums that user subscribes to
+      # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do
-        :candidate -> TopicHelpers.subscribe_to_followers("candidate", follow.follow_ids)
-        :user -> TopicHelpers.subscribe_to_followers("user", follow.follow_ids)
-        :forum -> TopicHelpers.subscribe_to_followers("forum", follow.follow_ids)
-        :election -> TopicHelpers.subscribe_to_followers("election", follow.follow_ids)
+        :candidate -> TopicHelpers.subscribe_to_holds("candidate", follow.follow_ids)
+        :user -> TopicHelpers.subscribe_to_holds("user", follow.follow_ids)
+        :forum -> TopicHelpers.subscribe_to_holds("forum", follow.follow_ids)
+        :election -> TopicHelpers.subscribe_to_holds("election", follow.follow_ids)
       end
     end
 
