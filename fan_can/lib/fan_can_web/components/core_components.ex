@@ -316,9 +316,35 @@ defmodule FanCanWeb.CoreComponents do
     """
   end
 
-    def input(%{type: "radio", value: value} = assigns) do
+  def input(%{type: "checkgroup", group: group, value: value} = assigns) do
     assigns =
-      assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
+      assign_new(assigns, :checked_group, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
+
+    ~H"""
+    <div phx-feedback-for={@name}>
+      <label class="flex items-center gap-2 text-sm leading-6 text-white">
+        <input type="hidden" name={@name} value="false" />
+        <input
+          type="checkbox"
+          id={@id}
+          name={@name}
+          value="true"
+          checked={@checked}
+          class="rounded border-zinc-300 focus:ring-0"
+          {@rest}
+        />
+        <%= @label %>
+      </label>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "radio", value: value} = assigns) do
+    assigns =
+      assigns
+      |> assign_new(:checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
+      |> assign_new(:group, fn -> "heyheyhey" end)
 
     ~H"""
     <div phx-feedback-for={@name}>
@@ -328,7 +354,7 @@ defmodule FanCanWeb.CoreComponents do
           type="radio"
           id={@id}
           name={@name}
-          value="true"
+          value={@value}
           checked={@checked}
           class="rounded border-zinc-300 focus:ring-0"
           {@rest}
