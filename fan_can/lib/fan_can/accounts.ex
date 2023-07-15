@@ -89,11 +89,12 @@ defmodule FanCan.Accounts do
   end
 
   def get_all_holds_by_token(token) do
-    user      = get_user_holds_by_token(token)
-    race      = Election.get_race_holds_by_token(token)
-    election  = Election.get_election_holds_by_token(token)
+    user        = get_user_holds_by_token(token)
+    race        = Election.get_race_holds_by_token(token)
+    election    = Election.get_election_holds_by_token(token)
+    candidate   = Election.get_candidate_holds_by_token(token)
     
-    %{:user_holds => user, :race_holds => race, :election_holds => election}
+    %{:user_holds => user, :race_holds => race, :election_holds => election, :candidate_holds => candidate}
   end
 
   def get_user_thread_ids_by_token(token)

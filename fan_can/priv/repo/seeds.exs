@@ -22,7 +22,7 @@ alias FanCan.Site.Forum
 alias FanCan.Site.Forum.Post
 alias FanCan.Site.Forum.Thread
 alias FanCan.Core.Attachment
-alias FanCan.Public.Election.{Race, Ballot, RaceHolds, ElectionHolds}
+alias FanCan.Public.Election.{Race, Ballot, RaceHolds, ElectionHolds, CandidateHolds}
 
 Repo.insert_all(State, [
       %{id: 1, name: :Alabama, code: :AL, num_districts: 7, governor: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -445,6 +445,14 @@ Repo.insert_all(ElectionHolds, [
       # Jim & Aaron subscribe to Pres Election
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :follow, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :follow, election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      # Aaron chose 2
+])
+
+Repo.insert_all(CandidateHolds, [
+      # Jim like Mike & Mirch
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "0e91778f-503f-4218-a801-c8bb7ff9498b", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "0ce64757-3bf2-4779-99ca-3b5b35d59c4d", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "09f131ac-818c-4058-b9ce-dc3b91794416", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
       # Aaron chose 2
 ])
 

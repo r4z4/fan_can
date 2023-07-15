@@ -50,6 +50,14 @@
     </div>
 </div>
 
+<div class="text-center w-3/5 m-auto border-solid border-2 border-white rounded-lg p-2">
+  <h6 class="text-white">Tips</h6>
+    <div class="flex text-white">
+      <p> You are allowed to have to candidates check, however can only submit for one (Yes, we are preparing for RCV). You will receive an error upon submission, however you can also set yourself a friendly alert.</p>
+    </div>
+</div>
+
+
 <section class="h-screen w-8/9 bg-slate-800">
   <.simple_form
     for={@ballot_form}
@@ -74,9 +82,12 @@
                     <div class="col-span-1">
                     <.input
                       field={@ballot_form[{ballot_race.district}]}
-                      type="radio"
-                      name={ballot_race.district}
-                      value={candidate.id}
+                      type="checkbox"
+                      name="vote_box"
+                      phx-change="vote_casted"
+                      phx-value-district={ballot_race.district}
+                      value="ugh"
+                      checked={voted_for?(candidate.id, assigns.current_user_holds.candidate_holds)}
                       label="Vote"
                       options={[]}
                     />

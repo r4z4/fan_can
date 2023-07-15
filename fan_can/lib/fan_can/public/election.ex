@@ -26,7 +26,7 @@ defmodule FanCan.Public.Election do
   alias FanCan.Public.Election  
   alias FanCan.Public.Candidate  
   alias FanCan.Accounts.{UserHolds, User, UserToken}
-  alias FanCan.Public.Election.{RaceHolds, ElectionHolds}
+  alias FanCan.Public.Election.{RaceHolds, ElectionHolds, CandidateHolds}
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
@@ -354,6 +354,18 @@ defmodule FanCan.Public.Election do
     query = from [u, ut, eh] in query,
           where: ut.token == ^token,
           select: eh
+          # Repo.all returns a list
+    Repo.all(query)
+  end
+
+  def get_candidate_holds_by_token(token)
+      when is_binary(token) do
+    query = from u in User,
+        join: ut in UserToken, on: u.id == ut.user_id,
+        join: ch in CandidateHolds, on: u.id == ch.user_id
+    query = from [u, ut, ch] in query,
+          where: ut.token == ^token,
+          select: ch.candidate_id
           # Repo.all returns a list
     Repo.all(query)
   end

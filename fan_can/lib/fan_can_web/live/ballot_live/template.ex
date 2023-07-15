@@ -105,6 +105,14 @@ defmodule FanCanWeb.BallotLive.Template do
       end
   end
 
+  def voted_for?(id, holds) do
+    Enum.member?(holds, id)
+  end
+
+  def handle_event("vote_casted", %{"vote_box" => id, "district" => district, "_target" => target}, socket) do
+    IO.puts("Vote Casted")
+  end
+
   def handle_event("save", _vals, socket) do
     IO.puts("Handler")
     {:noreply, socket}

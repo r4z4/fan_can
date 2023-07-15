@@ -57,6 +57,8 @@ defmodule FanCanWeb.HomeLive do
   defp sub_and_add(holds, socket) do
     TopicHelpers.subscribe_to_holds("user", Kernel.elem(holds, 0))
     TopicHelpers.subscribe_to_holds("race", Kernel.elem(holds, 1))
+    TopicHelpers.subscribe_to_holds("election", Kernel.elem(holds, 2))
+    TopicHelpers.subscribe_to_holds("candidate", Kernel.elem(holds, 3))
     # TopicHelpers.subscribe_to_holds("forum", holds["forum_ids"])
     # TopicHelpers.subscribe_to_holds("election", holds["election_ids"])
   end
