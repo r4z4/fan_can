@@ -1,24 +1,17 @@
 <.header>
-  Forum <%= @forum.id %>
-  <:subtitle>This is a forum record from your database.</:subtitle>
-  <:actions>
-    <.link patch={~p"/forums/#{@forum}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit forum</.button>
-    </.link>
-  </:actions>
+    <:actions>
+      <.link patch={~p"/forums/main/#{@forum}/new_thread"} phx-click={JS.push_focus()}>
+        <.button>New Thread</.button>
+      </.link>
+    </:actions>
 </.header>
-
-<.list>
-  <:item title="Title"><%= @forum.title %></:item>
-  <:item title="Description"><%= @forum.desc %></:item>
-  <:item title="Category"><%= @forum.category %></:item>
-  <:item title="Members"><%= @forum.members %></:item>
-</.list>
 
 <.back navigate={~p"/forums"}>Back to forums</.back>
 
 <section class="h-screen w-screen bg-slate-800 p-8">
     <h1 class="text-center font-bold text-2xl text-indigo-500"><%= @page_title %></h1>
+
+    <PageNav.display enum={[]} current_user={@current_user}/>
 
     <div class="grid justify-center md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-5 my-10">
       <!-- Card -->
@@ -36,7 +29,7 @@
     </div>
 </section>
 
-<.modal :if={@live_action == :edit} id="forum-modal" show on_cancel={JS.patch(~p"/forums/#{@forum}")}>
+<.modal :if={@live_action == :new_thread} id="forum-modal" show on_cancel={JS.patch(~p"/forums/#{@forum}")}>
   <.live_component
     module={FanCanWeb.ForumLive.FormComponent}
     id={@forum.id}
@@ -45,5 +38,17 @@
     action={@live_action}
     forum={@forum}
     patch={~p"/forums/#{@forum}"}
+  />
+</.modal>
+
+<.modal :if={@live_action == :new_thread} id="thread-modal" show on_cancel={JS.patch(~p"/forums/main/#{@forum}")}>
+  <.live_component
+    module={FanCanWeb.ForumLive.ThreadFormComponent}
+    id={@forum.id}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    forum={@forum}
+    patch={~p"/posts"}
   />
 </.modal>

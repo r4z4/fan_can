@@ -3,7 +3,8 @@ defmodule FanCanWeb.ForumLive.Page do
 
   alias FanCan.Site
   alias FanCan.Site.Forum
-
+  alias FanCanWeb.Components.PageNav
+  
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -37,5 +38,6 @@ defmodule FanCanWeb.ForumLive.Page do
   end
 
   defp page_title(:page), do: "Show Forum"
+  defp page_title(:new_thread), do: "New Thread"
   defp page_title(:edit), do: "Edit Forum"
 end

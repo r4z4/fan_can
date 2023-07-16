@@ -135,7 +135,8 @@ defmodule FanCanWeb.Router do
       # Order matters. Need this before /:id or 'main' gets interpreted as an id
       live "/forums/main", ForumLive.Main, :main
       live "/forums/main/:id", ForumLive.Page, :page
-      live "/forums/main/:id/new", ThreadLive.Main, :new
+      live "/forums/main/:id/new_thread", ForumLive.Page, :new_thread
+      # live "/forums/main/:id/new", ForumLive.ThreadFormComponent, :new
       # Main pages will be list of those items
       live "/forums/main/:id/thread/:id", PostLive.Main, :main
 

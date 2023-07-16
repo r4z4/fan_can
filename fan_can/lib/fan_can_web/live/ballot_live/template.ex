@@ -121,8 +121,22 @@ defmodule FanCanWeb.BallotLive.Template do
     Enum.member?(holds, id)
   end
 
-  def handle_event("vote_casted", %{"vote_box" => id, "district" => district, "_target" => target}, socket) do
-    IO.puts("Vote Casted")
+  def handle_event("vote_casted", %{"0" => id, "_target" => target}, socket) do
+    IO.inspect(target, label: "Target")
+    IO.puts(id)
+    {:noreply, socket}
+  end
+
+  def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do
+    IO.inspect(target, label: "Target")
+    IO.puts(id)
+    {:noreply, socket}
+  end
+
+  def handle_event("vote_casted", %{"2" => id, "_target" => target}, socket) do
+    IO.inspect(target, label: "Target")
+    IO.puts(id)
+    {:noreply, socket}
   end
 
   def handle_event("save", _vals, socket) do

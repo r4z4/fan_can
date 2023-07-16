@@ -50,9 +50,9 @@ defmodule FanCanWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="backdrop-blur-sm fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
-        class="fixed inset-0 overflow-y-auto"
+        class="fixed inset-0 overflow-y-auto border-solid"
         aria-labelledby={"#{@id}-title"}
         aria-describedby={"#{@id}-description"}
         role="dialog"
@@ -66,7 +66,7 @@ defmodule FanCanWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-800 p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-slate-800 p-14 shadow-lg ring-1 transition border-solid border-2 border-white"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -340,21 +340,17 @@ defmodule FanCanWeb.CoreComponents do
     """
   end
 
-  def input(%{type: "radio", value: value} = assigns) do
-    assigns =
-      assigns
-      |> assign_new(:checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
-      |> assign_new(:group, fn -> "heyheyhey" end)
+  def input(%{type: "radio", id: id, value: value} = assigns) do
 
     ~H"""
     <div phx-feedback-for={@name}>
       <label class="flex items-center gap-2 text-sm leading-6 text-white">
-        <input type="hidden" name={@name} value="false" />
+        <input type="hidden" name={@name} value={@value} />
         <input
           type="radio"
           id={@id}
           name={@name}
-          value={@value}
+          value={value}
           checked={@checked}
           class="rounded border-zinc-300 focus:ring-0"
           {@rest}

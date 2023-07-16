@@ -82,8 +82,9 @@
                     <div class="col-span-1">
                     <.input
                       field={@ballot_form[{ballot_race.district}]}
+                      id={candidate.id}
                       type="radio"
-                      name={ballot_race.district}
+                      name={Enum.find_index(@ballot_races, fn x -> x == ballot_race end)}
                       phx-change={"vote_casted"}
                       value={candidate.id}
                       checked={voted_for?(candidate.id, assigns.vote_list)}

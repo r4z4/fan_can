@@ -3,6 +3,7 @@ defmodule FanCanWeb.ForumLive.Index do
 
   alias FanCan.Site
   alias FanCan.Site.Forum
+  alias FanCan.Site.Forum.Thread
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserHolds
 
@@ -50,6 +51,12 @@ defmodule FanCanWeb.ForumLive.Index do
     socket
     |> assign(:page_title, "New Forum")
     |> assign(:forum, %Forum{})
+  end
+
+  defp apply_action(socket, :new_thread, _params) do
+    socket
+    |> assign(:page_title, "New Thread")
+    |> assign(:thread, %Thread{})
   end
 
   defp apply_action(socket, :index, _params) do
