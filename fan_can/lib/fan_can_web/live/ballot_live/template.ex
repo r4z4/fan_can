@@ -121,23 +121,75 @@ defmodule FanCanWeb.BallotLive.Template do
     Enum.member?(holds, id)
   end
 
-  def handle_event("vote_casted", %{"0" => id, "_target" => target}, socket) do
-    IO.inspect(target, label: "Target")
-    IO.puts(id)
-    {:noreply, socket}
+  def add_or_replace(attrs, idx, socket) do
+    {race, _} = List.pop_at(socket.assigns.ballot_races, idx)
+    opponents =       
+      Enum.filter(race.candidates, fn(c) -> if c.id != attrs.candidate_id, do: c.id, else: nil end)
+    IO.inspect(opponents, label: "Opponent")
+    voted_for = 
+      Enum.map(opponents, fn o -> o.id end)
+      # Filter return a list, find return first elem found or nil if nothing which is better here
+      |> Enum.map(fn id -> Enum.find(socket.assigns.vote_list, fn v -> v = id end) end)
+    IO.inspect(voted_for, label: "Voted for")
+    if voted_for do
+      case Election.unregister_vote(voted_for) do # Remove Previous Vote
+        {:ok, struct} -> 
+          case Election.register_vote(attrs) do
+            {:ok, holds} -> 
+              IO.inspect(holds, label: "Holds: ")
+              {:noreply,
+                socket
+                |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
+
+            {:error, %Ecto.Changeset{} = changeset} ->
+              IO.inspect(changeset, label: "Holds Error: ")
+              {:noreply, 
+                socket
+                |> put_flash(:error, "Error adding alert for #{attrs.candidate_id}")}
+          end
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          IO.inspect(changeset, label: "Holds Error: ")
+          {:noreply, socket}
+      end
+    else
+      case Election.register_vote(attrs) do
+        {:ok, holds} -> 
+          IO.inspect(holds, label: "Holds: ")
+          {:noreply,
+            socket
+            |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          IO.inspect(changeset, label: "Holds Error: ")
+          {:noreply, 
+            socket
+            |> put_flash(:error, "Error adding alert for #{attrs.candidate_id}")}
+      end
+    end
   end
 
-  def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do
-    IO.inspect(target, label: "Target")
-    IO.puts(id)
-    {:noreply, socket}
+  def handle_event("vote_casted", params, socket) do
+    IO.inspect(params, label: "Params")
+    idx = List.to_string(params["_target"])
+    {int_val, ""} = Integer.parse(idx)
+    id = params[idx]
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, candidate_id: id}
+    # IO.inspect(target, label: "Target")
+    add_or_replace(attrs, int_val, socket)
   end
 
-  def handle_event("vote_casted", %{"2" => id, "_target" => target}, socket) do
-    IO.inspect(target, label: "Target")
-    IO.puts(id)
-    {:noreply, socket}
-  end
+  # def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do
+  #   IO.inspect(target, label: "Target")
+  #   IO.puts(id)
+  #   {:noreply, socket}
+  # end
+
+  # def handle_event("vote_casted", %{"2" => id, "_target" => target}, socket) do
+  #   IO.inspect(target, label: "Target")
+  #   IO.puts(id)
+  #   {:noreply, socket}
+  # end
 
   def handle_event("save", _vals, socket) do
     IO.puts("Handler")

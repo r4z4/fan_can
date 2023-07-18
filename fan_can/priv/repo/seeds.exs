@@ -132,7 +132,7 @@ Repo.insert_all(Candidate, [
       %{id: "55f7e3e6-883a-4c4a-b04c-b69bcc741273", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: nil, l_name: "Shelton", f_name: "Alicia",
       party: :Democrat, cpvi: "D+13", education: ["Xavier University", "Bellevus University"], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       # NE State Senate Contenders
-      %{id: "7460e15c-64ab-42d1-b536-8116e87acfbe", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 2, l_name: "Slattery", f_name: "Sarah",
+      %{id: "049acd0a-427b-4096-8cd5-1ce59845649e", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 2, l_name: "Slattery", f_name: "Sarah",
       party: :Democrat, cpvi: "EVEN", education: [], birth_state: :NE, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
       %{id: "13bf326e-8d5b-4ddf-9de7-49508481a57b", prefix: nil, suffix: nil, incumbent_since: nil, dob: nil, attachments: nil, district: 4, l_name: "Maxwell-Ostdiek", f_name: "Cindy",
       party: :Independent, cpvi: "EVEN", education: [], birth_state: :IA, state: :NE, seat: nil, end_date: nil, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()},
@@ -308,7 +308,7 @@ Repo.insert_all(Election, [
 Repo.insert_all(Race, [
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "5ab8d863-9eca-4ff3-a654-9dfcdab59f7c", district: 6, candidates: ["5ab8d863-9eca-4ff3-a654-9dfcdab59f7c", "09f131ac-818c-4058-b9ce-dc3b91794416"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 53.3, elect: "f56539b0-e259-498a-afd3-c2c4da769772", district: 4, candidates: ["f56539b0-e259-498a-afd3-c2c4da769772", "13bf326e-8d5b-4ddf-9de7-49508481a57b"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 57.2, elect: "7460e15c-64ab-42d1-b536-8116e82acfbe", district: 2, candidates: ["7460e15c-64ab-42d1-b536-8116e82acfbe", "7460e15c-64ab-42d1-b536-8116e87acfbe"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 57.2, elect: "7460e15c-64ab-42d1-b536-8116e82acfbe", district: 2, candidates: ["7460e15c-64ab-42d1-b536-8116e82acfbe", "049acd0a-427b-4096-8cd5-1ce59845649e"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", district: 10, candidates: ["5ab8d863-9eca-4ff3-a654-9dfcdab99f7c", "0423af0e-4b1e-43d4-9a47-559ce17cdd4f"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Starting here we have winner candidate vs. one of the made up contenders
       %{id: "5d99c305-7d3e-4279-acc6-e90764139bc2", seat: :State_Senator, election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", elect_percentage: 54.3, elect: "7e8750c4-2872-4dad-a793-7a6915d8ef75", district: 8, candidates: ["7e8750c4-2872-4dad-a793-7a6915d8ef75", "93f33178-116a-48eb-9033-e599e2525994"], attachments: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
@@ -449,9 +449,10 @@ Repo.insert_all(ElectionHolds, [
 ])
 
 Repo.insert_all(CandidateHolds, [
-      # Jim like Mike & Mirch
+      # Jim like Mike & Mirch & Sarah because WTF radio
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "0e91778f-503f-4218-a801-c8bb7ff9498b", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "0ce64757-3bf2-4779-99ca-3b5b35d59c4d", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "049acd0a-427b-4096-8cd5-1ce59845649e", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, candidate_id: "09f131ac-818c-4058-b9ce-dc3b91794416", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
       # Aaron chose 2
 ])

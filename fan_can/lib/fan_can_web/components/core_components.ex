@@ -345,7 +345,6 @@ defmodule FanCanWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <label class="flex items-center gap-2 text-sm leading-6 text-white">
-        <input type="hidden" name={@name} value={@value} />
         <input
           type="radio"
           id={@id}

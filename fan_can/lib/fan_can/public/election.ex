@@ -334,6 +334,32 @@ defmodule FanCan.Public.Election do
     end
   end
 
+  def register_vote(attrs) do
+    IO.inspect(attrs, label: "Attrs")
+    case extract_key(attrs) do
+      :candidate_id -> 
+        %CandidateHolds{}
+          |> CandidateHolds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      _ -> IO.puts("Ooooooooooooooops")
+    end
+  end
+
+  def unregister_vote(id) do
+    IO.inspect(id, label: "unregister id")
+    query =
+      from ch in CandidateHolds,
+      where: ch.candidate_id in ^id,
+      select: ch
+    candidate = FanCan.Repo.one(query)
+    IO.inspect(candidate, label: "to delete")
+    case FanCan.Repo.delete candidate do
+      {:ok, struct}       -> {:ok, struct}
+      {:error, changeset} -> IO.inspect(changeset, label: "changeset")
+    end
+  end
+
     def get_race_holds_by_token(token)
       when is_binary(token) do
     query = from u in User,
