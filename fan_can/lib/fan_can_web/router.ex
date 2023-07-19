@@ -99,6 +99,7 @@ defmodule FanCanWeb.Router do
       live "/candidates/new", CandidateLive.Index, :new
       live "/candidates/:id/edit", CandidateLive.Index, :edit
 
+      live "/candidates/main", CandidateLive.Main, :main
       live "/candidates/:id", CandidateLive.Show, :show
       live "/candidates/:id/show/edit", CandidateLive.Show, :edit
 

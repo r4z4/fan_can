@@ -5,6 +5,7 @@ defmodule FanCanWeb.BallotLive.Template do
   alias FanCan.Public.Election.BallotRace
   alias FanCan.Accounts.UserHolds
   alias FanCan.Accounts
+  alias FanCanWeb.Components.{BallotEntry, BallotEntryForm}
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -171,12 +172,14 @@ defmodule FanCanWeb.BallotLive.Template do
 
   def handle_event("vote_casted", params, socket) do
     IO.inspect(params, label: "Params")
-    idx = List.to_string(params["_target"])
-    {int_val, ""} = Integer.parse(idx)
-    id = params[idx]
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, candidate_id: id}
-    # IO.inspect(target, label: "Target")
-    add_or_replace(attrs, int_val, socket)
+    # idx = List.to_string(params["_target"])
+    # {int_val, ""} = Integer.parse(idx)
+    # id = params[idx]
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, candidate_id: params["id"]}
+    IO.inspect(attrs, label: "Vote Casted Attrs")
+    IO.inspect(socket.assigns.ballot_form, label: "Assigns")
+    {:noreply, socket}
+    # add_or_replace(attrs, int_val, socket)
   end
 
   # def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do

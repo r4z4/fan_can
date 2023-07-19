@@ -70,38 +70,7 @@
     <div class="grid justify-center md:grid-cols-4 lg:grid-cols-6 gap-3 lg:gap-5 my-10">
       <!-- Card -->
         <div :for={ballot_race <- @ballot_races} class="bg-slate-700 text-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
-            <!--<img class="h-56 lg:h-60 w-full object-cover" src={ballot_race.image_path} alt="" />-->
-            <div class="p-2">
-                <h3 class="font-semibold text-lg leading-6 text-white my-2">
-                    <%= ballot_race.seat %> <span class="ml-3 text-purple" :if={ballot_race.district}>||  District: <%= ballot_race.district %></span>
-                </h3>
-                <ul :for={candidate <- ballot_race.candidates} class="">
-                  <li class="grid grid-cols-6 gap-0">
-                    <div class="col-span-5"><%= candidate.l_name %>, <%= candidate.f_name %><span class="text-xs text-orange" :if={candidate.incumbent_since}>(<%= String.slice(Date.to_string(candidate.incumbent_since), 0..3) %>)</span>
-                    <span class={party_class(candidate.party)} :if={ballot_race.district}>|| <%= party_name(candidate.party) %></span></div>
-                    <div class="col-span-1">
-                    <.input
-                      field={@ballot_form[{ballot_race.district}]}
-                      id={candidate.id}
-                      type="radio"
-                      name={Enum.find_index(@ballot_races, fn x -> x == ballot_race end)}
-                      phx-change={"vote_casted"}
-                      value={candidate.id}
-                      checked={voted_for?(candidate.id, assigns.vote_list)}
-                      label="Vote"
-                      options={[]}
-                    />
-                    </div>
-                  </li>
-                </ul>
-                <a href={~p"/races/inspect/#{ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
-                <div class="inline w-auto bg-slate-700 rounded-md">
-                  <button phx-click="star_click" phx-value-id={ballot_race.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-                  <button phx-click="share_click" phx-value-id={ballot_race.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
-                  <button phx-click="bell_click" phx-value-id={ballot_race.id}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-                  <button phx-click="bookmark_click" phx-value-id={ballot_race.id} phx-value-desc={ballot_race.desc}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
-                </div>
-            </div>
+          <BallotEntry.display ballot_race={ballot_race} vote_list={@vote_list}/>
         </div>
     </div>
   </.simple_form>

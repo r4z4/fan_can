@@ -81,11 +81,11 @@ defmodule FanCanWeb.HomeLive do
         <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
       </.header>
 
-      <div class="mx-auto text-white">
+      <div class="grid justify-center mx-auto text-center md:grid-cols-3 lg:grid-cols-3 gap-10 lg:gap-10 my-10 text-white">
 
         <div>
           <.link
-            href={~p"/candidates"}
+            href={~p"/candidates/main"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
             <Heroicons.LiveView.icon name="users" type="outline" class="h-10 w-10 text-emerald" />
@@ -115,7 +115,13 @@ defmodule FanCanWeb.HomeLive do
 
       </div>
 
-        <div class="grid justify-center md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
+      <div class="relative flex py-5 items-center">
+        <div class="flex-grow border-t border-gray-400"></div>
+        <span class="flex-shrink mx-4 text-gray-400">Content</span>
+        <div class="flex-grow border-t border-gray-400"></div>
+      </div>
+
+        <div class="grid justify-center md:grid-cols-3 lg:grid-cols-3 gap-10 lg:gap-10">
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
             <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
               <div class="text-white">
