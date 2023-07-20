@@ -122,24 +122,26 @@ defmodule FanCanWeb.BallotLive.Template do
     Enum.member?(holds, id)
   end
 
-  def add_or_replace(attrs, idx, socket) do
-    {race, _} = List.pop_at(socket.assigns.ballot_races, idx)
-    opponents =       
-      Enum.filter(race.candidates, fn(c) -> if c.id != attrs.candidate_id, do: c.id, else: nil end)
-    IO.inspect(opponents, label: "Opponent")
-    voted_for = 
-      Enum.map(opponents, fn o -> o.id end)
+  def add_or_replace(attrs, candidates, socket) do
+    # race = Enum.find(socket.assigns.ballot_races, fn br -> br = district end)
+    # opponents =       
+    #   Enum.filter(race.candidates, fn(c) -> if c.id != attrs.candidate_id, do: c.id, else: nil end)
+    # IO.inspect(opponents, label: "Opponent")
+    has_voted = 
+    #   Enum.map(opponents, fn o -> o.id end)
       # Filter return a list, find return first elem found or nil if nothing which is better here
+      candidates
       |> Enum.map(fn id -> Enum.find(socket.assigns.vote_list, fn v -> v = id end) end)
-    IO.inspect(voted_for, label: "Voted for")
-    if voted_for do
-      case Election.unregister_vote(voted_for) do # Remove Previous Vote
+    IO.inspect(has_voted, label: "Has Voted")
+    if has_voted do
+      case Election.unregister_vote(has_voted) do # Remove Previous Vote
         {:ok, struct} -> 
           case Election.register_vote(attrs) do
             {:ok, holds} -> 
               IO.inspect(holds, label: "Holds: ")
               {:noreply,
                 socket
+                |> assign(:vote_list, [attrs.candidate_id | List.delete(socket.assigns.vote_list, has_voted)])
                 |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
 
             {:error, %Ecto.Changeset{} = changeset} ->
@@ -159,6 +161,7 @@ defmodule FanCanWeb.BallotLive.Template do
           IO.inspect(holds, label: "Holds: ")
           {:noreply,
             socket
+            |> assign(:vote_list, [attrs.candidate_id | socket.assigns.vote_list])
             |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
@@ -178,8 +181,10 @@ defmodule FanCanWeb.BallotLive.Template do
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, candidate_id: params["id"]}
     IO.inspect(attrs, label: "Vote Casted Attrs")
     IO.inspect(socket.assigns.ballot_form, label: "Assigns")
-    {:noreply, socket}
-    # add_or_replace(attrs, int_val, socket)
+    {district, ""} = Integer.parse(params["value"])
+    IO.inspect(district, label: "Vote Casted District")
+    race = Enum.find(socket.assigns.ballot_races, fn x -> x.district == district end)
+    add_or_replace(attrs, race.candidates, socket)
   end
 
   # def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do
