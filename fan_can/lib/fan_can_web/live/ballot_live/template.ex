@@ -122,16 +122,14 @@ defmodule FanCanWeb.BallotLive.Template do
     Enum.member?(holds, id)
   end
 
-  def add_or_replace(attrs, candidates, socket) do
+  def add_or_replace(attrs, candidate_ids, socket) do
+    IO.inspect(socket.assigns.vote_list, label: "Vote List")
+    IO.inspect(candidate_ids, label: "candidate_ids")
     # race = Enum.find(socket.assigns.ballot_races, fn br -> br = district end)
     # opponents =       
     #   Enum.filter(race.candidates, fn(c) -> if c.id != attrs.candidate_id, do: c.id, else: nil end)
     # IO.inspect(opponents, label: "Opponent")
-    has_voted = 
-    #   Enum.map(opponents, fn o -> o.id end)
-      # Filter return a list, find return first elem found or nil if nothing which is better here
-      candidates
-      |> Enum.map(fn id -> Enum.find(socket.assigns.vote_list, fn v -> v = id end) end)
+    has_voted = Enum.find(socket.assigns.vote_list, fn v -> v in candidate_ids end)
     IO.inspect(has_voted, label: "Has Voted")
     if has_voted do
       case Election.unregister_vote(has_voted) do # Remove Previous Vote
@@ -184,7 +182,8 @@ defmodule FanCanWeb.BallotLive.Template do
     {district, ""} = Integer.parse(params["value"])
     IO.inspect(district, label: "Vote Casted District")
     race = Enum.find(socket.assigns.ballot_races, fn x -> x.district == district end)
-    add_or_replace(attrs, race.candidates, socket)
+    candidate_ids = Enum.map(race.candidates, fn x -> x.id end)
+    add_or_replace(attrs, candidate_ids, socket)
   end
 
   # def handle_event("vote_casted", %{"1" => id, "_target" => target}, socket) do

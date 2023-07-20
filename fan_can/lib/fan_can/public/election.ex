@@ -350,7 +350,8 @@ defmodule FanCan.Public.Election do
     IO.inspect(id, label: "unregister id")
     query =
       from ch in CandidateHolds,
-      where: ch.candidate_id in ^id,
+      where: ch.candidate_id == ^id,
+      # & type = :vote
       select: ch
     candidate = FanCan.Repo.one(query)
     IO.inspect(candidate, label: "to delete")

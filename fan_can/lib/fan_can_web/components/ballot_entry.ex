@@ -70,21 +70,24 @@ defmodule FanCanWeb.Components.BallotEntry do
             <span class="ml-3 text-purple" :if={@ballot_race.district}>District: <%= @ballot_race.district %></span>
           </h3>
           <Heroicons.LiveView.icon name="arrow-path-rounded-square" type="outline" class="h-5 w-5 text-yellow-300 inline" />
-          <ul :for={candidate <- @ballot_race.candidates} class="">
+          <ul :for={candidate <- @ballot_race.candidates} class="mb-2">
           <button
             phx-click="vote_casted" 
             phx-value-id={candidate.id}
             value={@ballot_race.district}
             class="inline-block rounded border-2 border-success w-3/3 px-2 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-success transition duration-150 ease-in-out hover:border-success-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-success-600 focus:border-success-600 focus:text-success-600 focus:outline-none focus:ring-0 active:border-success-700 active:text-success-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
             disabled={voted_for?(candidate.id, assigns.vote_list)}
-            ><div class="grid grid-cols-3 gap-0"><%= candidate.l_name %>, <%= candidate.f_name %><span class="text-xs text-orange" :if={candidate.incumbent_since}>(<%= String.slice(Date.to_string(candidate.incumbent_since), 0..3) %>)</span><div class="inline"><span class={party_class(candidate.party)} :if={@ballot_race.district}>|| <%= party_name(candidate.party) %></span></div><div class="inline"><img src={if voted_for?(candidate.id, assigns.vote_list), do: "/images/green_check_circle.svg", else: "/images/empty_circle.svg"} class="inline max-h-4" /></div></div></button>
+            ><div class="grid grid-cols-3 gap-0"><div><%= candidate.l_name %>, <%= candidate.f_name %><span class="text-xs text-orange" :if={candidate.incumbent_since}>(<%= String.slice(Date.to_string(candidate.incumbent_since), 0..3) %>)</span></div><div class="inline"><span class={party_class(candidate.party)} :if={@ballot_race.district}>|| <%= party_name(candidate.party) %></span></div><div class="inline"><img src={if voted_for?(candidate.id, assigns.vote_list), do: "/images/green_check_circle.svg", else: "/images/empty_circle.svg"} class="inline max-h-4" /></div></div></button>
           </ul>
-          <a href={"/races/inspect/#{@ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
-          <div class="inline w-auto bg-slate-700 rounded-md">
-            <button phx-click="star_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-            <button phx-click="share_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
-            <button phx-click="bell_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-            <button phx-click="bookmark_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
+
+          <div class="mt-2">
+            <a href={"/races/inspect/#{@ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
+            <div class="inline w-auto bg-slate-700 rounded-md">
+              <button phx-click="star_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+              <button phx-click="share_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
+              <button phx-click="bell_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+              <button phx-click="bookmark_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
+            </div>
           </div>
       </div>
     """
