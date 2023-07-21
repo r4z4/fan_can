@@ -19,6 +19,8 @@ defmodule FanCan.Site.Forum.Post do
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:title, :author, :content, :upvotes, :downvotes, :thread_id])
-    |> validate_required([:title, :author, :content, :upvotes, :downvotes, :thread_id])
+    |> validate_required([:title, :author, :content, :thread_id])
+    |> validate_length(:title, max: 150)
+    |> validate_length(:content, max: 500)
   end
 end

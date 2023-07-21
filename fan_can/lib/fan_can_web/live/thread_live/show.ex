@@ -26,8 +26,10 @@ defmodule FanCanWeb.ThreadLive.Show do
      |> assign(:posts, Forum.get_thread_posts(id))}
   end
 
+  @impl true
   def handle_event("upvote_click", %{"id" => id}, socket) do
     post = Forum.get_post!(id)
+    IO.inspect(post, label: "post")
     Forum.update_post(post, %{upvotes: post.upvotes + 1})
     # Add pubsub msg
     upvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} upvoted your post :)"}
@@ -36,6 +38,7 @@ defmodule FanCanWeb.ThreadLive.Show do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_event("downvote_click", %{"id" => id}, socket) do
     post = Forum.get_post!(id)
     Forum.update_post(post, %{downvotes: post.downvotes + 1})

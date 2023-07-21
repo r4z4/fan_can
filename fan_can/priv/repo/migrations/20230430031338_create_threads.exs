@@ -6,7 +6,7 @@ defmodule FanCan.Repo.Migrations.CreateThreads do
       add :id, :binary_id, primary_key: true
       add :title, :string
       add :creator, :binary_id
-      add :content, :string
+      add :content, :text
       add :likes, :integer, null: false, default: 0
       add :shares, :integer, null: false, default: 0
       add :forum_id, references(:forums, type: :binary_id, on_delete: :nothing)
@@ -14,6 +14,6 @@ defmodule FanCan.Repo.Migrations.CreateThreads do
       timestamps()
     end
 
-    create index(:threads, [:forum_id])
+    create index(:threads, [:id])
   end
 end

@@ -18,7 +18,8 @@ defmodule FanCan.Site.Forum.Thread do
   @doc false
   def changeset(thread, attrs) do
     thread
-    |> cast(attrs, [:title, :creator, :content, :likes, :shares])
-    |> validate_required([:title, :creator, :content, :likes, :shares])
+    |> cast(attrs, [:title, :creator, :content, :forum_id, :likes, :shares])
+    |> validate_required([:title, :creator, :content, :forum_id])
+    |> validate_length(:content, max: 500)
   end
 end

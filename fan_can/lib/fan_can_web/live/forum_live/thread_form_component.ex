@@ -22,7 +22,8 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
       >
         <.input field={@form[:id]} type="hidden" />
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:creator]} type="text" label="Author" disabled />
+        <.input field={@form[:forum_id]} value={@thread.forum_id} type="text" label="Forum" readonly type="hidden" />
+        <.input field={@form[:creator]} value={@thread.creator} type="text" label="Author" readonly />
         <.input field={@form[:content]} type="textarea" label="Content" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Thread</.button>
@@ -34,6 +35,7 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
 
   @impl true
   def update(%{forum: forum, current_user: current_user} = assigns, socket) do
+    IO.puts("Update")
     thread = %Thread{forum_id: forum.id, creator: current_user.id}
     changeset = Forum.change_thread(thread)
     {:ok,
@@ -45,6 +47,7 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
 
   @impl true
   def handle_event("validate", %{"thread" => thread_params}, socket) do
+    IO.inspect(thread_params, label: "Thread Params Validate")
     changeset =
       socket.assigns.thread
       |> Forum.change_thread(thread_params)
@@ -73,6 +76,7 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
   end
 
   defp save_thread(socket, :new_thread, thread_params) do
+    IO.inspect(thread_params, label: "Thread Params")
     case Forum.create_thread(thread_params) do
       {:ok, thread} ->
         notify_parent({:saved, thread})
@@ -80,9 +84,11 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Thread created successfully")
-         |> push_patch(to: ~p"/threads/#{socket.assigns.thread.id}")}
+         |> push_patch(to: ~p"/forums/main/#{thread.forum_id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.puts("Error")
+        IO.inspect(changeset, label: "Changeset")
         {:noreply, assign_form(socket, changeset)}
     end
   end
@@ -95,8 +101,8 @@ defmodule FanCanWeb.ForumLive.ThreadFormComponent do
     send(self(), {__MODULE__, msg})
     with {_, thread = %Thread{}} <- msg do
       # Add pubsub msg
-      new_thread_thread_message = %{type: :new_thread, string: "New thread added to thread #{thread.thread_id} :)"}
-      FanCanWeb.Endpoint.broadcast!("threads_" <> thread.thread_id, "new_message", new_thread_thread_message)
+      new_thread_thread_message = %{type: :new_thread, string: "New thread added to thread #{thread.id} :)"}
+      FanCanWeb.Endpoint.broadcast!("threads_" <> thread.id, "new_message", new_thread_thread_message)
     end
   end
 end

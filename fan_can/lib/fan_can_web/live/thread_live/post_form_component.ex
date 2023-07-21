@@ -10,7 +10,7 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage post records in your database.</:subtitle>
+        <:subtitle>Let User @Whatever Know What You Think :)</:subtitle>
       </.header>
 
       <.simple_form
@@ -22,10 +22,8 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
       >
         <.input field={@form[:thread_id]} type="hidden" />
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:author]} type="text" label="Author" disabled />
+        <.input field={@form[:author]} type="text" label="Author" readonly />
         <.input field={@form[:content]} type="textarea" label="Content" />
-        <.input field={@form[:upvotes]} type="number" label="Upvotes" />
-        <.input field={@form[:downvotes]} type="number" label="Downvotes" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Post</.button>
         </:actions>
@@ -82,7 +80,7 @@ defmodule FanCanWeb.ThreadLive.PostFormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Post created successfully")
-         |> push_patch(to: ~p"/threads/#{socket.assigns.thread.id}")}
+         |> push_patch(to: ~p"/threads/#{post.thread_id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}

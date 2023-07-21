@@ -21,25 +21,16 @@
                     <a href={~p"/threads/#{thread.id}"}><%= thread.title %></a>
                 </h3>
                 <div><p class="text-xs"><%= thread.creator %></p></div>
-                <button phx-click="like_click"><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-black" /></button>
-                <button phx-click="share_click"><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-black" /></button>
+                <button :if={false} phx-click="like_click" phx-value-id={thread.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-black" /></button>
+                <button :if={true} phx-click="like_click" phx-value-id={thread.id} disabled><Heroicons.LiveView.icon name="star" type="solid" class="h-5 w-5 text-yellow" /></button>
+
+                <button :if={false} phx-click="share_click" phx-value-id={thread.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-black" /></button>
+                <button :if={true} phx-click="share_click" phx-value-id={thread.id}><Heroicons.LiveView.icon name="share" type="solid" class="h-5 w-5 text-blue" /></button>
                 <div><p><%= thread.content %></p></div>
             </div>
         </div>
     </div>
 </section>
-
-<.modal :if={@live_action == :new_thread} id="forum-modal" show on_cancel={JS.patch(~p"/forums/#{@forum}")}>
-  <.live_component
-    module={FanCanWeb.ForumLive.FormComponent}
-    id={@forum.id}
-    title={@page_title}
-    user={@current_user}
-    action={@live_action}
-    forum={@forum}
-    patch={~p"/forums/#{@forum}"}
-  />
-</.modal>
 
 <.modal :if={@live_action == :new_thread} id="thread-modal" show on_cancel={JS.patch(~p"/forums/main/#{@forum}")}>
   <.live_component
@@ -49,6 +40,6 @@
     current_user={@current_user}
     action={@live_action}
     forum={@forum}
-    patch={~p"/posts"}
+    patch={~p"/forums/main/#{@forum}"}
   />
 </.modal>

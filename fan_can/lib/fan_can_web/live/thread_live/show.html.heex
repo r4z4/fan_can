@@ -33,9 +33,12 @@
         <div :for={post <- @posts} class="bg-slate-700 rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
             <div class="p-1 text-white">
                 <p class="font-bold"><%= post.title %></p>
-                <div><p class="text-xs"><%= post.author %></p></div>
-                <button phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up" type="outline" class="h-5 w-5 text-black" /></button>
-                <button phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down" type="outline" class="h-5 w-5 text-black" /></button>
+                <div><p class="text-xs mb-2"><%= post.author %></p></div>
+                <button :if={true} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="solid" class="h-5 w-5 text-green" /></button>
+                <button :if={false} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="outline" class="h-5 w-5 text-black" /></button>
+
+                <button :if={true} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="solid" class="h-5 w-5 text-red" /></button>
+                <button :if={false} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="outline" class="h-5 w-5 text-black" /></button>
                 <div><p><%= post.content %></p></div>
             </div>
         </div>

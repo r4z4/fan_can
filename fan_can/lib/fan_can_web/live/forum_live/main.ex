@@ -38,13 +38,13 @@ defmodule FanCanWeb.ForumLive.Main do
     |> assign(:forum, nil)
   end
 
-  defp get_forum_image(title) do
+  defp get_forum_icon(title) do
     case title do
-      "The Nebraska Unicameral" -> "https://upload.wikimedia.org/wikipedia/commons/f/f0/Thinking_%2850377%29_-_The_Noun_Project.svg"
-      "General Forum" -> "https://upload.wikimedia.org/wikipedia/commons/f/f0/Thinking_%2850377%29_-_The_Noun_Project.svg"
-      "User's Forum" -> "https://upload.wikimedia.org/wikipedia/commons/f/f4/User_Avatar_2.png"
-      "2024 Election" -> "https://upload.wikimedia.org/wikipedia/commons/8/89/Republican_v_Democrat_Gallup_08.svg"
-      "Issues" -> "https://upload.wikimedia.org/wikipedia/commons/3/35/Adobe_Help_CS5_icon.png"
+      "The Nebraska Unicameral" -> "building-library"
+      "General Forum" -> "chat-bubble-left-ellipsis"
+      "User's Forum" -> "users"
+      "2024 Election" -> "check-circle"
+      "Issues" -> "information-circle"
     end
   end
 
