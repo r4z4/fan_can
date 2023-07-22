@@ -5,7 +5,7 @@ defmodule FanCanWeb.UserAuth do
   import Phoenix.Controller
 
   alias FanCan.Accounts
-  alias FanCan.Core.TopicHelpers
+  alias FanCan.Core.{TopicHelpers, Holds}
   alias FanCan.Accounts.UserHolds
   alias FanCan.Public.Election.RaceHolds
 

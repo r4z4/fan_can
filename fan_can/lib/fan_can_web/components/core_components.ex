@@ -518,7 +518,7 @@ defmodule FanCanWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-white"
+          class="relative divide-y divide-white/25 border-t border-white/25 text-sm leading-6 text-white"
         >
           <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-slate-400">
             <td

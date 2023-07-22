@@ -12,7 +12,7 @@
   <:item title="Title"><%= @forum.title %></:item>
   <:item title="Description"><%= @forum.desc %></:item>
   <:item title="Category"><%= @forum.category %></:item>
-  <:item title="Members"><%= @forum.members %></:item>
+  <:item title="Members"><%= Kernel.length(@forum.members) %></:item>
 </.list>
 
 <.back navigate={~p"/forums"}>Back to forums</.back>

@@ -4,8 +4,7 @@ defmodule FanCanWeb.CandidateLive.Main do
   alias FanCan.Public
   alias FanCan.Public.Candidate
   alias FanCan.Accounts
-  alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserHolds
+  alias FanCan.Core.{TopicHelpers, Holds}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,7 +13,7 @@ defmodule FanCanWeb.CandidateLive.Main do
     FanCanWeb.Endpoint.subscribe("topic")
     result = if connected?(socket), do: Public.paginate_candidates(), else: %Scrivener.Page{}
 
-    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
+    for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do
@@ -77,6 +76,6 @@ defmodule FanCanWeb.CandidateLive.Main do
     |> assign(:candidates, nil)
   end
 
-  defp page_title(:show), do: "Show Forum"
-  defp page_title(:edit), do: "Edit Forum"
+  defp page_title(:show), do: "Show Candidate"
+  defp page_title(:edit), do: "Edit Candidate"
 end

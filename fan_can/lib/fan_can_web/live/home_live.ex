@@ -4,8 +4,9 @@ defmodule FanCanWeb.HomeLive do
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserHolds
+  alias FanCan.Public.Election
   alias FanCanWeb.Components.StateSnapshot
-  alias FanCan.Core.Utils
+  alias FanCan.Core.{Utils, Holds}
 
 #   def mount(%{"token" => token}, _session, socket) do
 #     socket =
@@ -24,7 +25,7 @@ defmodule FanCanWeb.HomeLive do
     g_candidates = api_query(socket.assigns.current_user.state)
     IO.inspect(self(), label: "Self")
     IO.inspect(socket, label: "Home Socket")
-    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
+    for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       sub_and_add(follow, socket)
@@ -64,8 +65,11 @@ defmodule FanCanWeb.HomeLive do
   end
 
   defp get_races(holds) do
-    # Enum.filter(holds, fn x -> x.type == :races end)
+  IO.inspect(holds, label: "HOLDS")
     holds.race_holds
+    |> Enum.filter(fn x -> x.type == :bookmark end)
+    |> Enum.map(fn x -> x.hold_cat_id end)
+    |> Election.get_races()
   end
 
   defp get_elections(holds) do
@@ -126,7 +130,7 @@ defmodule FanCanWeb.HomeLive do
             <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
               <div class="text-white">
                 <div :for={race <- get_races(@current_user_holds)} class="">
-                  race.id
+                  <p><%= race.district %> - <%= race.seat %></p>
                 </div>
               </div>
           </div>

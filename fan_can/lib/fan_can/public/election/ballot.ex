@@ -15,7 +15,7 @@ defmodule FanCan.Public.Election.Ballot do
   @doc false
   def changeset(ballot, attrs) do
     ballot
-    |> cast(attrs, [:election_id, :columns, :attachment])
+    |> cast(attrs, [:id, :election_id, :columns, :attachment])
     |> validate_required([:election_id])
   end
 end

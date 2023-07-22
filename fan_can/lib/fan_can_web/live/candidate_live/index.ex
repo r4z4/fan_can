@@ -4,8 +4,7 @@ defmodule FanCanWeb.CandidateLive.Index do
   alias FanCan.Public
   alias FanCan.Public.Candidate
   alias FanCan.Accounts
-  alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserHolds
+  alias FanCan.Core.{TopicHelpers, Holds}
 
   # @impl Phoenix.LiveView
   @impl true
@@ -15,7 +14,7 @@ defmodule FanCanWeb.CandidateLive.Index do
     FanCanWeb.Endpoint.subscribe("topic")
     result = if connected?(socket), do: Public.paginate_candidates(), else: %Scrivener.Page{}
 
-    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
+    for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do

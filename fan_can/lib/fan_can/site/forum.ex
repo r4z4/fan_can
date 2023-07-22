@@ -20,7 +20,7 @@ defmodule FanCan.Site.Forum do
   @doc false
   def changeset(forum, attrs) do
     forum
-    |> cast(attrs, [:title, :category, :members, :moderator, :desc])
+    |> cast(attrs, [:title, :category, :members, :shares, :moderator, :desc])
     |> validate_required([:title, :category])
   end
 

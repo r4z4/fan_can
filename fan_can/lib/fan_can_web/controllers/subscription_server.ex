@@ -2,6 +2,7 @@ defmodule FanCanWeb.SubscriptionServer do
   use GenServer
   alias FanCan.Core.TopicHelpers
   alias FanCan.Accounts.UserHolds
+  alias FanCan.Core.Holds
   
   def start do
     initial_state = []
@@ -17,7 +18,7 @@ defmodule FanCanWeb.SubscriptionServer do
   end
 
   def handle_message({:subscribe_user_holds, user_holds}, state) do
-    for follow = %UserHolds{} <- user_holds do
+    for follow = %Holds{} <- user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do

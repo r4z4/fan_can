@@ -3,7 +3,7 @@ defmodule FanCanWeb.ForumLive.Page do
 
   alias FanCan.Site
   alias FanCan.Site.Forum
-  alias FanCanWeb.Components.PageNav
+  alias FanCanWeb.Components.{PageNav, CatStats}
   
   @impl true
   def mount(_params, _session, socket) do

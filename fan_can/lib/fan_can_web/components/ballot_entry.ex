@@ -24,7 +24,7 @@ defmodule FanCanWeb.Components.BallotEntry do
 
     defp comprehend(list) do
     for x <- list do
-      x.candidate_id
+      x.hold_cat_id
     end
   end
 

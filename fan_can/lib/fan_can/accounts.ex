@@ -9,6 +9,7 @@ defmodule FanCan.Accounts do
   alias FanCan.Accounts.{User, UserToken, UserNotifier, UserHolds}
   alias FanCan.Site.Forum.{Post, Thread}
   alias FanCan.Public.Election
+  alias FanCan.Core.Holds
 
   ## Database getters
 
@@ -49,13 +50,14 @@ defmodule FanCan.Accounts do
 
   def get_all_user_info(token) do
     query = from u in User,
-      join: uf in UserHolds,
-      on: uf.user_id == u.id,
+      join: h in Holds,
+      on: h.user_id == u.id,
       join: ut in UserToken,
       on: ut.user_id == u.id,
       where: ut.token == ^token,
+      where: h.hold_cat == :user,
       # FIXME Change this to confirmed_at > inserted_at
-      select: {u.username, u.email, u.inserted_at, {uf.type, uf.follow_ids}}
+      select: {u.username, u.email, u.inserted_at, {h.type, h.follow_ids}}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -76,25 +78,28 @@ defmodule FanCan.Accounts do
     Repo.one(query)
   end
 
-  def get_user_holds_by_token(token)
+  def get_holds_by_token(token, cat)
       when is_binary(token) do
     query = from u in User,
         join: ut in UserToken, on: u.id == ut.user_id,
-        join: uh in UserHolds, on: u.id == uh.user_id_init
-    query = from [u, ut, uh] in query,
+        join: h in Holds, on: u.id == h.user_id
+    query = from [u, ut, h] in query,
           where: ut.token == ^token,
-          select: uh
+          where: h.hold_cat == ^cat,
+          select: h
           # Repo.all returns a list
     Repo.all(query)
   end
 
   def get_all_holds_by_token(token) do
-    user        = get_user_holds_by_token(token)
-    race        = Election.get_race_holds_by_token(token)
-    election    = Election.get_election_holds_by_token(token)
-    candidate   = Election.get_candidate_holds_by_token(token)
+    user        = get_holds_by_token(token, :user)
+    race        = get_holds_by_token(token, :race)
+    election    = get_holds_by_token(token, :election)
+    candidate   = get_holds_by_token(token, :candidate)
+    post        = get_holds_by_token(token, :post)
+    thread      = get_holds_by_token(token, :thread)
     
-    %{:user_holds => user, :race_holds => race, :election_holds => election, :candidate_holds => candidate}
+    %{:user_holds => user, :race_holds => race, :election_holds => election, :candidate_holds => candidate, :post_holds => post, :thread_holds => thread}
   end
 
   def get_user_thread_ids_by_token(token)

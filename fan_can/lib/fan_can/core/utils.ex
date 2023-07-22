@@ -45,7 +45,11 @@ defmodule FanCan.Core.Utils do
     # Event = Can have many
 
     def hold_types do
-        [:follow, :star, :bookmark, :alert, :vote]
+        [:follow, :star, :bookmark, :alert, :vote, :like, :share, :upvote, :downvote]
+    end
+
+    def hold_cats do
+        [:candidate, :user, :election, :forum, :thread, :post, :race]
     end
 
     def event_types do

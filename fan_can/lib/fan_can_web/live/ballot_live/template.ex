@@ -25,7 +25,7 @@ defmodule FanCanWeb.BallotLive.Template do
 
   defp comprehend(list) do
     for x <- list do
-      x.candidate_id
+      x.hold_cat_id
     end
   end
 
@@ -83,7 +83,7 @@ defmodule FanCanWeb.BallotLive.Template do
   end
 
   def handle_event("bell_click", %{"id" => id}, socket) do
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, race_id: id}
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, hold_cat: :race, hold_cat_id: id}
       # FIXME: Move to RegisterHandlers
       case Election.register_alert(attrs) do
         {:ok, holds} -> 
@@ -101,7 +101,7 @@ defmodule FanCanWeb.BallotLive.Template do
   end
 
   def handle_event("bookmark_click", %{"id" => id, "desc" => desc}, socket) do
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, race_id: id}
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, hold_cat: :race, hold_cat_id: id}
       # FIXME: Move to RegisterHandlers
       case Election.register_bookmark(attrs) do
         {:ok, holds} -> 
@@ -132,21 +132,21 @@ defmodule FanCanWeb.BallotLive.Template do
     has_voted = Enum.find(socket.assigns.vote_list, fn v -> v in candidate_ids end)
     IO.inspect(has_voted, label: "Has Voted")
     if has_voted do
-      case Election.unregister_vote(has_voted) do # Remove Previous Vote
+      case Election.unregister_vote(has_voted, :candidate) do # Remove Previous Vote
         {:ok, struct} -> 
           case Election.register_vote(attrs) do
             {:ok, holds} -> 
               IO.inspect(holds, label: "Holds: ")
               {:noreply,
                 socket
-                |> assign(:vote_list, [attrs.candidate_id | List.delete(socket.assigns.vote_list, has_voted)])
-                |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
+                |> assign(:vote_list, [attrs.hold_cat_id | List.delete(socket.assigns.vote_list, has_voted)])
+                |> put_flash(:info, "Successfully voted for: #{attrs.hold_cat_id}")}
 
             {:error, %Ecto.Changeset{} = changeset} ->
               IO.inspect(changeset, label: "Holds Error: ")
               {:noreply, 
                 socket
-                |> put_flash(:error, "Error adding alert for #{attrs.candidate_id}")}
+                |> put_flash(:error, "Error adding alert for #{attrs.hold_cat_id}")}
           end
 
         {:error, %Ecto.Changeset{} = changeset} ->
@@ -159,14 +159,14 @@ defmodule FanCanWeb.BallotLive.Template do
           IO.inspect(holds, label: "Holds: ")
           {:noreply,
             socket
-            |> assign(:vote_list, [attrs.candidate_id | socket.assigns.vote_list])
-            |> put_flash(:info, "Successfully voted for: #{attrs.candidate_id}")}
+            |> assign(:vote_list, [attrs.hold_cat_id | socket.assigns.vote_list])
+            |> put_flash(:info, "Successfully voted for: #{attrs.hold_cat_id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           IO.inspect(changeset, label: "Holds Error: ")
           {:noreply, 
             socket
-            |> put_flash(:error, "Error adding alert for #{attrs.candidate_id}")}
+            |> put_flash(:error, "Error adding alert for #{attrs.hold_cat_id}")}
       end
     end
   end
@@ -176,9 +176,10 @@ defmodule FanCanWeb.BallotLive.Template do
     # idx = List.to_string(params["_target"])
     # {int_val, ""} = Integer.parse(idx)
     # id = params[idx]
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, candidate_id: params["id"]}
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, hold_cat: :candidate, hold_cat_id: params["id"]}
     IO.inspect(attrs, label: "Vote Casted Attrs")
     IO.inspect(socket.assigns.ballot_form, label: "Assigns")
+    # Governor race has no distrcit. How we handling that?
     {district, ""} = Integer.parse(params["value"])
     IO.inspect(district, label: "Vote Casted District")
     race = Enum.find(socket.assigns.ballot_races, fn x -> x.district == district end)

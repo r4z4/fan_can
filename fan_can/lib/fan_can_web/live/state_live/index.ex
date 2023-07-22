@@ -3,12 +3,11 @@ defmodule FanCanWeb.StateLive.Index do
 
   alias FanCan.Public
   alias FanCan.Public.State
-  alias FanCan.Core.TopicHelpers
-  alias FanCan.Accounts.UserHolds
+  alias FanCan.Core.{TopicHelpers, Holds}
 
   @impl true
   def mount(_params, _session, socket) do
-    for follow = %UserHolds{} <- socket.assigns.current_user_holds do
+    for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do

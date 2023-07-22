@@ -25,6 +25,7 @@ defmodule FanCan.Public.Election do
   alias FanCan.Public.Election.Ballot
   alias FanCan.Public.Election  
   alias FanCan.Public.Candidate  
+  alias FanCan.Core.Holds
   alias FanCan.Accounts.{UserHolds, User, UserToken}
   alias FanCan.Public.Election.{RaceHolds, ElectionHolds, CandidateHolds}
   import Ecto.Query, warn: false
@@ -292,20 +293,20 @@ defmodule FanCan.Public.Election do
   """
   def register_alert(attrs) do
     IO.inspect(attrs, label: "Attrs")
-    case extract_key(attrs) do
-      :race_id -> 
-        %RaceHolds{}
-          |> RaceHolds.changeset(attrs)
+    case Map.fetch(attrs, :hold_cat) do
+      :race -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
-      :election_id -> 
-        %ElectionHolds{}
-          |> ElectionHolds.changeset(attrs)
+      :election -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
-      :user_id_recv -> 
-        %UserHolds{}
-        |> UserHolds.changeset(attrs)
+      :user -> 
+        %Holds{}
+        |> Holds.changeset(attrs)
         |> Repo.insert(returning: true)
 
       _ -> IO.puts("Ooooooooooooooops")
@@ -314,20 +315,20 @@ defmodule FanCan.Public.Election do
 
   def register_bookmark(attrs) do
     IO.inspect(attrs, label: "Attrs")
-    case extract_key(attrs) do
-      :race_id -> 
-        %RaceHolds{}
-          |> RaceHolds.changeset(attrs)
+    case Map.fetch(attrs, :hold_cat) do
+      {:ok, :race} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
-      :election_id -> 
-        %ElectionHolds{}
-          |> ElectionHolds.changeset(attrs)
+      {:ok, :election} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
       # Can you bookmark a user? Probably not
-      :user_id_recv -> 
-        %UserHolds{}
-        |> UserHolds.changeset(attrs)
+      {:ok, :user} -> 
+        %Holds{}
+        |> Holds.changeset(attrs)
         |> Repo.insert(returning: true)
 
       _ -> IO.puts("Bookmark Ooooooooooooooops")
@@ -335,24 +336,25 @@ defmodule FanCan.Public.Election do
   end
 
   def register_vote(attrs) do
-    IO.inspect(attrs, label: "Attrs")
-    case extract_key(attrs) do
-      :candidate_id -> 
-        %CandidateHolds{}
-          |> CandidateHolds.changeset(attrs)
+    IO.inspect(attrs, label: "Attrs ElectionEX")
+    case Map.fetch(attrs, :hold_cat) do
+      {:ok, :candidate} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
       _ -> IO.puts("Ooooooooooooooops")
     end
   end
 
-  def unregister_vote(id) do
+  def unregister_vote(id, cat) do
     IO.inspect(id, label: "unregister id")
     query =
-      from ch in CandidateHolds,
-      where: ch.candidate_id == ^id,
+      from h in Holds,
+      where: h.hold_cat_id == ^id,
+      where: h.hold_cat == ^cat,
       # & type = :vote
-      select: ch
+      select: h
     candidate = FanCan.Repo.one(query)
     IO.inspect(candidate, label: "to delete")
     case FanCan.Repo.delete candidate do
@@ -361,40 +363,50 @@ defmodule FanCan.Public.Election do
     end
   end
 
-    def get_race_holds_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id,
-        join: rh in RaceHolds, on: u.id == rh.user_id
-    query = from [u, ut, rh] in query,
-          where: ut.token == ^token,
-          select: rh
-          # Repo.all returns a list
-    Repo.all(query)
+  def get_races(race_hold_ids) do
+    IO.inspect(race_hold_ids, label: "race_hold_ids")
+    query =
+      from r in Race,
+      where: r.id in ^race_hold_ids,
+      # & type = :vote
+      select: r
+    races = FanCan.Repo.all(query)
   end
 
-  def get_election_holds_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id,
-        join: eh in ElectionHolds, on: u.id == eh.user_id
-    query = from [u, ut, eh] in query,
-          where: ut.token == ^token,
-          select: eh
-          # Repo.all returns a list
-    Repo.all(query)
-  end
+  #   def get_race_holds_by_token(token)
+  #     when is_binary(token) do
+  #   query = from u in User,
+  #       join: ut in UserToken, on: u.id == ut.user_id,
+  #       join: rh in RaceHolds, on: u.id == rh.user_id
+  #   query = from [u, ut, rh] in query,
+  #         where: ut.token == ^token,
+  #         select: rh
+  #         # Repo.all returns a list
+  #   Repo.all(query)
+  # end
 
-  def get_candidate_holds_by_token(token)
-      when is_binary(token) do
-    query = from u in User,
-        join: ut in UserToken, on: u.id == ut.user_id,
-        join: ch in CandidateHolds, on: u.id == ch.user_id
-    query = from [u, ut, ch] in query,
-          where: ut.token == ^token,
-          select: ch
-          # Repo.all returns a list
-    Repo.all(query)
-  end
+  # def get_election_holds_by_token(token)
+  #     when is_binary(token) do
+  #   query = from u in User,
+  #       join: ut in UserToken, on: u.id == ut.user_id,
+  #       join: eh in ElectionHolds, on: u.id == eh.user_id
+  #   query = from [u, ut, eh] in query,
+  #         where: ut.token == ^token,
+  #         select: eh
+  #         # Repo.all returns a list
+  #   Repo.all(query)
+  # end
+
+  # def get_candidate_holds_by_token(token)
+  #     when is_binary(token) do
+  #   query = from u in User,
+  #       join: ut in UserToken, on: u.id == ut.user_id,
+  #       join: ch in CandidateHolds, on: u.id == ch.user_id
+  #   query = from [u, ut, ch] in query,
+  #         where: ut.token == ^token,
+  #         select: ch
+  #         # Repo.all returns a list
+  #   Repo.all(query)
+  # end
 
 end

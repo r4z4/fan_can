@@ -8,12 +8,12 @@ defmodule FanCan.Repo.Migrations.CreateForums do
       add :desc, :string
       add :category, :string
       # Subscribers and Members are different
-      add :members, {:array, :binary_id}
+      add :members, {:array, :binary_id}, null: false, default: []
       add :moderator, references(:users, type: :binary_id, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:forums, [:moderator])
+    create index(:forums, [:id])
   end
 end
