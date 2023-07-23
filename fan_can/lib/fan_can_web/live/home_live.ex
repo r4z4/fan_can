@@ -197,7 +197,7 @@ defmodule FanCanWeb.HomeLive do
     {:ok, body} = Jason.decode(resp.body)
 
     # IO.inspect(body["offices"], label: "Offices")
-    # IO.inspect(body["officials"], label: "Officials")
+    IO.inspect(body["officials"], label: "Officials")
 
     %{"offices" => body["offices"], "officials" => body["officials"]}
   end

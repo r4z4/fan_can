@@ -66,10 +66,12 @@ defmodule FanCanWeb.Components.BallotEntry do
     ~H"""
       <!--<img class="h-56 lg:h-60 w-full object-cover" src={@ballot_race.image_path} alt="" />-->
       <div class="p-2">
-          <h3 class="font-semibold text-lg leading-6 text-white my-2 inline">
+        <div class="grid grid-cols-6 mb-2">
+          <h3 class="col-span-5 font-semibold text-lg leading-6 text-white h-5">
             <span class="ml-3 text-purple" :if={@ballot_race.district}>District: <%= @ballot_race.district %></span>
           </h3>
-          <Heroicons.LiveView.icon name="arrow-path-rounded-square" type="outline" class="h-5 w-5 text-yellow-300 inline" />
+          <Heroicons.LiveView.icon name="arrow-path-rounded-square" type="outline" class="h-5 w-5 text-yellow-300 col-span-1 md:col-span-1" />
+        </div>
           <ul :for={candidate <- @ballot_race.candidates} class="mb-2">
           <button
             phx-click="vote_casted" 
