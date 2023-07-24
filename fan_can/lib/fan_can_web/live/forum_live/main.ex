@@ -3,10 +3,14 @@ defmodule FanCanWeb.ForumLive.Main do
 
   alias FanCan.Site
   alias FanCan.Site.Forum
+  alias FanCanWeb.Components.PresenceDisplay
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :forums, Site.list_forums())}
+    {:ok, 
+      socket
+      |> stream(:forums, Site.list_forums())
+      |> assign(:social_count, 0)}
   end
 
   @impl true
@@ -46,6 +50,17 @@ defmodule FanCanWeb.ForumLive.Main do
       "2024 Election" -> "check-circle"
       "Issues" -> "information-circle"
     end
+  end
+  
+  @impl true 
+  def handle_info(
+      %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
+      %{assigns: %{social_count: count}} = socket
+    ) do
+    IO.inspect(count, label: "Count")
+    social_count = count + map_size(joins) - map_size(leaves)
+
+    {:noreply, assign(socket, :social_count, social_count)}
   end
 
   @impl true

@@ -80,7 +80,6 @@ defmodule FanCanWeb.UserResetPasswordLive do
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 
-  @impl true
   defp assign_user_and_token(socket, %{"token" => token}) do
     if user = Accounts.get_user_by_reset_password_token(token) do
       assign(socket, user: user, token: token)
@@ -102,7 +101,6 @@ defmodule FanCanWeb.UserResetPasswordLive do
      |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
-  @impl true
   defp assign_form(socket, %{} = source) do
     assign(socket, :form, to_form(source, as: "user"))
   end

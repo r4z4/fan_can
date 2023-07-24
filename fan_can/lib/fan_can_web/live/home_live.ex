@@ -82,7 +82,7 @@ defmodule FanCanWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <div>
-    <.live_component module={PresenceDisplay} social_count={@social_count} id="presence_display" />
+    <.live_component module={PresenceDisplay} social_count={@social_count} room="Lobby" id="presence_display" />
       <.header class="text-center">
         Hello <%= assigns.current_user.username %> || Welcome to Fantasy Candidate
         <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
@@ -133,7 +133,7 @@ defmodule FanCanWeb.HomeLive do
             <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
               <div class="text-white">
                 <div :for={race <- get_races(@current_user_holds)} class="">
-                  <p><%= race.district %> - <%= race.seat %></p>
+                  <.link href={~p"/races/#{race.id}"}><p><%= race.district %> - <%= race.seat %></p></.link>
                 </div>
               </div>
           </div>
@@ -183,10 +183,11 @@ defmodule FanCanWeb.HomeLive do
   #   resp
   # end
 
+  @impl true
   def handle_info(
-        %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
-        %{assigns: %{social_count: count}} = socket
-      ) do
+      %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
+      %{assigns: %{social_count: count}} = socket
+    ) do
     IO.inspect(count, label: "Count")
     social_count = count + map_size(joins) - map_size(leaves)
 

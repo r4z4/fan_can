@@ -4,8 +4,9 @@ defmodule FanCanWeb.Components.PresenceDisplay do
   #{u.username, u.email, u.confirmed_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
   # us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     IO.inspect(socket, label: "Component Socket")
+    IO.inspect(params, label: "Component Params")
     # # before subscribing, get current_player_count
     # topic = "home_page"
     # initial_count = Presence.list(topic) |> map_size
@@ -21,7 +22,9 @@ defmodule FanCanWeb.Components.PresenceDisplay do
     #   %{}
     # )
     # Assigning to parent LV socket. Use thin_wrapper
-    {:ok, socket}
+    {:ok, 
+      socket
+      |> assign(:room, params.room)}
   end
 
   def update(assigns, socket) do
@@ -29,16 +32,16 @@ defmodule FanCanWeb.Components.PresenceDisplay do
     socket = assign(socket, assigns)
 
     # before subscribing, get current_player_count
-    topic = "home_page"
-    initial_count = Presence.list(topic) |> map_size
+    # topic = "Lobby"
+    initial_count = Presence.list(assigns.room) |> map_size
 
     # Subscribe to the topic
-    FanCanWeb.Endpoint.subscribe(topic)
+    FanCanWeb.Endpoint.subscribe(assigns.room)
 
     # Track changes to the topic
     Presence.track(
       self(),
-      topic,
+      assigns.room,
       socket.id,
       %{}
     )
@@ -57,7 +60,7 @@ defmodule FanCanWeb.Components.PresenceDisplay do
           <div class="flex p-4 w-full hover:scale-105 duration-500">
             <div class=" flex items-center justify-between p-4 rounded-lg bg-white shadow-indigo-50 shadow-md">
               <div>
-                <h3 class="text-fuchsia-700 text-md">Users In Lobby: <%= @social_count %> </h3>
+                <h3 class="text-fuchsia-700 text-md">Users In <%= @room %>: <%= @social_count %> </h3>
               </div>
             </div>
           </div>
