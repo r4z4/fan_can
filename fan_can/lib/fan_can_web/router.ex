@@ -61,6 +61,15 @@ defmodule FanCanWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
+  scope "/admin/", FanCanWeb do
+    pipe_through [:browser, :require_authenticated_user, :require_admin_role]
+      live "/forums", ForumLive.Index, :index
+      live "/forums/new", ForumLive.Index, :new
+      live "/forums/:id", ForumLive.Show, :show
+      live "/forums/:id/edit", ForumLive.Index, :edit
+      live "/forums/:id/show/edit", ForumLive.Show, :edit
+  end
+
   scope "/", FanCanWeb do
     pipe_through [:browser, :require_authenticated_user]
 
@@ -130,9 +139,9 @@ defmodule FanCanWeb.Router do
       live "/posts/:id/show/edit", PostLive.Show, :edit
 
 
-      live "/forums", ForumLive.Index, :index
-      live "/forums/new", ForumLive.Index, :new
-      live "/forums/:id/edit", ForumLive.Index, :edit
+      # live "/forums", ForumLive.Index, :index
+      # live "/forums/new", ForumLive.Index, :new
+      # live "/forums/:id/edit", ForumLive.Index, :edit
       # Order matters. Need this before /:id or 'main' gets interpreted as an id
       live "/forums/main", ForumLive.Main, :main
       live "/forums/main/:id", ForumLive.Page, :page
@@ -140,10 +149,6 @@ defmodule FanCanWeb.Router do
       # live "/forums/main/:id/new", ForumLive.ThreadFormComponent, :new
       # Main pages will be list of those items
       live "/forums/main/:id/thread/:id", PostLive.Main, :main
-
-      live "/forums/:id", ForumLive.Show, :show
-      live "/forums/:id/show/edit", ForumLive.Show, :edit
-
     end
   end
 

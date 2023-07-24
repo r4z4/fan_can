@@ -4,6 +4,7 @@ defmodule FanCanWeb.ThreadLive.Index do
   alias FanCan.Site.Forum
   alias FanCan.Site.Forum.Thread
   alias FanCan.Core.{TopicHelpers, Holds}
+  import FanCan.Accounts.Authorize
 
   @impl true
   def mount(_params, _session, socket) do

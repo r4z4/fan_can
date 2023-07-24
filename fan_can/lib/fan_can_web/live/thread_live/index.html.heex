@@ -21,7 +21,7 @@
     <div class="sr-only">
       <.link navigate={~p"/threads/#{thread}"}>Show</.link>
     </div>
-    <.link patch={~p"/threads/#{thread}/edit"}>Edit</.link>
+    <.link :if={get_permissions(@current_user.role) |> edit?(:thread)} patch={~p"/threads/#{thread}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, thread}}>
     <.link

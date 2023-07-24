@@ -13,12 +13,10 @@
 # 8d04fd4f-1321-4e9f-911a-7369d57d0b55
 
 alias FanCan.Repo
-alias FanCan.Accounts.User
-alias FanCan.Accounts.UserHolds
-alias FanCan.Public.Candidate
-alias FanCan.Public.Election
-alias FanCan.Public.State
+alias FanCan.Accounts.{User, UserHolds, Authorize}
+alias FanCan.Public.{Candidate, Election, State}
 alias FanCan.Site.Forum
+alias FanCan.Public.Election.Ballot
 alias FanCan.Site.Forum.Post
 alias FanCan.Site.Forum.Thread
 alias FanCan.Core.{Attachment, Holds}
@@ -78,10 +76,11 @@ Repo.insert_all(State, [
 ])
 
 Repo.insert_all(User, [
-      %{id: "a9f44567-e031-44f1-aae6-972d7aabbb45", username: "admin", city: "Omaha", state: :NE, district: nil, email: "admin@admin.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "b5f44567-e031-44f1-aae6-972d7aabbb45", username: "jim_the_og", city: "Omaha", state: :NE, district: nil, email: "jim@jim.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", username: "aaron", city: "Chicago", state: :IL, district: nil, email: "aaron@aaron.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "a9f44567-e031-44f1-aae6-972d7aabbb45", username: "admin", city: "Omaha", state: :NE, district: nil, email: "admin@admin.com", role: :admin, hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "b5f44567-e031-44f1-aae6-972d7aabbb45", username: "jim_the_og", city: "Omaha", state: :NE, district: nil, email: "jim@jim.com", role: :voter, hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", username: "aaron", city: "Chicago", state: :IL, district: nil, email: "aaron@aaron.com", role: :voter, hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", username: "TheMan98", city: "Minneapolis", state: :MN, district: nil, email: "User@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "459180af-49aa-48df-92e2-547be9283ac4", username: "Candidate_Jim", city: "Omaha", state: :NE, district: nil, email: "UserJim@example.com", role: :candidate, hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "b2f44567-e031-44f1-aae6-972d7aabbb45", username: "Anders01", city: "Lawrence", state: :KS, district: nil, email: "User2@example.com", hashed_password: Bcrypt.hash_pwd_salt("password"), confirmed_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
@@ -447,6 +446,54 @@ Repo.insert_all(Holds, [
       %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :like, hold_cat: :thread, hold_cat_id: "4fd6aa47-51da-4277-bca6-3a87b2153c20", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
+#Authorization Roles
+Repo.insert_all(Authorize, [
+      # Jim went to town and chose them all
+      %{id: Ecto.UUID.generate(), 
+            role: :reader, 
+            
+            read: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true}, 
+            edit: %{}, 
+            create: %{}, 
+            delete: %{}, 
+            
+            updated_at: NaiveDateTime.local_now(), 
+            inserted_at: NaiveDateTime.local_now()},
+
+      %{id: Ecto.UUID.generate(), 
+            role: :voter, 
+            
+            read: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true},  
+            # permissions will allow editing of post, but still depend on ownership if can truly edit
+            edit: %{:ballot => true, :post => true, :thread => true}, 
+            create: %{:post => true, :thread => true}, 
+            delete: %{:post => true, :thread => true}, 
+            
+            updated_at: NaiveDateTime.local_now(), 
+            inserted_at: NaiveDateTime.local_now()},
+
+      %{id: Ecto.UUID.generate(), 
+            role: :admin, 
+
+            read: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true}, 
+            edit: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true}, 
+            create: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true}, 
+            delete: %{:user=> true, :candidate => true, :election => true, :ballot => true, :forum => true, :post => true, :thread => true, :race => true}, 
+
+            updated_at: NaiveDateTime.local_now(), 
+            inserted_at: NaiveDateTime.local_now()},
+
+      %{id: Ecto.UUID.generate(), 
+            role: :candidate,
+            
+            read: %{:candidate => true}, 
+            edit: %{:candidate => true}, 
+            create: %{:forum => true, :post => true, :thread => true, :race => true}, 
+            delete: %{}, 
+            
+            updated_at: NaiveDateTime.local_now(), 
+            inserted_at: NaiveDateTime.local_now()}
+])
 # Ecto.UUID.bingenerate()
 
 

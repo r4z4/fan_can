@@ -52,7 +52,7 @@
     <div class="sr-only">
       <.link navigate={~p"/candidates/#{candidate}"}>Show</.link>
     </div>
-    <.link patch={~p"/candidates/#{candidate}/edit"}>Edit</.link>
+    <.link :if={get_permissions(@current_user.role) |> edit?(:candidate)} patch={~p"/candidates/#{candidate}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, candidate}}>
     <.link

@@ -8,6 +8,7 @@ defmodule FanCan.Accounts.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :role, Ecto.Enum, values: Utils.roles
     field :city, :string
     field :state, Ecto.Enum, values: Utils.states
     field :district, :integer

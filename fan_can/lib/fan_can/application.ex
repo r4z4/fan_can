@@ -17,6 +17,7 @@ defmodule FanCan.Application do
       {Phoenix.PubSub, name: FanCan.PubSub},
       # Start Finch
       {Finch, name: FanCan.Finch},
+      FanCan.Presence,
       FanCan.ThinWrapper,
       # Start the Endpoint (http/https)
       FanCanWeb.Endpoint

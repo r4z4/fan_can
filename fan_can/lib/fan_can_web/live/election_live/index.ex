@@ -4,10 +4,12 @@ defmodule FanCanWeb.ElectionLive.Index do
   alias FanCan.Public
   alias FanCan.Public.Election
   alias FanCan.Core.{TopicHelpers, Holds}
+  import FanCan.Accounts.Authorize, only: [get_permissions: 1, read?: 2, create?: 2, edit?: 2, delete?: 2]
 
   @impl true
   def mount(_params, _session, socket) do
     IO.inspect(socket, label: "Election Socket")
+    role = socket.assigns.current_user.role
     for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to

@@ -9,8 +9,8 @@
 >
   <:col :let={{_id, forum}} class="border-solid border-2 border-sky-500" label="Title"><%= forum.title %></:col>
   <:col :let={{_id, forum}} label="Description"><%= forum.desc %></:col>
-  <:col :let={{_id, forum}} label="DB View"><.link navigate={~p"/forums/#{forum}"}>DB View</.link></:col>
   <:col :let={{_id, forum}} label="Category"><%= forum.category %></:col>
   <:col :let={{_id, forum}} label=""><Heroicons.LiveView.icon name={get_forum_icon(forum.title)} type="outline" class="h-8 w-8 text-blue" /></:col>
+  <:col :if={ @current_user.role == :admin } :let={{_id, forum}} label="DB View"><.link navigate={~p"/admin/forums/#{forum}"}>DB View</.link></:col>
 </.table>
 

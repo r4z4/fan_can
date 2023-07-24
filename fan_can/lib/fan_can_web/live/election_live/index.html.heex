@@ -27,7 +27,7 @@
     <div class="sr-only">
       <.link navigate={~p"/elections/#{election}"}>Show</.link>
     </div>
-    <.link patch={~p"/elections/#{election}/edit"}>Edit</.link>
+      <.link :if={get_permissions(@current_user.role) |> edit?(:election)} patch={~p"/elections/#{election}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, election}}>
     <.link

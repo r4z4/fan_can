@@ -6,6 +6,7 @@ defmodule FanCanWeb.HomeLive do
   alias FanCan.Accounts.UserHolds
   alias FanCan.Public.Election
   alias FanCanWeb.Components.StateSnapshot
+  alias FanCanWeb.Components.PresenceDisplay
   alias FanCan.Core.{Utils, Holds}
 
 #   def mount(%{"token" => token}, _session, socket) do
@@ -52,7 +53,8 @@ defmodule FanCanWeb.HomeLive do
     {:ok,
      socket
      |> assign(:messages, [])
-     |> assign(:g_candidates, g_candidates)}
+     |> assign(:g_candidates, g_candidates)
+     |> assign(:social_count, 0)}
   end
 
   defp sub_and_add(holds, socket) do
@@ -65,7 +67,7 @@ defmodule FanCanWeb.HomeLive do
   end
 
   defp get_races(holds) do
-  IO.inspect(holds, label: "HOLDS")
+    # IO.inspect(holds, label: "HOLDS")
     holds.race_holds
     |> Enum.filter(fn x -> x.type == :bookmark end)
     |> Enum.map(fn x -> x.hold_cat_id end)
@@ -80,6 +82,7 @@ defmodule FanCanWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <div>
+    <.live_component module={PresenceDisplay} social_count={@social_count} id="presence_display" />
       <.header class="text-center">
         Hello <%= assigns.current_user.username %> || Welcome to Fantasy Candidate
         <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
@@ -179,6 +182,16 @@ defmodule FanCanWeb.HomeLive do
   #   IO.inspect(resp, label: "Loc Info Resp")
   #   resp
   # end
+
+  def handle_info(
+        %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
+        %{assigns: %{social_count: count}} = socket
+      ) do
+    IO.inspect(count, label: "Count")
+    social_count = count + map_size(joins) - map_size(leaves)
+
+    {:noreply, assign(socket, :social_count, social_count)}
+  end
 
   def get_str(state) do
     Enum.zip(Utils.states, Utils.state_names ++ Utils.territories)

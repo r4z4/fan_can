@@ -56,6 +56,14 @@ defmodule FanCan.Core.Utils do
         [:share, :like]
     end
 
+    def roles do
+        [:admin, :reader, :voter, :candidate]
+    end
+
+    def resources do
+        [:ballot, :election, :user, :candidate, :race, :forum, :post, :thread]
+    end
+
     def forum_categories do
         [:Site, :General, :Politics, :State]
     end

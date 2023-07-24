@@ -5,6 +5,7 @@ defmodule FanCanWeb.CandidateLive.Index do
   alias FanCan.Public.Candidate
   alias FanCan.Accounts
   alias FanCan.Core.{TopicHelpers, Holds}
+  import FanCan.Accounts.Authorize
 
   # @impl Phoenix.LiveView
   @impl true

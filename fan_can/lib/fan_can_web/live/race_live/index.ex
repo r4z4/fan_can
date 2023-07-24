@@ -4,6 +4,7 @@ defmodule FanCanWeb.RaceLive.Index do
   alias FanCan.Public.Election
   alias FanCan.Public.Election.Race
   alias FanCan.Core.{TopicHelpers, Holds}
+  import FanCan.Accounts.Authorize
 
   @impl true
   def mount(_params, _session, socket) do

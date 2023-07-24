@@ -276,6 +276,18 @@ defmodule FanCanWeb.UserAuth do
     end
   end
 
+  def require_admin_role(conn, _opts) do
+    if conn.assigns.current_user.role == :admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not authorized to view this page")
+      |> maybe_store_return_to()
+      |> redirect(to: ~p"/users/log_in")
+      |> halt()
+    end
+  end
+
   defp put_token_in_session(conn, token) do
     conn
     |> put_session(:user_token, token)

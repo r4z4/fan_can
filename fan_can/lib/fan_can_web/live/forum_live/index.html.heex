@@ -20,7 +20,7 @@
     <div class="sr-only">
       <.link navigate={~p"/forums/#{forum}"}>Show</.link>
     </div>
-    <.link patch={~p"/forums/#{forum}/edit"}>Edit</.link>
+    <.link :if={get_permissions(@current_user.role) |> edit?(:forum)} patch={~p"/forums/#{forum}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, forum}}>
     <.link
