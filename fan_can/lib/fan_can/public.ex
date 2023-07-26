@@ -150,7 +150,6 @@ defmodule FanCan.Public do
         ballot_ids = Election.get_ballot_ids_by_election_id(election.id)
         # IO.inspect(ballot_ids, label: "ballot_ids")
         new = Map.put(election, :ballot_ids, ballot_ids)
-        IO.inspect(new, label: "new")
       end
   end
 

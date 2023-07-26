@@ -1,3 +1,5 @@
-defmodule FanCan.Public.Election.BallotRace do
-  defstruct id: nil, candidates: [], seat: nil, state: :NE, desc: "Default", election_date: nil, year: 1900, inserted_at: nil, updated_at: nil
+alias FanCan.Public.Election.BallotRace
+
+defmodule FanCan.Public.Election.BallotRaces do
+  defstruct ballot_race: [%BallotRace{}]
 end

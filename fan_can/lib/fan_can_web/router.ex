@@ -68,6 +68,8 @@ defmodule FanCanWeb.Router do
       live "/forums/:id", ForumLive.Show, :show
       live "/forums/:id/edit", ForumLive.Index, :edit
       live "/forums/:id/show/edit", ForumLive.Show, :edit
+
+      live "/scenes", Admin.ScenesLive
   end
 
   scope "/", FanCanWeb do
@@ -75,6 +77,7 @@ defmodule FanCanWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{FanCanWeb.UserAuth, :ensure_authenticated}] do
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 

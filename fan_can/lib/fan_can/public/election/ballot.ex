@@ -6,6 +6,8 @@ defmodule FanCan.Public.Election.Ballot do
   @foreign_key_type :binary_id
   schema "ballots" do
     field :attachment, :binary_id
+    field :user_id, :binary_id
+    field :vote_map, :map
     field :columns, :integer
     field :election_id, :binary_id
 
@@ -15,7 +17,7 @@ defmodule FanCan.Public.Election.Ballot do
   @doc false
   def changeset(ballot, attrs) do
     ballot
-    |> cast(attrs, [:id, :election_id, :columns, :attachment])
+    |> cast(attrs, [:id, :user_id, :vote_map, :election_id, :columns, :attachment])
     |> validate_required([:election_id])
   end
 end

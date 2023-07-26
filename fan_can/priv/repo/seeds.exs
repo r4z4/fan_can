@@ -405,8 +405,8 @@ Repo.insert_all(Post, [
 ])
 
 Repo.insert_all(Ballot, [
-      %{id: "0bf74d8b-edc4-432c-a1db-732168966ea3", election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", columns: 3, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+      %{id: "0bf74d8b-edc4-432c-a1db-732168966ea3", election_id: "bfe75d28-b2eb-4478-82f5-17828f9c82c6", user_id: nil, vote_map: %{}, columns: 3, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "52e101ec-4106-4603-9be4-782c9d42299f", election_id: "a1f44567-e031-44f1-aae6-972d7aabbb45", user_id: nil, vote_map: %{}, columns: 4, attachment: nil, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 # "Follow" = "Subscribe"
 

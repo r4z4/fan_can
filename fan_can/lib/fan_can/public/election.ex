@@ -54,7 +54,7 @@ defmodule FanCan.Public.Election do
       where: b.id == ^ballot_id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => r.id, :candidates => [], :seat => r.seat, :district => r.district, :state => e.state, :desc => e.desc, :election_date => e.election_date, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
+      select: %{:id => r.id, :candidates => [], :seat => r.seat, :district => r.district, :state => e.state, :desc => e.desc, :election_id => e.id, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -344,6 +344,17 @@ defmodule FanCan.Public.Election do
           |> Repo.insert(returning: true)
 
       _ -> IO.puts("Ooooooooooooooops")
+    end
+  end
+
+  def register_ballot(attrs) do
+    IO.inspect(attrs, label: "Attrs Ballot")
+    case Map.fetch(attrs, :user_id) do
+      {:ok, _} -> 
+        get_ballot!(attrs.id)
+        |> update_ballot(attrs)
+
+      _ -> IO.puts("Ooooooooooooooops Ballot")
     end
   end
 
