@@ -34,7 +34,7 @@
     <:item title="Attachments"><%= @candidate.attachments %></:item>
   </.list>
 
-  <.back navigate={~p"/candidates"}>Back to candidates</.back>
+  <.back navigate={~p"/candidates/main"}>Back to candidates</.back>
 </div>
 
   <.modal :if={@live_action == :edit} id="candidate-modal" show on_cancel={JS.patch(~p"/candidates/#{@candidate}")}>

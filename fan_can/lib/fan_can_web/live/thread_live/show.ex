@@ -7,7 +7,10 @@ defmodule FanCanWeb.ThreadLive.Show do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, 
+      socket
+      |> assign(:post_upvote_ids, Enum.filter(socket.assigns.current_user_holds.post_holds, fn ph -> ph.type == :upvote end) |> Enum.map(fn ph -> ph.hold_cat_id end))
+      |> assign(:post_downvote_ids, Enum.filter(socket.assigns.current_user_holds.post_holds, fn ph -> ph.type == :downvote end) |> Enum.map(fn ph -> ph.hold_cat_id end))}
   end
 
   defp apply_action(socket, :new_post, _params) do
@@ -19,6 +22,7 @@ defmodule FanCanWeb.ThreadLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
+    IO.inspect(socket.assigns.post_upvote_ids, label: "PUIDs")
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))

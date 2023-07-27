@@ -114,7 +114,7 @@ defmodule FanCanWeb.HomeLive do
 
         <div>
           <.link
-            href={~p"/elections"}
+            href={~p"/elections/main"}
             class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
           >
             <Heroicons.LiveView.icon name="check-badge" type="outline" class="h-10 w-10 text-red" />

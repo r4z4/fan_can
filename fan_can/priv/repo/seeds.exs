@@ -394,11 +394,11 @@ Repo.insert_all(Post, [
             content: "Please read the following guideliens before ...", upvotes: 3, downvotes: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "566f949a-be08-49e7-9c60-0c33d55b791b", title: "Second User", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
             content: "This is the test of the Elections Post", upvotes: 1, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "Query Test", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
+      %{id: "1f310d22-6abb-4b9f-942a-53aafd7f2006", title: "Query Test", author: "b5f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "7e37664a-b475-4a92-a354-8d95a7d66abc", 
             content: "Needed two posts from Jim to test a query", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "00411e71-e465-43c5-8521-66edbee07171", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{id: Ecto.UUID.generate(), title: "I Disagree", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 
+      %{id: "9de1ea76-ce5a-447f-a809-7b62dcbfa3a7", title: "I Disagree", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 
             content: "I get what you are saying here, and I have in fact seen some of that myself, but I think that it is something to be overcome instead.", 
             upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 
@@ -437,7 +437,10 @@ Repo.insert_all(Holds, [
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :vote, hold_cat: :candidate, hold_cat_id: "09f131ac-818c-4058-b9ce-dc3b91794416", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Post Holds Jim & Aaron
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :upvote, hold_cat: :post, hold_cat_id: "956c5b4f-f1a1-42f0-b04d-bd80eddbe997", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
-      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :downvote, hold_cat: :post, hold_cat_id: "59e92082-6cc8-435d-9e71-59d3c89c9867", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :upvote, hold_cat: :post, hold_cat_id: "59e92082-6cc8-435d-9e71-59d3c89c9867", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :upvote, hold_cat: :post, hold_cat_id: "566f949a-be08-49e7-9c60-0c33d55b791b", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :upvote, hold_cat: :post, hold_cat_id: "1f310d22-6abb-4b9f-942a-53aafd7f2006", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :upvote, hold_cat: :post, hold_cat_id: "9de1ea76-ce5a-447f-a809-7b62dcbfa3a7", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :upvote, hold_cat: :post, hold_cat_id: "566f949a-be08-49e7-9c60-0c33d55b791b", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       # Thread Holds Jim & Aaron
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :share, hold_cat: :thread, hold_cat_id: "208272e9-1765-451f-9acb-79699ce5fc25", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},

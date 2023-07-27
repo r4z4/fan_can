@@ -34,11 +34,11 @@
             <div class="p-1 text-white">
                 <p class="font-bold"><%= post.title %></p>
                 <div><p class="text-xs mb-2"><%= post.author %><span class="ml-6 inline text-xs text-right"><%= post.updated_at.month %> <%= post.updated_at.day %> <%= post.updated_at.year %></span></p></div>
-                <button :if={true} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="solid" class="h-5 w-5 text-green" /></button>
-                <button :if={false} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="outline" class="h-5 w-5 text-black" /></button>
+                <button :if={Enum.member?(@post_upvote_ids, post.id)} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="solid" class="h-5 w-5 text-green-500" /></button>
+                <button :if={!Enum.member?(@post_upvote_ids, post.id)} phx-click="upvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-up-circle" type="outline" class="h-5 w-5 text-black" /></button>
 
-                <button :if={true} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="solid" class="h-5 w-5 text-red" /></button>
-                <button :if={false} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="outline" class="h-5 w-5 text-black" /></button>
+                <button :if={Enum.member?(@post_downvote_ids, post.id)} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="solid" class="h-5 w-5 text-red-500" /></button>
+                <button :if={!Enum.member?(@post_downvote_ids, post.id)} phx-click="downvote_click" phx-value-id={post.id}><Heroicons.LiveView.icon name="arrow-down-circle" type="outline" class="h-5 w-5 text-black" /></button>
                 <div><p><%= post.content %></p></div>
             </div>
         </div>

@@ -69,6 +69,13 @@ defmodule FanCanWeb.Router do
       live "/forums/:id/edit", ForumLive.Index, :edit
       live "/forums/:id/show/edit", ForumLive.Show, :edit
 
+      live "/elections", ElectionLive.Index, :index
+      live "/elections/new", ElectionLive.Index, :new
+      live "/elections/:id/edit", ElectionLive.Index, :edit
+
+      live "/elections/:id", ElectionLive.Show, :show
+      live "/elections/:id/show/edit", ElectionLive.Show, :edit
+
       live "/scenes", Admin.ScenesLive
   end
 
@@ -82,13 +89,10 @@ defmodule FanCanWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       live "/home", HomeLive
-      live "/elections", ElectionLive.Index, :index
-      live "/elections/new", ElectionLive.Index, :new
-      live "/elections/:id/edit", ElectionLive.Index, :edit
 
-      live "/elections/:id", ElectionLive.Show, :show
-      live "/elections/:id/show/edit", ElectionLive.Show, :edit
 
+      live "/elections/main", ElectionLive.Main, :index
+      live "/elections/main/:id", ElectionLive.Page
       live "/elections/live/ballot/:id", BallotLive.Template, :template
 
       live "/states", StateLive.Index, :index

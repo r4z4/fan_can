@@ -30,9 +30,9 @@ defmodule FanCanWeb.ThreadLive.Index do
     end
 
     {:ok, socket
-          |> stream(:threads, Forum.list_threads())
-          # Use streams, but for something we display always. Not a flash. Keep flash with assigns below.
-          |> stream(:stream_messages, [])}
+      |> stream(:threads, Forum.list_threads())
+      # Use streams, but for something we display always. Not a flash. Keep flash with assigns below.
+      |> stream(:stream_messages, [])}
   end
 
   @impl true

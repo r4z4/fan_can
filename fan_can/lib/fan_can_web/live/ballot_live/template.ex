@@ -213,7 +213,7 @@ defmodule FanCanWeb.BallotLive.Template do
           {:noreply,
             socket
             |> put_flash(:info, "Successfully Submitted Ballot")
-            |> push_navigate(to: ~p"/elections")}
+            |> push_navigate(to: ~p"/elections/main")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, 
