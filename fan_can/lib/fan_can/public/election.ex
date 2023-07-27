@@ -207,6 +207,14 @@ defmodule FanCan.Public.Election do
     FanCan.Repo.all(query)
   end
 
+  def get_ballots_by_election_id(id) do
+    query = from b in Ballot,
+      join: e in Election,
+      on: b.election_id == e.id,
+      where: e.id == ^id,
+      select: b
+    FanCan.Repo.all(query)
+  end
   @doc """
   Creates a ballot.
 

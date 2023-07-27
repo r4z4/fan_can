@@ -17,8 +17,8 @@
   <:col :let={{_id, election}} label="Desc"><%= election.desc %></:col>
   <:col :let={{_id, election}} label="Ballot Link(s)">
     <ul>
-      <%= for id <- election.ballot_ids do %>
-        <li><.link navigate={~p"/elections/live/ballot/#{id}"}>Go To Ballot</.link></li>
+      <%= for b <- election.ballots do %>
+        <li><Heroicons.LiveView.icon :if={b.submitted} name="shield-check" type="solid" class="inline h-5 w-5 text-green-500" /><.link navigate={~p"/elections/live/ballot/#{b.id}"}>Go To Ballot</.link></li>
       <%= end %>
     </ul>
   </:col>

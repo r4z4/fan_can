@@ -53,6 +53,10 @@
     </div>
 </div>
 
+<div :if={@ballot.submitted} class="text-center w-min m-auto border-solid border-2 border-white rounded-lg p-2 mb-4">
+  <h6 class="text-white">This Ballot Has Been Submitted</h6>
+</div>
+
 <div class="text-center w-3/5 m-auto border-solid border-2 border-white rounded-lg p-2">
   <h6 class="text-white">Tips</h6>
     <div class="flex text-white">
@@ -65,7 +69,7 @@
   <.simple_form
     for={@ballot_form}
     id="ballot-form"
-    phx-submit="save"
+    phx-submit="submit_ballot"
   >
     <h1 class="text-center font-bold text-2xl text-indigo-500">Ballot For <%= @desc %> </h1>
     <h4 class="text-center text-white">Ballots for <%= List.first(@ballot_races).seat %></h4>

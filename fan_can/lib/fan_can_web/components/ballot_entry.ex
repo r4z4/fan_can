@@ -74,6 +74,7 @@ defmodule FanCanWeb.Components.BallotEntry do
         </div>
           <ul :for={candidate <- @ballot_race.candidates} class="mb-2">
           <button
+            type="button"
             phx-click="vote_casted" 
             phx-value-id={candidate.id}
             value={@ballot_race.district}

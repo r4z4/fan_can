@@ -7,7 +7,7 @@ defmodule FanCan.Repo.Migrations.CreateBallots do
       add :user_id, references(:users, type: :binary_id, on_delete: :nothing)
       add :columns, :integer
       add :vote_map, :map, default: %{}
-      add :complete, :boolean, null: false, default: false
+      add :submitted, :boolean, null: false, default: false
       add :attachment, references(:attachments, type: :binary_id, on_delete: :nothing)
       add :election_id, references(:elections, type: :binary_id, on_delete: :nothing)
 

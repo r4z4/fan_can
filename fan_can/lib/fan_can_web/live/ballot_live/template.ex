@@ -76,7 +76,7 @@ defmodule FanCanWeb.BallotLive.Template do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:ballot_id, id)
+     |> assign(:ballot, Election.get_ballot!(id))
      |> assign(:ballot_form, nil)
      |> assign(:ballot_races, final_ballot_races)
      |> assign(:election_id, Map.fetch!(List.first(final_ballot_races), :election_id))
@@ -205,23 +205,21 @@ defmodule FanCanWeb.BallotLive.Template do
   # end
 
   @impl true
-  def handle_event("save", _vals, socket) do
+  def handle_event("submit_ballot", _vals, socket) do
     ballot_form = format_vote_map(socket.assigns.vote_list, socket.assigns.election_id, socket.assigns.ballot_races)
-    attrs = %{id: socket.assigns.ballot_id, user_id: socket.assigns.current_user.id, vote_map: ballot_form, election_id: socket.assigns.election_id, updated_at: NaiveDateTime.utc_now()}
+    attrs = %{id: socket.assigns.ballot.id, user_id: socket.assigns.current_user.id, vote_map: ballot_form, submitted: true, election_id: socket.assigns.election_id, updated_at: NaiveDateTime.utc_now()}
       case Election.register_ballot(attrs) do
         {:ok, ballot} -> 
-          IO.inspect(ballot, label: "ballot: ")
           {:noreply,
             socket
-            |> put_flash(:info, "Successfully Submitted Ballot")}
+            |> put_flash(:info, "Successfully Submitted Ballot")
+            |> push_navigate(to: ~p"/elections")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          IO.inspect(changeset, label: "Ballot Error: ")
           {:noreply, 
             socket
             |> put_flash(:error, "Error Submitting Ballot")}
       end
-    {:noreply, socket}
   end
   
   def format_vote_map(vote_list, election_id, ballot_races) do
@@ -234,7 +232,7 @@ defmodule FanCanWeb.BallotLive.Template do
     ballot_map = Map.new() |> Map.put(String.to_atom(election_id), ballot_list)
     # IO.inspect(ballot_map, label: "ballot_map")
 
-    # %Ballot{id: ballot_id, user_id: current_user.id, vote_map: %{}}
+    # %Ballot{id: ballot.id, user_id: current_user.id, vote_map: %{}}
   end
 
   defp page_title(:template), do: "Ballot For ..."
