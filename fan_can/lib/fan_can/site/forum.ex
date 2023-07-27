@@ -4,6 +4,7 @@ defmodule FanCan.Site.Forum do
   import Ecto.Query, warn: false
   alias FanCan.Core.Utils
   alias FanCan.Repo
+  alias FanCan.Accounts.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -37,10 +38,12 @@ defmodule FanCan.Site.Forum do
   """
   def get_forum_threads(id) do
     query = from t in Thread,
+      join: u in User,
+      on: t.creator == u.id,
       where: t.forum_id == ^id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
+      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :creator_name => u.username, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -60,6 +63,21 @@ defmodule FanCan.Site.Forum do
   def list_threads do
     Repo.all(Thread)
   end
+
+  def list_threads_plus do
+    query = from t in Thread,
+      join: u in User,
+      on: t.creator == u.id,
+      # FIXME Change this to confirmed_at > inserted_at
+      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
+      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :creator_name => u.username, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
+      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
+      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
+      # distinct: p.id
+      # where: u.age > type(^age, :integer)
+    FanCan.Repo.all(query)
+  end
+
 
   @doc """
   Gets a single thread.
@@ -155,10 +173,12 @@ defmodule FanCan.Site.Forum do
   """
   def get_thread_posts(id) do
     query = from p in Post,
+      join: u in User,
+      on: p.author == u.id,
       where: p.thread_id == ^id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => p.id, :title => p.title, :content => p.content, :author => p.author, :upvotes => p.upvotes, :downvotes => p.downvotes, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
+      select: %{:id => p.id, :title => p.title, :content => p.content, :author => u.username, :upvotes => p.upvotes, :downvotes => p.downvotes, :inserted_at => p.inserted_at, :updated_at => p.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id

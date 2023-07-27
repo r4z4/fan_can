@@ -26,10 +26,10 @@ defmodule FanCanWeb.HomeLive do
     g_candidates = api_query(socket.assigns.current_user.state)
     IO.inspect(self(), label: "Self")
     IO.inspect(socket, label: "Home Socket")
-    for follow = %Holds{} <- socket.assigns.current_user_holds do
-      IO.inspect(follow, label: "Type")
+    for hold_cat <- socket.assigns.current_user_holds do
+      IO.inspect(hold_cat, label: "hold_cat")
       # Subscribe to user_holds. E.g. forums that user subscribes to
-      sub_and_add(follow, socket)
+      sub_and_add(hold_cat, socket)
     end
 
     with %{post_ids: post_ids, thread_ids: thread_ids} <- socket.assigns.current_user_published_ids do
@@ -56,14 +56,18 @@ defmodule FanCanWeb.HomeLive do
      |> assign(:g_candidates, g_candidates)
      |> assign(:social_count, 0)}
   end
-
-  defp sub_and_add(holds, socket) do
-    TopicHelpers.subscribe_to_holds("user", Kernel.elem(holds, 0))
-    TopicHelpers.subscribe_to_holds("race", Kernel.elem(holds, 1))
-    TopicHelpers.subscribe_to_holds("election", Kernel.elem(holds, 2))
-    TopicHelpers.subscribe_to_holds("candidate", Kernel.elem(holds, 3))
+  # this is the order returned from the query in accounts.ex
+  defp sub_and_add(hold_cat, socket) do
+    case Kernel.elem(hold_cat, 0) do
+      :candidate_holds -> TopicHelpers.subscribe_to_holds("candidate", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
+      :election_holds -> TopicHelpers.subscribe_to_holds("election", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
+      :race_holds -> TopicHelpers.subscribe_to_holds("race", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
+      :user_holds -> TopicHelpers.subscribe_to_holds("user", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
+      :thread_holds -> TopicHelpers.subscribe_to_holds("thread", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
+      :post_holds -> TopicHelpers.subscribe_to_holds("post", Kernel.elem(hold_cat, 1) |> Enum.map(fn h -> h.id end))
     # TopicHelpers.subscribe_to_holds("forum", holds["forum_ids"])
     # TopicHelpers.subscribe_to_holds("election", holds["election_ids"])
+    end
   end
 
   defp get_races(holds) do
@@ -76,6 +80,14 @@ defmodule FanCanWeb.HomeLive do
 
   defp get_elections(holds) do
     holds.election_holds
+    |> Enum.map(fn x -> x.hold_cat_id end)
+    |> Election.get_elections()
+  end
+
+  defp get_favorites(holds) do
+    IO.inspect(holds, label: "holds")
+    all_holds = holds.candidate_holds ++ holds.user_holds ++ holds.election_holds ++ holds.race_holds ++ holds.post_holds ++ holds.thread_holds
+    |> Enum.filter(fn x -> x.type == :favorite end)
   end
 
   @impl true
@@ -129,30 +141,40 @@ defmodule FanCanWeb.HomeLive do
       </div>
 
         <div class="grid justify-center md:grid-cols-3 lg:grid-cols-3 gap-10 lg:gap-10">
+
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
-            <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" /> Races You Are Watching</div>
-              <div class="text-white">
-                <div :for={race <- get_races(@current_user_holds)} class="">
-                  <.link href={~p"/races/#{race.id}"}><p><%= race.district %> - <%= race.seat %></p></.link>
-                </div>
+            <div class="text-white inline"><Heroicons.LiveView.icon name="eye" type="outline" class="inline h-5 w-5 text-white m-2" />
+              Races You Are Watching
+            </div>
+            <div class="text-white">
+              <div :for={race <- get_races(@current_user_holds)} class="">
+                <.link href={~p"/races/#{race.id}"}><p><%= race.district %> - <%= race.seat %></p></.link>
               </div>
+            </div>
           </div>
 
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
-            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> Your List of Favorites</div>
-              <div class="text-white">
-                 Map Over (Diff Icon for Each Type (Race, Ballot, Candidate etc)
+            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> 
+              Your List of Favorites
+            </div>
+            <div class="text-white">
+              <div :for={fav <- get_favorites(@current_user_holds)} class="">
+                <.link href={~p"/"}><p><%= fav.hold_cat %></p></.link>
               </div>
+            </div>
           </div>
 
           <div class="text-center m-auto border-solid border-2 border-white rounded-lg p-2">
-            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" /> Your Shred Items</div>
-              <div class="text-white">
-                <div :for={election <- get_elections(@current_user_holds)} class="">
-                  election.id
-                </div>
+            <div class="text-white inline"><Heroicons.LiveView.icon name="star" type="outline" class="inline h-5 w-5 text-white m-2" />
+              Your Shred Items
+            </div>
+            <div class="text-white">
+              <div :for={election <- get_elections(@current_user_holds)} class="">
+                <.link href={~p"/races/#{election.id}"}><p><%= election.desc %></p></.link>
               </div>
+            </div>
           </div>
+        
         </div>
 
         <StateSnapshot.display g_candidates={@g_candidates}/>

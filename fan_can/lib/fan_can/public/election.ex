@@ -392,6 +392,16 @@ defmodule FanCan.Public.Election do
     races = FanCan.Repo.all(query)
   end
 
+  def get_elections(hold_ids) do
+    IO.inspect(hold_ids, label: "election_hold_ids")
+    query =
+      from e in Election,
+      where: e.id in ^hold_ids,
+      # & type = :vote
+      select: e
+    elections = FanCan.Repo.all(query)
+  end
+
   #   def get_race_holds_by_token(token)
   #     when is_binary(token) do
   #   query = from u in User,
