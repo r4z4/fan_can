@@ -94,7 +94,7 @@ defmodule FanCanWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <div>
-    <.live_component module={PresenceDisplay} social_count={@social_count} room="Lobby" id="presence_display" />
+    <.live_component module={PresenceDisplay} social_count={@social_count} user_follow_holds={@current_user_holds.user_holds} room="Lobby" id="presence_display" />
       <.header class="text-center">
         Hello <%= assigns.current_user.username %> || Welcome to Fantasy Candidate
         <:subtitle>Not Really Sure What We're Doing Here Yet</:subtitle>
