@@ -21,7 +21,7 @@ defmodule FanCan.Repo.Migrations.CreateCandidates do
       add :education, {:array, :string}
       add :attachments, {:array, :binary_id}
 
-      timestamps()
+      timestamps(null: true)
     end
   end
 end

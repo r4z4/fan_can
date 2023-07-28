@@ -73,6 +73,30 @@ defmodule FanCan.Public do
   end
 
   @doc """
+  Gets the current mayor for the user's city and state.
+
+  ## Examples
+
+      iex> create_candidate(%{field: value})
+      {:ok, %Candidate{}}
+
+      iex> create_candidate(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def get_mayor(city \\ "", state \\ "") do
+    IO.inspect(city, label: "city")
+    IO.inspect(state, label: "state")
+    query =
+      from c in Candidate,
+      where: c.city == ^city,
+      where: c.state == ^state,
+      # & type = :vote
+      select: c
+    mayor = FanCan.Repo.one(query)
+  end
+
+  @doc """
   Updates a candidate.
 
   ## Examples

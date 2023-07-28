@@ -5,12 +5,14 @@ defmodule FanCanWeb.CandidateLive.Main do
   alias FanCan.Public.Candidate
   alias FanCan.Accounts
   alias FanCan.Core.{TopicHelpers, Holds}
+  alias FanCanWeb.Components.CandidateSnapshot
 
   @impl true
   def mount(_params, _session, socket) do
     # {email, username} = Accounts.get_user_data_by_token(session["user_token"])
     # %{entries: entries, page_number: page_number, page_size: page_size, total_entries: total_entries, total_pages: total_pages}
     FanCanWeb.Endpoint.subscribe("topic")
+    mayor = Public.get_mayor(socket.assigns.current_user.city, socket.assigns.current_user.state)
     result = if connected?(socket), do: Public.paginate_candidates(), else: %Scrivener.Page{}
 
     for follow = %Holds{} <- socket.assigns.current_user_holds do
@@ -44,6 +46,7 @@ defmodule FanCanWeb.CandidateLive.Main do
      |> assign(:page_number, result.page_number || 0)
      |> assign(:page_size, result.page_size || 0)
      |> assign(:total_entries, result.total_entries || 0)
+     |> assign(:mayor, mayor)
      |> assign(:total_pages, result.total_pages || 0)}
   end
 

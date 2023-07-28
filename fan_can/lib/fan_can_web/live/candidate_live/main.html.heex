@@ -13,6 +13,9 @@
   </:col>
 </.table>
 
+
+<CandidateSnapshot.display mayor={@mayor} />
+
 <.modal :if={@live_action == :edit} id="candidate-modal" show on_cancel={JS.patch(~p"/candidate/#{@candidate}")}>
   <.live_component
     module={FanCanWeb.CandidateLive.FormComponent}
