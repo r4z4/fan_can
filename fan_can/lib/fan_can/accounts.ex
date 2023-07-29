@@ -176,6 +176,29 @@ defmodule FanCan.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Gets all users in a list of user_ids.
+
+  Raises `Ecto.NoResultsError` if the no users found.
+
+  ## Examples
+
+      iex> get_users(["UUID", "UUID" ... "UUID"])
+      [%User{}, %User{} ... %User{}]
+
+      iex> get_users(["UUID", "UUID" ... "UUID"])
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_users(ids) do
+    query =
+      from u in User,
+      where: u.id in ^ids,
+      # & type = :vote
+      select: u
+    users = FanCan.Repo.all(query)
+  end
+
   ## User registration
 
   @doc """

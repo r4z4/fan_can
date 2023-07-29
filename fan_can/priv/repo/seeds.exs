@@ -373,8 +373,16 @@ Repo.insert_all(Thread, [
             likes: 0, shares: 2, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "4fd6aa47-51da-4277-bca6-3a87b2153c20", title: "Interesting Facts I Learned about the Unicameral", creator: "b2f44567-e031-44f1-aae6-972d7aabbb45", forum_id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", 
             content: "Every now and then I just stumble across intersting facts and just figured that I would have to share them", 
-            likes: 4, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
-
+            likes: 4, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "b2a8dcab-1d6f-45d3-9356-95713abc0669", title: "You Should Follow What the Great State of Minnesota Does", creator: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", forum_id: "c6643e31-52a3-4936-ab15-c81f0fe29ab8", 
+            content: "Every now and then I just stumble across intersting facts and just figured that I would have to share them", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "af3d214f-7761-4ba4-af26-0faf07c368ba", title: "Minnesota Users Seem to be Lacking Around Here", creator: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", forum_id: "3f826aed-ab18-47d3-80b5-b20328db4e0f", 
+            content: "I certainly hope that this can change soon because it is always nice to have a wide variety of poeople on a platform such as this one.", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "ad9952fb-dff9-4bc5-b1c5-ef0a6cc38316", title: "Differences in States - E.g. Minnesota vs. Nebraska", creator: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", forum_id: "acc8123d-d79e-416c-890f-7e56a51ffe32", 
+            content: "This is one of those posts that are from the Minnesota person and he is being followed by a certain subset of people to make it better to debug. God bless him.", 
+            likes: 0, shares: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 ])
 
 Repo.insert_all(Post, [
@@ -399,6 +407,15 @@ Repo.insert_all(Post, [
       %{id: Ecto.UUID.generate(), title: "Misc Post", author: "a9f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "00411e71-e465-43c5-8521-66edbee07171", 
             content: "Just something of the misx category here. Maybe I will come back in and formulate something big and fancy", upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{id: "9de1ea76-ce5a-447f-a809-7b62dcbfa3a7", title: "I Disagree", author: "b2f44567-e031-44f1-aae6-972d7aabbb45", thread_id: "208272e9-1765-451f-9acb-79699ce5fc25", 
+            content: "I get what you are saying here, and I have in fact seen some of that myself, but I think that it is something to be overcome instead.", 
+            upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "01d9b7cf-4684-43bc-8b20-fc5e1ff56420", title: "Back in Minnesota there is a certain way that we do things", author: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", thread_id: "dd9ea23d-00ca-4f64-9226-dd95b86747b6", 
+            content: "I get what you are saying here, and I have in fact seen some of that myself, but I think that it is something to be overcome instead.", 
+            upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "3ab6efb5-d84f-4932-bd21-cfac11763407", title: "Minnesota seems be blocked from the VPN", author: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
+            content: "I am trying to connect here so that I can vote vote vote, but I cannot seem to get through. I wonder if there is some kind of weird firewall issue that seems to be interrupting the flow here. One of these days I think that we should all rallly together and really come up with some solutions here. But until then, I guess, I will just wait and see what your response is", 
+            upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
+      %{id: "9d44f5fd-4016-462e-85f9-bb41f2ac8692", title: "Can People From Minnesota Vote in Other State Elections?", author: "67bbf29b-7ee9-48a4-b2fb-9a113e26ac91", thread_id: "acdd24e9-adc8-4ddc-969b-cc7bd7085e2f", 
             content: "I get what you are saying here, and I have in fact seen some of that myself, but I think that it is something to be overcome instead.", 
             upvotes: 0, downvotes: 0, updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
 

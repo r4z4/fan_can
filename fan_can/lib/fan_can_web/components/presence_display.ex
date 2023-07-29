@@ -28,16 +28,34 @@ defmodule FanCanWeb.Components.PresenceDisplay do
       |> assign(:room, params.room)}
   end
 
+  defp users_from_metas(metas) do
+    Enum.map(metas, &get_in(&1, [:username]))
+    |> Enum.uniq()
+  end
+
+  def get_users(joins) do
+  IO.inspect(joins, label: "joins")
+    for x <- Map.keys(joins) do 
+      joins
+        |> Map.get(x)
+        |> Map.get(:metas)
+        |> List.first()
+    end
+  end
+
   def update(assigns, socket) do
-    IO.inspect(self(), label: "UPDATE")
+    IO.inspect(assigns, label: "assigns")
     IO.inspect(assigns.room, label: "ROOM")
     socket = assign(socket, assigns)
 
     # before subscribing, get current_player_count
     # topic = "Lobby"
     initial_count = Presence.list(assigns.room) |> map_size
-    initial_user_id_list = Presence.list(assigns.room) |> Map.keys()
-    initial_users = Presence.list(assigns.room) |> Accounts.get_users()
+    users = Presence.list(assigns.room) |> get_users()
+
+    IO.inspect(Presence.list(assigns.room), label: "Presence.list(assigns.room)")
+
+    IO.inspect(users, label: "USERS")
 
     # Subscribe to the topic
     FanCanWeb.Endpoint.subscribe(assigns.room)
@@ -48,15 +66,15 @@ defmodule FanCanWeb.Components.PresenceDisplay do
       assigns.room,
       socket.id,
       %{
-        username: username,
+        username: assigns.username,
+        user_id: assigns.user_id,
         joined_at: :os.system_time(:seconds)
       }
     )
 
     {:ok,
       socket
-      |> assign(:user_id_list, initial_user_id_list)
-      |> assign(:users, initial_users)
+      |> assign(:users, users)
       |> assign(:social_count, initial_count)}
   end
 
@@ -66,20 +84,13 @@ defmodule FanCanWeb.Components.PresenceDisplay do
       <div class="flex items-center justify-center my-4">
           <!-- Card -->
             <%= for user <- assigns.users do %>
-              <div class="flex">
-                <div class=" flex items-center justify-between p-2 rounded-lg bg-white shadow-indigo-50 shadow-md">
-                    <div class="content">
-                      <div class="flex items-center justify-center">
-                        <div :if={Enum.member?(@user_follow_holds, user.id)}>
-                          <icon :if={user.id == assigns.current_user_id}>✴</icon>
-                          <div :if={user.id in assigns.current_user_follows}>
-                              <button phx-click="toggle_follow" value={ user.id } id="follow_btn">✅</button>{" "}
-                          </div>
-                        </div>
-                        {user.username}
-                      </div>
+                <div class="flex items-center justify-between mx-1 p-2 rounded-lg bg-white shadow-indigo-50 shadow-md">
+                  <div class="flex items-center justify-center">
+                    <div :if={Enum.member?(@user_follow_holds, user.user_id)}>
+                      <button phx-click="toggle_follow" value={ user.user_id } id="follow_btn">✅</button>
+                    </div>
+                      <icon :if={user.user_id == assigns.user_id}>✴</icon><%= user.username %>
                   </div>
-                </div>
               </div>
             <% end %>
           <!-- End Card -->
@@ -90,11 +101,17 @@ defmodule FanCanWeb.Components.PresenceDisplay do
 
   def handle_info(
         %{event: "presence_diff", payload: %{joins: joins, leaves: leaves}},
-        %{assigns: %{social_count: count}} = socket
+        %{assigns: %{user_id_list: id_list, users: users}} = socket
       ) do
-    social_count = count + map_size(joins) - map_size(leaves)
+      IO.inspect(joins, label: "Joins")
+    user_id_list = [Map.keys(joins) | id_list] |> List.delete(Map.keys(leaves))
+    users = get_users(joins) ++ users |> List.delete(get_users(leaves))
+    IO.inspect(users, label: "Users List")
+    IO.inspect(Kernel.length(users), label: "Username List Length")
 
-    {:noreply, assign(socket, :social_count, social_count)}
+    {:noreply, socket 
+      |> assign(user_id_list: user_id_list)
+      |> assign(users: users)}
   end
 
   def handle_event("social", _value, socket) do
