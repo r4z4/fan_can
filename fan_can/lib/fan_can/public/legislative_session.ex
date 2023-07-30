@@ -1,5 +1,6 @@
 defmodule FanCan.Public.LegislativeSession do
   use Ecto.Schema
+  import Ecto.Changeset
 
   embedded_schema do
     field :session_id, :integer
@@ -17,7 +18,6 @@ defmodule FanCan.Public.LegislativeSession do
     field :session_hash, :string
     field :name, :string
   end
-end
 
   @doc false
   def changeset(legislative_session, attrs) do

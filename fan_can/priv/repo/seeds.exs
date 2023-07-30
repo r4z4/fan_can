@@ -14,7 +14,7 @@
 
 alias FanCan.Repo
 alias FanCan.Accounts.{User, UserHolds, Authorize}
-alias FanCan.Public.{Candidate, Election, State}
+alias FanCan.Public.{Candidate, Election, State, Legislator}
 alias FanCan.Site.Forum
 alias FanCan.Public.Election.Ballot
 alias FanCan.Site.Forum.Post
@@ -469,6 +469,12 @@ Repo.insert_all(Holds, [
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :favorite, hold_cat: :post, hold_cat_id: "566f949a-be08-49e7-9c60-0c33d55b791b", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "b5f44567-e031-44f1-aae6-972d7aabbb45", type: :favorite, hold_cat: :user, hold_cat_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()},
       %{user_id: "df18d5eb-e99e-4481-9e16-4d2f434a3711", type: :favorite, hold_cat: :thread, hold_cat_id: "4fd6aa47-51da-4277-bca6-3a87b2153c20", updated_at: NaiveDateTime.local_now(), inserted_at: NaiveDateTime.local_now()}
+])
+# I need a generic opponent to load for the ballots for now (during offseason)
+Repo.insert_all(Legislator, [
+      %{
+            people_id: 99999, person_hash: "ababababab", party_id: "6", state_id: 00, party: "N", role_id: 2, role: "Sen", name: "Jim Opponent", first_name: "Jim", middle_name: "", last_name: "Oppponent", suffix: "",
+            nickname: "", district: "SD-014", ftm_eid: nil, votesmart_id: nil, opensecrets_id: "", knowwho_pid: nil, ballotpedia: "", bioguide_id: "", committee_sponsor: 0, committee_id: 0, state_federal: 0}
 ])
 
 #Authorization Roles

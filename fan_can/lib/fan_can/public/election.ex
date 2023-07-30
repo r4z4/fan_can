@@ -21,13 +21,10 @@ defmodule FanCan.Public.Election do
     |> validate_required([:year, :state, :desc, :election_date])
   end
 
-  alias FanCan.Public.Election.Race
-  alias FanCan.Public.Election.Ballot
-  alias FanCan.Public.Election  
-  alias FanCan.Public.Candidate  
+  alias FanCan.Public.{Election, Candidate, Legislator}  
   alias FanCan.Core.Holds
   alias FanCan.Accounts.{UserHolds, User, UserToken}
-  alias FanCan.Public.Election.{RaceHolds, ElectionHolds, CandidateHolds}
+  alias FanCan.Public.Election.{RaceHolds, Ballot, Race, ElectionHolds, CandidateHolds}
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
@@ -68,6 +65,26 @@ defmodule FanCan.Public.Election do
       where: c.id in r.candidates,
       where: r.id == ^race_id
     FanCan.Repo.all(query)
+  end
+
+  def get_leg(state_id) do
+    query = from l in Legislator,
+      where: l.state_id == ^state_id
+    FanCan.Repo.all(query)
+  end
+
+  def get_mock(state_id) do
+    query = from l in Legislator,
+      where: l.state_id == 00
+    FanCan.Repo.one(query)
+  end
+
+  def get_legislators(state_id) do
+    real = get_leg(state_id)
+    length = Kernel.length(real)
+    mock = get_mock(state_id)
+    # mocks = List.duplicate(mock, length)
+    [List.first(real), mock]
   end
 
   @doc """

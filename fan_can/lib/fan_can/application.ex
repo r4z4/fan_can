@@ -20,7 +20,8 @@ defmodule FanCan.Application do
       FanCan.Presence,
       FanCan.ThinWrapper,
       # Start the Endpoint (http/https)
-      FanCanWeb.Endpoint
+      FanCanWeb.Endpoint,
+      {Task.Supervisor, name: FanCan.TaskSupervisor}
       # Start a worker by calling: FanCan.Worker.start_link(arg)
       # {FanCan.Worker, arg}
     ]

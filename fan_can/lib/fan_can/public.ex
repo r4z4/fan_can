@@ -7,6 +7,8 @@ defmodule FanCan.Public do
   alias FanCan.Repo
 
   alias FanCan.Public.Candidate
+  alias FanCan.Public.Legislator
+  alias FanCan.Core.Utils
 
   @doc """
   Returns the list of candidates.
@@ -70,6 +72,45 @@ defmodule FanCan.Public do
     %Candidate{}
     |> Candidate.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_legislator(attrs \\ %{}) do
+    %Legislator{}
+    |> Legislator.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def list_legislators(state) do
+    state_id = 
+      Enum.with_index(Utils.states)
+      |> Enum.find(fn {x,y} -> x == state end)
+      |> Kernel.elem(1)
+      |> Kernel.+(1)
+    query =
+      from l in Legislator,
+      where: l.state_id == ^state_id,
+      # & type = :vote
+      select: l
+    state_legislators = FanCan.Repo.all(query)
+  end
+
+  def create_legislators(list \\ []) do
+    IO.inspect(list, label: "Query list")
+    Repo.insert_all(Legislator, list, returning: true)
+  end
+
+  def state_records_exist?(state) do
+    IO.inspect(state, label: "state state list")
+    # Legiscan IDs alphabetical
+    state_id = 
+      Enum.with_index(Utils.states)
+      |> Enum.find(fn {x,y} -> x == state end)
+      |> Kernel.elem(1)
+      |> Kernel.+(1)
+    IO.inspect(state_id, label: "state_id")
+    result = Repo.exists?(from l in Legislator, where: l.state_id == ^state_id)
+    IO.inspect(result, label: "RESULT")
+    Repo.exists?(from l in Legislator, where: l.state_id == ^state_id)
   end
 
   @doc """

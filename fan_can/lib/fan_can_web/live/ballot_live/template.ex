@@ -5,7 +5,7 @@ defmodule FanCanWeb.BallotLive.Template do
   alias FanCan.Public.Election.{BallotRace, Ballot}
   alias FanCan.Accounts.UserHolds
   alias FanCan.Accounts
-  alias FanCanWeb.Components.{BallotEntry, BallotEntryForm}
+  alias FanCanWeb.Components.{BallotEntry, LegBallotEntry, BallotEntryForm}
 
 # @type ballot_map :: %{
 #    id: String.t,
@@ -69,7 +69,8 @@ defmodule FanCanWeb.BallotLive.Template do
     ballot_races = Election.get_ballot_races(id)
     final_ballot_races = 
       for ballot_race <- ballot_races do
-        candidates = Election.get_candidates(ballot_race.id)
+        # candidates = Election.get_candidates(ballot_race.id)
+        candidates = Election.get_legislators(socket.assigns.state_id)
         new = 
           Map.replace(ballot_race, :candidates, candidates)
       end

@@ -1,10 +1,13 @@
 defmodule FanCan.Public.Legislator do
   use Ecto.Schema
+  import Ecto.Changeset
 
-  embedded_schema do
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+  schema "legislators" do
     field :people_id, :integer
     field :person_hash, :string
-    field :party_id, :integer
+    field :party_id, :string
     field :state_id, :integer
     field :party, :string
     field :role_id, :integer
@@ -26,7 +29,6 @@ defmodule FanCan.Public.Legislator do
     field :committee_id, :integer
     field :state_federal, :integer
   end
-end
 
   @doc false
   def changeset(legislator, attrs) do

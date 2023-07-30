@@ -5,9 +5,10 @@ defmodule FanCanWeb.UserAuth do
   import Phoenix.Controller
 
   alias FanCan.Accounts
-  alias FanCan.Core.{TopicHelpers, Holds}
+  alias FanCan.Core.{TopicHelpers, Holds, Utils}
   alias FanCan.Accounts.UserHolds
   alias FanCan.Public.Election.RaceHolds
+  alias FanCan.Public
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -157,8 +158,10 @@ defmodule FanCanWeb.UserAuth do
   def on_mount(:ensure_authenticated, _params, session, socket) do
     socket = mount_current_user(session, socket)
     socket = mount_current_user_holds(session, socket)
+    socket = mount_state_id(socket)
     socket = mount_current_user_published_ids(session, socket)
     socket = mount_legiscan_keys(session, socket)
+    socket = mount_use_local_data(socket.assigns.current_user.state, socket)
     # socket = mount_current_user_post_ids(session, socket)
     
     if socket.assigns.current_user do
@@ -193,7 +196,28 @@ defmodule FanCanWeb.UserAuth do
     end)
   end
 
+  defp mount_state_id(socket) do
+      Phoenix.Component.assign_new(socket, :state_id, fn ->
+        Enum.with_index(Utils.states)
+        |> Enum.find(fn {x,y} -> x == socket.assigns.current_user.state end)
+        |> Kernel.elem(1)
+        |> Kernel.+(1)
+    end)
+  end
+
+  defp mount_use_local_data(state, socket) do
+      Phoenix.Component.assign_new(socket, :use_local_data, fn ->
+      # if state in Utils.states do
+        case Public.state_records_exist?(state) do
+          true -> true
+          false -> false
+        end
+      # end
+    end)
+  end
+
   defp mount_legiscan_keys(session, socket) do
+      mount_use_local_data(socket.assigns.current_user.state, socket)
       Phoenix.Component.assign_new(socket, :legiscan_keys, fn ->
       if user_token = session["user_token"] do
         user = Accounts.get_user_by_session_token(user_token)
@@ -205,7 +229,7 @@ defmodule FanCanWeb.UserAuth do
         {:ok, body} = Jason.decode(resp.body)
 
         # IO.inspect(body["offices"], label: "Offices")
-        IO.inspect(body, label: "legiscan")
+        # IO.inspect(body, label: "legiscan")
         # First one will be the current one
         List.first(body["sessions"])
       end

@@ -1,4 +1,6 @@
 defmodule FanCan.Core.Utils do
+
+    # Ensure these are alphabetical. Legiscan API state IDs based on that. NE = 27 & MN = 23
     def states do
         [:AL,:AK,:AZ,:AR,:CA,:CO,:CT,:DE,:FL,:GA,:HI,:ID,:IL,:IN,:IA,:KS,:KY,:LA,:ME,:MD,:MA,
         :MI,:MN,:MS,:MO,:MT,:NE,:NV,:NH,:NJ,:NM,:NY,:NC,:ND,:OH,:OK,:OR,:PA,:RI,:SC,:SD,:TN,
@@ -67,4 +69,5 @@ defmodule FanCan.Core.Utils do
     def forum_categories do
         [:Site, :General, :Politics, :State]
     end
+
 end

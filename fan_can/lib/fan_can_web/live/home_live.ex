@@ -23,7 +23,14 @@ defmodule FanCanWeb.HomeLive do
 #   end
 
   def mount(_params, session, socket) do
-    g_candidates = api_query(socket.assigns.current_user.state)
+    # Send to ETS table vs storing in socket
+    # g_candidates = api_query(socket.assigns.current_user.state)
+    task = 
+      Task.Supervisor.async(FanCan.TaskSupervisor, fn ->
+        IO.puts("Hey from a task")
+        api_query(socket.assigns.current_user.state)
+      end)
+
     IO.inspect(self(), label: "Self")
     IO.inspect(socket, label: "Home Socket")
     for hold_cat <- socket.assigns.current_user_holds do
@@ -49,13 +56,17 @@ defmodule FanCanWeb.HomeLive do
     # send pid, {:subscribe_user_published, socket.assigns.current_user_published_ids}
     # # ThinWrapper.put("game_data", game_data)
     # # game_data = ThinWrapper.get("game_data")
-
-    floor_actions = floor_query("house")
-
+    floor_task = 
+      Task.Supervisor.async(FanCan.TaskSupervisor, fn ->
+        IO.puts("Hey from a task")
+        floor_actions = floor_query("house")
+      end)
+    
     {:ok,
      socket
      |> assign(:messages, [])
-     |> assign(:g_candidates, g_candidates)
+     |> assign(:g_candidates, Task.await(task))
+     |> assign(:floor_actions, Task.await(floor_task))
      |> assign(:social_count, 0)}
   end
   # this is the order returned from the query in accounts.ex
@@ -87,7 +98,7 @@ defmodule FanCanWeb.HomeLive do
   end
 
   defp get_favorites(holds) do
-    IO.inspect(holds, label: "holds")
+    # IO.inspect(holds, label: "holds")
     all_holds = holds.candidate_holds ++ holds.user_holds ++ holds.election_holds ++ holds.race_holds ++ holds.post_holds ++ holds.thread_holds
     |> Enum.filter(fn x -> x.type == :favorite end)
   end

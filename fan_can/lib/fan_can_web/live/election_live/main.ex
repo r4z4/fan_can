@@ -2,6 +2,7 @@ defmodule FanCanWeb.ElectionLive.Main do
   use FanCanWeb, :live_view
 
   alias FanCan.Public
+  alias FanCan.Public.Legislator
   alias FanCan.Public.Election
   alias FanCan.Core.{TopicHelpers, Holds}
   import FanCan.Accounts.Authorize, only: [get_permissions: 1, read?: 2, create?: 2, edit?: 2, delete?: 2]
@@ -10,8 +11,12 @@ defmodule FanCanWeb.ElectionLive.Main do
   def mount(_params, _session, socket) do
     # IO.inspect(socket, label: "Election Socket")
     role = socket.assigns.current_user.role
-    legislators = get_session_people(socket.assigns.legiscan_keys["session_id"])
-    IO.inspect(people, label: "People")
+    legislators = 
+      case socket.assigns.use_local_data do
+        true -> Public.list_legislators(socket.assigns.current_user.state)
+        false -> get_session_people(socket.assigns.legiscan_keys["session_id"])
+      end
+    IO.inspect(legislators, label: "legislators")
     for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
@@ -56,9 +61,28 @@ defmodule FanCanWeb.ElectionLive.Main do
     {:ok, body} = Jason.decode(resp.body)
 
     # IO.inspect(body["offices"], label: "Offices")
-    IO.inspect(body, label: "session people")
+    # IO.inspect(body, label: "session people")
+    list = body["sessionpeople"]["people"]
+    struct_list = to_structs(list)
     # Return it as a list of map-items
-    body["people"]
+    case Public.create_legislators(struct_list) do
+      {id, legislators} -> 
+        legislators
+
+      {:error, resp} -> IO.inspect(resp, label: "RESP")
+        {:error, "Error in Persist People"}
+    end
+  end
+
+  defp to_structs(list) do
+    # IO.inspect(list, label: "LIST")
+    for item <- list do
+      leg_with_atom_keys = for {key, val} <- item, into: %{} do
+        {String.to_existing_atom(key), val}
+      end
+      # leg_struct = struct(Legislator, leg_with_atom_keys)
+      leg_with_atom_keys
+    end
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
