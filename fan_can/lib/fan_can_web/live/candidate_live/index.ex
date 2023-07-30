@@ -38,6 +38,7 @@ defmodule FanCanWeb.CandidateLive.Index do
 
     loc_info = get_voter_info(socket.assigns.current_user)
     
+    
     {:ok, 
      socket
      |> stream(:candidates, result.entries)

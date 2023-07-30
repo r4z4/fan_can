@@ -158,6 +158,7 @@ defmodule FanCanWeb.UserAuth do
     socket = mount_current_user(session, socket)
     socket = mount_current_user_holds(session, socket)
     socket = mount_current_user_published_ids(session, socket)
+    socket = mount_legiscan_keys(session, socket)
     # socket = mount_current_user_post_ids(session, socket)
     
     if socket.assigns.current_user do
@@ -188,6 +189,25 @@ defmodule FanCanWeb.UserAuth do
       Phoenix.Component.assign_new(socket, :current_user_holds, fn ->
       if user_token = session["user_token"] do
         Accounts.get_all_holds_by_token(user_token)
+      end
+    end)
+  end
+
+  defp mount_legiscan_keys(session, socket) do
+      Phoenix.Component.assign_new(socket, :legiscan_keys, fn ->
+      if user_token = session["user_token"] do
+        user = Accounts.get_user_by_session_token(user_token)
+        IO.puts("LegiScan")
+        {:ok, resp} =
+          Finch.build(:get, "https://api.legiscan.com/?key=#{System.fetch_env!("LEGISCAN_KEY")}&op=getSessionList&state=#{user.state}")
+          |> Finch.request(FanCan.Finch)
+
+        {:ok, body} = Jason.decode(resp.body)
+
+        # IO.inspect(body["offices"], label: "Offices")
+        IO.inspect(body, label: "legiscan")
+        # First one will be the current one
+        List.first(body["sessions"])
       end
     end)
   end

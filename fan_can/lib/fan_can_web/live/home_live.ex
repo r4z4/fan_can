@@ -50,6 +50,8 @@ defmodule FanCanWeb.HomeLive do
     # # ThinWrapper.put("game_data", game_data)
     # # game_data = ThinWrapper.get("game_data")
 
+    floor_actions = floor_query("house")
+
     {:ok,
      socket
      |> assign(:messages, [])
@@ -236,6 +238,35 @@ defmodule FanCanWeb.HomeLive do
     IO.inspect(body["officials"], label: "Officials")
 
     %{"offices" => body["offices"], "officials" => body["officials"]}
+  end
+
+      @doc """
+      "results" => [
+        %{
+          "chamber" => "House",
+          "congress" => "118",
+          "date" => "2023-07-30",
+          "floor_actions" => [],
+          "num_results" => 0,
+          "offset" => 0
+        }
+      ],
+    """
+
+  defp floor_query(chamber \\ "house") do
+    IO.puts("Floor Query firing")
+    date = Date.utc_today()
+    # state_str = get_str(state)
+    # IO.inspect(state_str, label: "State")
+    {:ok, resp} =
+      Finch.build(:get, "https://api.propublica.org/congress/v1/#{chamber}/floor_updates/#{date.year}/#{date.month}/#{date.day}.json", [{"X-API-Key", System.fetch_env!("PROPUB_KEY")}])
+      |> Finch.request(FanCan.Finch)
+
+    {:ok, body} = Jason.decode(resp.body)
+
+    # IO.inspect(body["offices"], label: "Offices")
+    IO.inspect(body, label: "floor_action")
+    body["results"]
   end
 
   @impl true

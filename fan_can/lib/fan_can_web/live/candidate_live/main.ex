@@ -37,12 +37,14 @@ defmodule FanCanWeb.CandidateLive.Main do
     end
 
     loc_info = get_voter_info(socket.assigns.current_user)
-    
+    nominations = api_query(socket.assigns.current_user.state)
+
     {:ok, 
      socket
      |> stream(:candidates, result.entries)
      |> stream(:stream_messages, [])
      |> assign(:loc_info, loc_info)
+     |> assign(:nominations, nominations)
      |> assign(:page_number, result.page_number || 0)
      |> assign(:page_size, result.page_size || 0)
      |> assign(:total_entries, result.total_entries || 0)
@@ -66,6 +68,22 @@ defmodule FanCanWeb.CandidateLive.Main do
     # IO.inspect(body, label: "Body")
     # IO.inspect(filtered, label: "Filtered")
     filtered
+  end
+
+  defp api_query(state) do
+    IO.puts("Api Query firing")
+    # state_str = get_str(state)
+    # IO.inspect(state_str, label: "State")
+    {:ok, resp} =
+      Finch.build(:get, "https://api.propublica.org/congress/v1/117/nominees/state/NE.json", [{"X-API-Key", System.fetch_env!("PROPUB_KEY")}])
+      |> Finch.request(FanCan.Finch)
+
+    {:ok, body} = Jason.decode(resp.body)
+
+    # IO.inspect(body["offices"], label: "Offices")
+    IO.inspect(body, label: "nominees")
+    # Return it as a list of map-items
+    body["results"]
   end
 
   @impl true

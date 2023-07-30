@@ -10,6 +10,8 @@ defmodule FanCanWeb.ElectionLive.Main do
   def mount(_params, _session, socket) do
     # IO.inspect(socket, label: "Election Socket")
     role = socket.assigns.current_user.role
+    legislators = get_session_people(socket.assigns.legiscan_keys["session_id"])
+    IO.inspect(people, label: "People")
     for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
@@ -34,12 +36,29 @@ defmodule FanCanWeb.ElectionLive.Main do
     {:ok, socket
           |> stream(:elections, Public.list_elections_and_ballots())
           # Use streams, but for something we display always. Not a flash. Keep flash with assigns below.
-          |> stream(:stream_messages, [])}
+          |> stream(:stream_messages, [])
+          |> assign(:legislators, legislators)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp get_session_people(session_id) do
+    IO.puts("get_session_people")
+    # state_str = get_str(state)
+    # IO.inspect(state_str, label: "State")
+    {:ok, resp} =
+      Finch.build(:get, "https://api.legiscan.com/?key=#{System.fetch_env!("LEGISCAN_KEY")}&op=getSessionPeople&id=#{session_id}")
+      |> Finch.request(FanCan.Finch)
+
+    {:ok, body} = Jason.decode(resp.body)
+
+    # IO.inspect(body["offices"], label: "Offices")
+    IO.inspect(body, label: "session people")
+    # Return it as a list of map-items
+    body["people"]
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do

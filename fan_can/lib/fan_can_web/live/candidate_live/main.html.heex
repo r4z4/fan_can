@@ -1,5 +1,19 @@
 <.header class="text-center w-fit m-auto px-12 py-4 border-2 border-solid border-fuchsia-400">State & County Officials</.header>
 
+<div class="m-auto text-white">
+  <h4>Recent Nominations for @current_user.state Representatives</h4>
+    <ul>
+      <%= for item <- @nominations do %>
+        <li>
+          <div>
+            <%= item["description"] %>
+            <%= item["status"] %>
+          </div>
+        </li>
+      <%= end %>
+    </ul>
+</div>
+
 <.table
   id="contests"
   rows={@loc_info}
