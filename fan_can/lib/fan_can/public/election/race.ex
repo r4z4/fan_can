@@ -10,7 +10,7 @@ defmodule FanCan.Public.Election.Race do
     field :attachments, {:array, :binary_id}
     field :candidates, {:array, :binary_id}
     field :election_id, :binary_id
-    field :district, :integer
+    field :district, :string
     # field :shares, :integer
     # field :bookmarks, :integer
     # field :alerts, :integer

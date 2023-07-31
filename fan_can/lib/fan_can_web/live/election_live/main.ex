@@ -67,11 +67,25 @@ defmodule FanCanWeb.ElectionLive.Main do
     # Return it as a list of map-items
     case Public.create_legislators(struct_list) do
       {id, legislators} -> 
+        legislators = legislators
+        create_ballot_races(legislators, "b566874e-dee8-4d31-a67e-a0ec5c9254b1")
         legislators
 
       {:error, resp} -> IO.inspect(resp, label: "RESP")
         {:error, "Error in Persist People"}
     end
+  end
+
+  defp create_ballot_races(legislators, election_id) do
+    # IO.inspect(list, label: "LIST")
+    race_list =
+      Enum.map(legislators, fn leg -> %{election_id: election_id, candidates: [{leg}], seat: leg.role, district: leg.district} end)
+      case Public.create_leg_ballot_races(race_list) do
+        {id, list} -> IO.inspect(list, label: "LIST")
+
+        {:error, resp} -> IO.inspect(resp, label: "RESP")
+          {:error, "Error in Persist People"}
+      end
   end
 
   defp to_structs(list) do

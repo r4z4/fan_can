@@ -65,8 +65,8 @@ defmodule FanCanWeb.HomeLive do
     {:ok,
      socket
      |> assign(:messages, [])
-     |> assign(:g_candidates, Task.await(task))
-     |> assign(:floor_actions, Task.await(floor_task))
+     |> assign(:g_candidates, Task.await(task, 10000))
+     |> assign(:floor_actions, Task.await(floor_task, 10000))
      |> assign(:social_count, 0)}
   end
   # this is the order returned from the query in accounts.ex

@@ -8,6 +8,7 @@ defmodule FanCan.Public do
 
   alias FanCan.Public.Candidate
   alias FanCan.Public.Legislator
+  alias FanCan.Public.Election.Race
   alias FanCan.Core.Utils
 
   @doc """
@@ -92,6 +93,12 @@ defmodule FanCan.Public do
       # & type = :vote
       select: l
     state_legislators = FanCan.Repo.all(query)
+  end
+
+  def create_leg_ballot_races(race_list \\ []) do
+    %Race{}
+    |> Race.changeset(race_list)
+    Repo.insert_all(Race, race_list, returning: true)
   end
 
   def create_legislators(list \\ []) do

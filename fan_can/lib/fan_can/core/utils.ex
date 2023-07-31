@@ -20,7 +20,7 @@ defmodule FanCan.Core.Utils do
     end
 
     def seats do
-        [:Senator, :State_Senator, :Judge, :Legislator, :Representative, :Comptroller, :Mayor, :Governor, :Sherrif, :Board_Member, :Council_Member, :Public_Defender]
+        [:Senator, :Sen, :State_Senator, :Judge, :Legislator, :Representative, :Rep, :Comptroller, :Mayor, :Governor, :Sherrif, :Board_Member, :Council_Member, :Public_Defender]
     end
 
     def parties do
