@@ -67,10 +67,11 @@ defmodule FanCanWeb.BallotLive.Template do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     ballot_races = Election.get_ballot_races(id)
+    IO.inspect(ballot_races, label: "ballot_races")
     final_ballot_races = 
       for ballot_race <- ballot_races do
         # candidates = Election.get_candidates(ballot_race.id)
-        candidates = Election.get_legislators(socket.assigns.state_id)
+        candidates = Election.get_legislators_from_ids(ballot_race.candidates)
         new = 
           Map.replace(ballot_race, :candidates, candidates)
       end
@@ -80,7 +81,7 @@ defmodule FanCanWeb.BallotLive.Template do
      |> assign(:ballot, Election.get_ballot!(id))
      |> assign(:ballot_form, nil)
      |> assign(:ballot_races, final_ballot_races)
-     |> assign(:election_id, Map.fetch!(List.first(final_ballot_races), :election_id))
+     |> assign(:election_id, Map.fetch!(List.first(ballot_races), :election_id))
      |> assign(:desc, List.first(ballot_races).desc)}
   end
 

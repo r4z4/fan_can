@@ -96,9 +96,10 @@ defmodule FanCan.Public do
   end
 
   def create_leg_ballot_races(race_list \\ []) do
-    %Race{}
-    |> Race.changeset(race_list)
-    Repo.insert_all(Race, race_list, returning: true)
+    case Repo.insert_all(Race, race_list, returning: true) do
+      {id, race_list} -> {:ok, id}
+      {:error, _} -> IO.puts("RACE LIST Error")
+    end
   end
 
   def create_legislators(list \\ []) do

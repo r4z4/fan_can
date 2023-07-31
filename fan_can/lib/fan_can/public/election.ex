@@ -51,7 +51,7 @@ defmodule FanCan.Public.Election do
       where: b.id == ^ballot_id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => r.id, :candidates => [], :seat => r.seat, :district => r.district, :state => e.state, :desc => e.desc, :election_id => e.id, :year => e.year, :inserted_at => b.inserted_at, :updated_at => b.updated_at}
+      select: %{:id => r.id, :candidates => r.candidates, :seat => r.seat, :district => r.district, :election_id => e.id, :desc => "Legislator ballot race"}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id
@@ -85,6 +85,12 @@ defmodule FanCan.Public.Election do
     mock = get_mock(state_id)
     # mocks = List.duplicate(mock, length)
     [List.first(real), mock]
+  end
+
+  def get_legislators_from_ids(id_list) do
+    query = from l in Legislator,
+      where: l.id in ^id_list
+    FanCan.Repo.all(query)
   end
 
   @doc """

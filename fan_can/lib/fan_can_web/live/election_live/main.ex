@@ -14,7 +14,7 @@ defmodule FanCanWeb.ElectionLive.Main do
     legislators = 
       case socket.assigns.use_local_data do
         true -> Public.list_legislators(socket.assigns.current_user.state)
-        false -> get_session_people(socket.assigns.legiscan_keys["session_id"])
+        false -> get_session_people(socket.assigns.legiscan_keys["session_id"], socket.assigns.current_user.id)
       end
     IO.inspect(legislators, label: "legislators")
     for follow = %Holds{} <- socket.assigns.current_user_holds do
@@ -50,7 +50,7 @@ defmodule FanCanWeb.ElectionLive.Main do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp get_session_people(session_id) do
+  defp get_session_people(session_id, user_id) do
     IO.puts("get_session_people")
     # state_str = get_str(state)
     # IO.inspect(state_str, label: "State")
@@ -68,6 +68,7 @@ defmodule FanCanWeb.ElectionLive.Main do
     case Public.create_legislators(struct_list) do
       {id, legislators} -> 
         legislators = legislators
+        create_ballot("b566874e-dee8-4d31-a67e-a0ec5c9254b1", user_id)
         create_ballot_races(legislators, "b566874e-dee8-4d31-a67e-a0ec5c9254b1")
         legislators
 
@@ -76,16 +77,26 @@ defmodule FanCanWeb.ElectionLive.Main do
     end
   end
 
-  defp create_ballot_races(legislators, election_id) do
-    # IO.inspect(list, label: "LIST")
-    race_list =
-      Enum.map(legislators, fn leg -> %{election_id: election_id, candidates: [{leg}], seat: leg.role, district: leg.district} end)
-      case Public.create_leg_ballot_races(race_list) do
-        {id, list} -> IO.inspect(list, label: "LIST")
+  defp create_ballot(election_id, user_id) do
+    attrs = %{election_id: election_id, user_id: user_id, submitted: false}
+    case Election.create_ballot(attrs) do
+      {:ok, ballot} -> IO.inspect(ballot, label: "ballot")
 
-        {:error, resp} -> IO.inspect(resp, label: "RESP")
-          {:error, "Error in Persist People"}
-      end
+      {:error, resp} -> IO.inspect(resp, label: "RESP")
+        {:error, "Error in ballot"}
+    end
+  end
+
+  defp create_ballot_races(legislators, election_id) do
+    IO.inspect(List.first(legislators), label: "LIST first leg")
+    race_list = Enum.map(legislators, fn leg -> %{election_id: election_id, candidates: [leg.id], seat: String.to_existing_atom(leg.role), district: leg.district, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()} end)
+    IO.inspect(race_list, label: "race_list")
+    case Public.create_leg_ballot_races(race_list) do
+      {:ok, id} -> IO.inspect(id, label: "ID of Created Insert all")
+
+      {:error, resp} -> IO.inspect(resp, label: "RESP")
+        {:error, "Error in Persist People"}
+    end
   end
 
   defp to_structs(list) do
