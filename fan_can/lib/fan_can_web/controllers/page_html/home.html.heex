@@ -7,7 +7,7 @@
       <%= if @current_user do %>
         <h5 class="text-2xl mt-2 sm:text-2xl tracking-widest text-white lg:text-3xl">Hello, <%= assigns.current_user.username %>. To view information for <%= assigns.current_user.state %>, please follow the link.</h5>
           <.link href={~p"/home"}><Heroicons.LiveView.icon name="home" type="outline" class="mt-2 h-14 w-14 text-sky-500 inline" /></.link>
-          <.link href={~p"/home"}><img class="m-auto text-center w-1/5" src={~p"/images/state_svg/ne.svg"} /></.link>
+          <.link href={~p"/home"}><img class="m-auto text-center w-1/5" src={~p"/images/state_svg/#{Atom.to_string(@current_user.state) |> String.downcase()}/outline.svg"} /></.link>
       <% else %>
         <h3 class="text-2xl sm:text-2xl tracking-widest text-white lg:text-3xl">Please <.link hover:text-zinc-700 href={~p"/users/log_in"}>Log in <Heroicons.LiveView.icon name="arrow-right-on-rectangle" type="outline" class="inline h-14 w-14 text-sky-500" /></.link> to Continue</h3>
       <% end %>

@@ -49,6 +49,8 @@ defmodule FanCan.Public.Election do
       join: b in Ballot,
       on: b.election_id == e.id,
       where: b.id == ^ballot_id,
+      where: r.district != "",
+      order_by: [asc: r.district],
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
       select: %{:id => r.id, :candidates => r.candidates, :seat => r.seat, :district => r.district, :election_id => e.id, :desc => "Legislator ballot race"}
