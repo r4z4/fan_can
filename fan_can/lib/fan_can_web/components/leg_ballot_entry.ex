@@ -71,10 +71,10 @@ defmodule FanCanWeb.Components.LegBallotEntry do
           <div class="mt-2">
             <a href={"/races/inspect/#{@ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
             <div class="inline w-auto bg-slate-700 rounded-md">
-              <button phx-click="star_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-              <button phx-click="share_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
-              <button phx-click="bell_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-              <button phx-click="bookmark_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
+              <button type="button" phx-click="star_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+              <button type="button" phx-click="share_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
+              <button type="button" phx-click="bell_click" phx-value-id={@ballot_race.id}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
+              <button type="button" phx-click="bookmark_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
             </div>
           </div>
       </div>

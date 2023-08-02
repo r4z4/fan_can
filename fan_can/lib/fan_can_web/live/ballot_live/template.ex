@@ -89,7 +89,7 @@ defmodule FanCanWeb.BallotLive.Template do
   def handle_event("bell_click", %{"id" => id}, socket) do
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, hold_cat: :race, hold_cat_id: id}
       # FIXME: Move to RegisterHandlers
-      case Election.register_alert(attrs) do
+      case Election.register_hold(attrs) do
         {:ok, holds} -> 
           IO.inspect(holds, label: "Holds: ")
           {:noreply,
@@ -108,7 +108,7 @@ defmodule FanCanWeb.BallotLive.Template do
   def handle_event("bookmark_click", %{"id" => id, "desc" => desc}, socket) do
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, hold_cat: :race, hold_cat_id: id}
       # FIXME: Move to RegisterHandlers
-      case Election.register_bookmark(attrs) do
+      case Election.register_hold(attrs) do
         {:ok, holds} -> 
           IO.inspect(holds, label: "Holds: ")
           {:noreply,

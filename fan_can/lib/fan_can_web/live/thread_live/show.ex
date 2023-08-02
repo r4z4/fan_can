@@ -4,6 +4,7 @@ defmodule FanCanWeb.ThreadLive.Show do
   alias FanCan.Site.Forum
   alias FanCan.Site.Forum.Thread
   alias FanCan.Site.Forum.Post
+  alias FanCan.Public.Election
 
   @impl true
   def mount(_params, _session, socket) do
@@ -39,7 +40,39 @@ defmodule FanCanWeb.ThreadLive.Show do
     upvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} upvoted your post :)"}
     IO.inspect(upvoted_message, label: "upvoted_message")
     FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", upvoted_message)
-    {:noreply, socket}
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :upvote, hold_cat: :post, hold_cat_id: id}
+    case Election.register_hold(attrs) do
+      {:ok, holds} -> 
+        IO.inspect(holds, label: "Holds: ")
+        {:noreply,
+          socket
+          |> put_flash(:info, "Upvoted: #{post.title}")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset, label: "Holds Error: ")
+        {:noreply, 
+          socket
+          |> put_flash(:error, "Error upvoting #{post.title}")}
+    end
+  end
+
+    @impl true
+  def handle_event("bookmark_click", %{"id" => id, "desc" => desc}, socket) do
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, hold_cat: :race, hold_cat_id: id}
+      # FIXME: Move to RegisterHandlers
+      case Election.register_hold(attrs) do
+        {:ok, holds} -> 
+          IO.inspect(holds, label: "Holds: ")
+          {:noreply,
+            socket
+            |> put_flash(:info, "Successfully bookmarked race: #{desc}")}
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          IO.inspect(changeset, label: "Holds Error: ")
+          {:noreply, 
+            socket
+            |> put_flash(:error, "Error adding alert for #{desc}")}
+      end
   end
 
   @impl true

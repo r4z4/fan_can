@@ -4,7 +4,7 @@ defmodule FanCanWeb.ElectionLive.Main do
   alias FanCan.Public
   alias FanCan.Public.Legislator
   alias FanCan.Public.Election
-  alias FanCan.Core.{TopicHelpers, Holds}
+  alias FanCan.Core.{TopicHelpers, Holds, Constants}
   import FanCan.Accounts.Authorize, only: [get_permissions: 1, read?: 2, create?: 2, edit?: 2, delete?: 2]
 
   @impl true
@@ -14,9 +14,9 @@ defmodule FanCanWeb.ElectionLive.Main do
     legislators = 
       case socket.assigns.use_local_data do
         true -> Public.list_legislators(socket.assigns.current_user.state)
-        false -> get_session_people(socket.assigns.legiscan_keys["session_id"], socket.assigns.current_user.id)
+        false -> get_session_people(socket.assigns.legiscan_keys["session_id"], socket.assigns.current_user)
       end
-    IO.inspect(legislators, label: "legislators")
+    # IO.inspect(legislators, label: "legislators")
     for follow = %Holds{} <- socket.assigns.current_user_holds do
       IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
@@ -50,8 +50,9 @@ defmodule FanCanWeb.ElectionLive.Main do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp get_session_people(session_id, user_id) do
+  defp get_session_people(session_id, user) do
     IO.puts("get_session_people")
+    election_id = Election.get_election_id(user.state, Constants.current_election)
     # state_str = get_str(state)
     # IO.inspect(state_str, label: "State")
     {:ok, resp} =
@@ -63,13 +64,24 @@ defmodule FanCanWeb.ElectionLive.Main do
     # IO.inspect(body["offices"], label: "Offices")
     # IO.inspect(body, label: "session people")
     list = body["sessionpeople"]["people"]
+    # Insert into DB as JSONB now too
+    for item <- list do
+      attrs = %{api_map: item}
+      IO.inspect(attrs, label: "ATTRS")
+      case Public.create_legislator_json(attrs) do
+        {:ok, leg} -> 
+          IO.inspect(leg, label: "here is leg")
+        {:error, changeset} -> IO.puts("Nope")
+      end
+    end
+
     struct_list = to_structs(list)
     # Return it as a list of map-items
     case Public.create_legislators(struct_list) do
       {id, legislators} -> 
         legislators = legislators
-        create_ballot("b566874e-dee8-4d31-a67e-a0ec5c9254b1", user_id)
-        create_ballot_races(legislators, "b566874e-dee8-4d31-a67e-a0ec5c9254b1")
+        create_ballot(election_id, user.id)
+        create_ballot_races(legislators, election_id)
         legislators
 
       {:error, resp} -> IO.inspect(resp, label: "RESP")
@@ -80,7 +92,7 @@ defmodule FanCanWeb.ElectionLive.Main do
   defp create_ballot(election_id, user_id) do
     attrs = %{election_id: election_id, user_id: user_id, submitted: false}
     case Election.create_ballot(attrs) do
-      {:ok, ballot} -> IO.inspect(ballot, label: "ballot")
+      {:ok, ballot} -> IO.puts("ballot")
 
       {:error, resp} -> IO.inspect(resp, label: "RESP")
         {:error, "Error in ballot"}
@@ -88,9 +100,9 @@ defmodule FanCanWeb.ElectionLive.Main do
   end
 
   defp create_ballot_races(legislators, election_id) do
-    IO.inspect(List.first(legislators), label: "LIST first leg")
+    # IO.inspect(List.first(legislators), label: "LIST first leg")
     race_list = Enum.map(legislators, fn leg -> %{election_id: election_id, candidates: [leg.id], seat: String.to_existing_atom(leg.role), district: leg.district, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()} end)
-    IO.inspect(race_list, label: "race_list")
+    # IO.inspect(race_list, label: "race_list")
     case Public.create_leg_ballot_races(race_list) do
       {:ok, id} -> IO.inspect(id, label: "ID of Created Insert all")
 

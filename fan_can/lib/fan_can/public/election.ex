@@ -324,20 +324,39 @@ defmodule FanCan.Public.Election do
       {:error, %Ecto.Changeset{}}
 
   """
+  # DRY
+  def register_upvote_downvote(attrs) do
+    IO.inspect(attrs, label: "Attrs")
+    # For now this'll always just be a post. might not always be though
+    case Map.fetch(attrs, :type) do
+      {:ok, :upvote} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      {:ok, :downvote} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      _ -> IO.puts("No Match for Upvote Downvote")
+    end
+  end
+
   def register_alert(attrs) do
     IO.inspect(attrs, label: "Attrs")
     case Map.fetch(attrs, :hold_cat) do
-      :race -> 
+      {:ok, :race} -> 
         %Holds{}
           |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
-      :election -> 
+      {:ok, :election} -> 
         %Holds{}
           |> Holds.changeset(attrs)
           |> Repo.insert(returning: true)
 
-      :user -> 
+      {:ok,:user} -> 
         %Holds{}
         |> Holds.changeset(attrs)
         |> Repo.insert(returning: true)
@@ -365,6 +384,18 @@ defmodule FanCan.Public.Election do
         |> Repo.insert(returning: true)
 
       _ -> IO.puts("Bookmark Ooooooooooooooops")
+    end
+  end
+
+  def register_hold(attrs) do
+    IO.inspect(attrs, label: "Hold Attrs")
+    case Map.fetch(attrs, :hold_cat) do
+      {:ok, _} -> 
+        %Holds{}
+          |> Holds.changeset(attrs)
+          |> Repo.insert(returning: true)
+
+      _ -> IO.puts("No Match on Register Holds")
     end
   end
 
@@ -425,6 +456,16 @@ defmodule FanCan.Public.Election do
       # & type = :vote
       select: e
     elections = FanCan.Repo.all(query)
+  end
+
+  def get_election_id(state, desc) do
+    query =
+      from e in Election,
+      where: e.state == ^state,
+      where: e.desc == ^desc,
+      # & type = :vote
+      select: e.id
+    id = FanCan.Repo.one(query)
   end
 
   #   def get_race_holds_by_token(token)

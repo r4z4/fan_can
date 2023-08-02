@@ -6,8 +6,7 @@ defmodule FanCan.Public do
   import Ecto.Query, warn: false
   alias FanCan.Repo
 
-  alias FanCan.Public.Candidate
-  alias FanCan.Public.Legislator
+  alias FanCan.Public.{Legislator, LegislatorJson, Candidate}
   alias FanCan.Public.Election.Race
   alias FanCan.Core.Utils
 
@@ -81,6 +80,12 @@ defmodule FanCan.Public do
     |> Repo.insert()
   end
 
+  def create_legislator_json(attrs \\ %{}) do
+    %LegislatorJson{}
+    |> LegislatorJson.changeset(attrs)
+    |> Repo.insert()
+  end
+
   def list_legislators(state) do
     state_id = 
       Enum.with_index(Utils.states)
@@ -103,7 +108,7 @@ defmodule FanCan.Public do
   end
 
   def create_legislators(list \\ []) do
-    IO.inspect(list, label: "Query list")
+    # IO.inspect(list, label: "Query list")
     Repo.insert_all(Legislator, list, returning: true)
   end
 
