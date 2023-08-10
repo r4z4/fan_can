@@ -59,6 +59,7 @@ defmodule FanCan.MixProject do
       {:ex_heroicons, "~> 2.0.0"},
       {:scrivener_ecto, "~> 2.0"},
       {:dotenv_parser, "~> 2.0"},
+      {:logger_file_backend, "~> 0.0.10"},
       {:plug_cowboy, "~> 2.5"}
     ]
   end

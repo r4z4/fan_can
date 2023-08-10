@@ -1,5 +1,6 @@
 defmodule FanCanWeb.HomeLive do
   use FanCanWeb, :live_view
+  require Logger
 
   alias FanCan.Accounts
   alias FanCan.Core.TopicHelpers
@@ -30,9 +31,10 @@ defmodule FanCanWeb.HomeLive do
         IO.puts("Hey from a task")
         api_query(socket.assigns.current_user.state)
       end)
-
-    IO.inspect(self(), label: "Self")
-    IO.inspect(socket, label: "Home Socket")
+    Logger.info("Home Socket = #{inspect socket}", ansi_color: :magenta)
+    Logger.info("Self = #{inspect self()}", ansi_color: :magenta_background)
+    # IO.inspect(self(), label: "Self")
+    # IO.inspect(socket, label: "Home Socket")
     for hold_cat <- socket.assigns.current_user_holds do
       IO.inspect(hold_cat, label: "hold_cat")
       # Subscribe to user_holds. E.g. forums that user subscribes to

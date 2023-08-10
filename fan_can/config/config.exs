@@ -58,9 +58,32 @@ config :tailwind,
   ]
 
 # Configures Elixir's Logger
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+# These options are ignored w/ our setup below
+# config :logger, :console,
+#   # format: "$time $metadata[$level] $message\n",
+#   format: {FanCan.LoggerFormatter, :format},
+#   metadata: [:request_id]
+
+config :logger,
+  backends: [:console, 
+             {LoggerFileBackend, :info},
+             {LoggerFileBackend, :error}],
+
+  # Setting format seems to have no effect here.
+  # format: {FanCan.LoggerFormatter, :format},
+  # format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
+
+config :logger, :info,
+  path: "/tmp/info/info.log",
+  format: {FanCan.LoggerFormatter, :format},
+  level: :info,
+  metadata: [:mfa]
+
+config :logger, :error_log, 
+  path: "/tmp/error/info.log",
+  level: :debug,
+  metadata: [:mfa]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
