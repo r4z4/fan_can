@@ -67,7 +67,6 @@ defmodule FanCanWeb.BallotLive.Template do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     ballot_races = Election.get_ballot_races(id)
-    IO.inspect(ballot_races, label: "ballot_races")
     final_ballot_races = 
       for ballot_race <- ballot_races do
         # candidates = Election.get_candidates(ballot_race.id)
@@ -91,13 +90,11 @@ defmodule FanCanWeb.BallotLive.Template do
       # FIXME: Move to RegisterHandlers
       case Election.register_hold(attrs) do
         {:ok, holds} -> 
-          IO.inspect(holds, label: "Holds: ")
           {:noreply,
             socket
             |> put_flash(:info, "We have set an alert for Race: #{holds.id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          IO.inspect(changeset, label: "Holds Error: ")
           {:noreply, 
             socket
             |> put_flash(:error, "Error adding alert")}
@@ -110,13 +107,11 @@ defmodule FanCanWeb.BallotLive.Template do
       # FIXME: Move to RegisterHandlers
       case Election.register_hold(attrs) do
         {:ok, holds} -> 
-          IO.inspect(holds, label: "Holds: ")
           {:noreply,
             socket
             |> put_flash(:info, "Successfully bookmarked race: #{desc}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          IO.inspect(changeset, label: "Holds Error: ")
           {:noreply, 
             socket
             |> put_flash(:error, "Error adding alert for #{desc}")}
@@ -128,47 +123,39 @@ defmodule FanCanWeb.BallotLive.Template do
   end
 
   def add_or_replace(attrs, candidate_ids, socket) do
-    IO.inspect(socket.assigns.vote_list, label: "Vote List")
-    IO.inspect(candidate_ids, label: "candidate_ids")
     # race = Enum.find(socket.assigns.ballot_races, fn br -> br = district end)
     # opponents =       
     #   Enum.filter(race.candidates, fn(c) -> if c.id != attrs.candidate_id, do: c.id, else: nil end)
     # IO.inspect(opponents, label: "Opponent")
     has_voted = Enum.find(socket.assigns.vote_list, fn v -> v in candidate_ids end)
-    IO.inspect(has_voted, label: "Has Voted")
     if has_voted do
       case Election.unregister_vote(has_voted, :candidate) do # Remove Previous Vote
         {:ok, struct} -> 
           case Election.register_vote(attrs) do
             {:ok, holds} -> 
-              IO.inspect(holds, label: "Holds: ")
               {:noreply,
                 socket
                 |> assign(:vote_list, [attrs.hold_cat_id | List.delete(socket.assigns.vote_list, has_voted)])
                 |> put_flash(:info, "Successfully voted for: #{attrs.hold_cat_id}")}
 
             {:error, %Ecto.Changeset{} = changeset} ->
-              IO.inspect(changeset, label: "Holds Error: ")
               {:noreply, 
                 socket
                 |> put_flash(:error, "Error adding alert for #{attrs.hold_cat_id}")}
           end
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          IO.inspect(changeset, label: "Holds Error: ")
           {:noreply, socket}
       end
     else
       case Election.register_vote(attrs) do
         {:ok, holds} -> 
-          IO.inspect(holds, label: "Holds: ")
           {:noreply,
             socket
             |> assign(:vote_list, [attrs.hold_cat_id | socket.assigns.vote_list])
             |> put_flash(:info, "Successfully voted for: #{attrs.hold_cat_id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          IO.inspect(changeset, label: "Holds Error: ")
           {:noreply, 
             socket
             |> put_flash(:error, "Error adding alert for #{attrs.hold_cat_id}")}
@@ -178,16 +165,12 @@ defmodule FanCanWeb.BallotLive.Template do
 
   @impl true
   def handle_event("vote_casted", params, socket) do
-    IO.inspect(params, label: "Params")
     # idx = List.to_string(params["_target"])
     # {int_val, ""} = Integer.parse(idx)
     # id = params[idx]
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :vote, hold_cat: :candidate, hold_cat_id: params["id"]}
-    IO.inspect(attrs, label: "Vote Casted Attrs")
-    IO.inspect(socket.assigns.ballot_form, label: "Assigns")
     # Governor race has no distrcit. How we handling that?
-    {district, ""} = Integer.parse(params["value"])
-    IO.inspect(district, label: "Vote Casted District")
+    district = params["value"]
     race = Enum.find(socket.assigns.ballot_races, fn x -> x.district == district end)
     candidate_ids = Enum.map(race.candidates, fn x -> x.id end)
     race_vote = %{district => district, }
@@ -225,8 +208,6 @@ defmodule FanCanWeb.BallotLive.Template do
   end
   
   def format_vote_map(vote_list, election_id, ballot_races) do
-    IO.inspect(ballot_races, label: "FMV Ballot Races")
-    IO.inspect(vote_list, label: "Vote List")
     # IO.inspect(first_map, label: "First Map")
 
     ballot_list = Enum.map(ballot_races, fn br -> %{:district => br.district, :candidates => Enum.map(br.candidates, fn c -> c.id end)} end) 

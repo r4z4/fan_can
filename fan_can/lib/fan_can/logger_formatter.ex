@@ -9,8 +9,6 @@ defmodule FanCan.LoggerFormatter do
           metadata: encode_metadata(metadata)
         }
       )
-    IO.inspect(log_event, label: "Log event")  
-
     Jason.encode!(log_event)
   rescue
     _ -> "could not format: #{inspect({level, message, timestamp, metadata})}"
@@ -27,11 +25,8 @@ defmodule FanCan.LoggerFormatter do
   # Not working
   defp format_timestamp(ts) do
     if ts do
-      IO.inspect(ts, label: "TS")
       date = "#{Kernel.elem(Kernel.elem(ts, 0), 0)}-#{Kernel.elem(Kernel.elem(ts, 0), 1)}-#{Kernel.elem(Kernel.elem(ts, 0), 2)}"
-      IO.inspect(date, label: "DATE")
       time = "#{Kernel.elem(Kernel.elem(ts, 1), 0)}:#{Kernel.elem(Kernel.elem(ts, 1), 1)}:#{Kernel.elem(Kernel.elem(ts, 1), 2)}:#{Kernel.elem(Kernel.elem(ts, 1), 3)}"
-      IO.inspect(time, label: "TIME")
       date <> "T" <> time
     end
   end

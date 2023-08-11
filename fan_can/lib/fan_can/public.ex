@@ -113,16 +113,13 @@ defmodule FanCan.Public do
   end
 
   def state_records_exist?(state) do
-    IO.inspect(state, label: "state state list")
     # Legiscan IDs alphabetical
     state_id = 
       Enum.with_index(Utils.states)
       |> Enum.find(fn {x,y} -> x == state end)
       |> Kernel.elem(1)
       |> Kernel.+(1)
-    IO.inspect(state_id, label: "state_id")
     result = Repo.exists?(from l in Legislator, where: l.state_id == ^state_id)
-    IO.inspect(result, label: "RESULT")
     Repo.exists?(from l in Legislator, where: l.state_id == ^state_id)
   end
 
@@ -139,8 +136,6 @@ defmodule FanCan.Public do
 
   """
   def get_mayor(city \\ "", state \\ "") do
-    IO.inspect(city, label: "city")
-    IO.inspect(state, label: "state")
     query =
       from c in Candidate,
       where: c.city == ^city,

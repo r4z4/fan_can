@@ -18,7 +18,6 @@ defmodule FanCanWeb.ElectionLive.Main do
       end
     # IO.inspect(legislators, label: "legislators")
     for follow = %Holds{} <- socket.assigns.current_user_holds do
-      IO.inspect(follow, label: "Type")
       # Subscribe to user_holds. E.g. forums that user subscribes to
       case follow.type do
         :candidate -> TopicHelpers.subscribe_to_holds("candidate", follow.follow_ids)
@@ -67,10 +66,8 @@ defmodule FanCanWeb.ElectionLive.Main do
     # Insert into DB as JSONB now too
     for item <- list do
       attrs = %{api_map: item}
-      IO.inspect(attrs, label: "ATTRS")
       case Public.create_legislator_json(attrs) do
-        {:ok, leg} -> 
-          IO.inspect(leg, label: "here is leg")
+        {:ok, leg} -> IO.puts("Leg")
         {:error, changeset} -> IO.puts("Nope")
       end
     end
@@ -105,7 +102,6 @@ defmodule FanCanWeb.ElectionLive.Main do
     # IO.inspect(race_list, label: "race_list")
     case Public.create_leg_ballot_races(race_list) do
       {:ok, id} -> IO.inspect(id, label: "ID of Created Insert all")
-
       {:error, resp} -> IO.inspect(resp, label: "RESP")
         {:error, "Error in Persist People"}
     end

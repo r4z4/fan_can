@@ -240,7 +240,6 @@ defmodule FanCanWeb.HomeLive do
 
   def api_query(state) do
     state_str = get_str(state)
-    IO.inspect(state_str, label: "State")
     {:ok, resp} =
       Finch.build(:get, "https://civicinfo.googleapis.com/civicinfo/v2/representatives?address=#{state_str}&key=#{System.fetch_env!("GCLOUD_PROJECT")}")
       |> Finch.request(FanCan.Finch)
@@ -248,7 +247,6 @@ defmodule FanCanWeb.HomeLive do
     {:ok, body} = Jason.decode(resp.body)
 
     # IO.inspect(body["offices"], label: "Offices")
-    IO.inspect(body["officials"], label: "Officials")
 
     %{"offices" => body["offices"], "officials" => body["officials"]}
   end
@@ -277,8 +275,6 @@ defmodule FanCanWeb.HomeLive do
 
     {:ok, body} = Jason.decode(resp.body)
 
-    # IO.inspect(body["offices"], label: "Offices")
-    IO.inspect(body, label: "floor_action")
     body["results"]
   end
 
@@ -306,7 +302,6 @@ defmodule FanCanWeb.HomeLive do
   @impl true
   def handle_info(%{event: "new_message", payload: new_message}, socket) do
     updated_messages = socket.assigns[:messages] ++ [new_message]
-    IO.inspect(new_message, label: "New Message")
 
     {:noreply,
      socket

@@ -2,6 +2,7 @@ defmodule FanCan.Public.Election do
   use Ecto.Schema
   import Ecto.Changeset
   alias FanCan.Core.Utils
+  alias FanCan.Public
   
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -18,7 +19,7 @@ defmodule FanCan.Public.Election do
   def changeset(election, attrs) do
     election
     |> cast(attrs, [:year, :state, :desc, :election_date])
-    |> validate_required([:year, :state, :desc, :election_date])
+    |> validate_required([:year, :state, :desc])
   end
 
   alias FanCan.Public.{Election, Candidate, Legislator}  
@@ -326,7 +327,6 @@ defmodule FanCan.Public.Election do
   """
   # DRY
   def register_upvote_downvote(attrs) do
-    IO.inspect(attrs, label: "Attrs")
     # For now this'll always just be a post. might not always be though
     case Map.fetch(attrs, :type) do
       {:ok, :upvote} -> 
@@ -344,7 +344,6 @@ defmodule FanCan.Public.Election do
   end
 
   def register_alert(attrs) do
-    IO.inspect(attrs, label: "Attrs")
     case Map.fetch(attrs, :hold_cat) do
       {:ok, :race} -> 
         %Holds{}
@@ -366,7 +365,6 @@ defmodule FanCan.Public.Election do
   end
 
   def register_bookmark(attrs) do
-    IO.inspect(attrs, label: "Attrs")
     case Map.fetch(attrs, :hold_cat) do
       {:ok, :race} -> 
         %Holds{}
@@ -388,7 +386,6 @@ defmodule FanCan.Public.Election do
   end
 
   def register_hold(attrs) do
-    IO.inspect(attrs, label: "Hold Attrs")
     case Map.fetch(attrs, :hold_cat) do
       {:ok, _} -> 
         %Holds{}
@@ -400,7 +397,6 @@ defmodule FanCan.Public.Election do
   end
 
   def register_vote(attrs) do
-    IO.inspect(attrs, label: "Attrs ElectionEX")
     case Map.fetch(attrs, :hold_cat) do
       {:ok, :candidate} -> 
         %Holds{}
@@ -412,7 +408,6 @@ defmodule FanCan.Public.Election do
   end
 
   def register_ballot(attrs) do
-    IO.inspect(attrs, label: "Attrs Ballot")
     case Map.fetch(attrs, :user_id) do
       {:ok, _} -> 
         get_ballot!(attrs.id)
@@ -423,7 +418,6 @@ defmodule FanCan.Public.Election do
   end
 
   def unregister_vote(id, cat) do
-    IO.inspect(id, label: "unregister id")
     query =
       from h in Holds,
       where: h.hold_cat_id == ^id,
@@ -431,7 +425,6 @@ defmodule FanCan.Public.Election do
       # & type = :vote
       select: h
     candidate = FanCan.Repo.one(query)
-    IO.inspect(candidate, label: "to delete")
     case FanCan.Repo.delete candidate do
       {:ok, struct}       -> {:ok, struct}
       {:error, changeset} -> IO.inspect(changeset, label: "changeset")
@@ -439,7 +432,6 @@ defmodule FanCan.Public.Election do
   end
 
   def get_races(race_hold_ids) do
-    IO.inspect(race_hold_ids, label: "race_hold_ids")
     query =
       from r in Race,
       where: r.id in ^race_hold_ids,
@@ -449,7 +441,6 @@ defmodule FanCan.Public.Election do
   end
 
   def get_elections(hold_ids) do
-    IO.inspect(hold_ids, label: "election_hold_ids")
     query =
       from e in Election,
       where: e.id in ^hold_ids,
@@ -466,6 +457,14 @@ defmodule FanCan.Public.Election do
       # & type = :vote
       select: e.id
     id = FanCan.Repo.one(query)
+
+    if !id do
+      attrs = %{id: Ecto.UUID.generate(), desc: desc, state: state, year: 2024}
+      case Public.create_election(attrs) do
+        {:ok, struct}       -> struct.id
+        {:error, changeset} -> IO.inspect(changeset, label: "changeset")
+      end
+    end
   end
 
   #   def get_race_holds_by_token(token)

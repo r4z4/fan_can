@@ -10,7 +10,7 @@ defmodule FanCan.Repo.Migrations.CreateUsersAuthTables do
       add :role, :string, null: false, default: "reader"
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
-      timestamps()
+      timestamps(null: [:updated_at])
     end
 
     create unique_index(:users, [:email])
