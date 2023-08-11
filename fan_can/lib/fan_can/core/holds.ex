@@ -10,6 +10,7 @@ defmodule FanCan.Core.Holds do
     field :hold_cat_id, :binary_id
     field :hold_cat, Ecto.Enum, values: Utils.hold_cats
     field :type, Ecto.Enum, values: Utils.hold_types
+    field :active, :boolean
 
     timestamps()
   end

@@ -397,13 +397,24 @@ defmodule FanCan.Public.Election do
   end
 
   def register_vote(attrs) do
-    case Map.fetch(attrs, :hold_cat) do
-      {:ok, :candidate} -> 
-        %Holds{}
-          |> Holds.changeset(attrs)
-          |> Repo.insert(returning: true)
+    # If hold exists, flip to active. Else, create new.
+    query =
+      from h in Holds,
+      where: h.hold_cat_id == ^attrs.hold_cat_id,
+      where: h.hold_cat == ^attrs.hold_cat,
+      where: h.type == ^attrs.type,
+      select: h
+    hold = FanCan.Repo.one(query)
+    Account.update_hold(hold, active: false)
+    if !hold do
+      case Map.fetch(attrs, :hold_cat) do
+        {:ok, :candidate} -> 
+          %Holds{}
+            |> Holds.changeset(attrs)
+            |> Repo.insert(returning: true)
 
-      _ -> IO.puts("Ooooooooooooooops")
+        _ -> IO.puts("Ooooooooooooooops")
+      end
     end
   end
 
@@ -417,18 +428,10 @@ defmodule FanCan.Public.Election do
     end
   end
 
-  def unregister_vote(id, cat) do
-    query =
-      from h in Holds,
-      where: h.hold_cat_id == ^id,
-      where: h.hold_cat == ^cat,
-      # & type = :vote
-      select: h
-    candidate = FanCan.Repo.one(query)
-    case FanCan.Repo.delete candidate do
-      {:ok, struct}       -> {:ok, struct}
-      {:error, changeset} -> IO.inspect(changeset, label: "changeset")
-    end
+  # Have it take a list now to handle multiple unregisters (clearing)
+  def unregister_votes(id_list, cat) do
+    from(h in Holds, where: h.hold_cat_id in ^id_list, where: h.hold_cat == ^cat, where: h.type == :vote, select: h)
+    |> FanCan.Repo.update_all(set: [active: false])
   end
 
   def get_races(race_hold_ids) do

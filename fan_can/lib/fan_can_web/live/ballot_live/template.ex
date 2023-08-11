@@ -1,6 +1,6 @@
 defmodule FanCanWeb.BallotLive.Template do
   use FanCanWeb, :live_view
-
+  require Logger
   alias FanCan.Public.Election
   alias FanCan.Public.Election.{BallotRace, Ballot}
   alias FanCan.Accounts.UserHolds
@@ -16,6 +16,7 @@ defmodule FanCanWeb.BallotLive.Template do
   def mount(_params, _session, socket) do
     vote_list = 
       Enum.filter(socket.assigns.current_user_holds.candidate_holds, fn hold -> Map.fetch!(hold, :type) == :vote end)
+      |> Enum.filter(fn x -> x.active == true end)
       |> comprehend()
 
     {:ok, 
@@ -102,6 +103,28 @@ defmodule FanCanWeb.BallotLive.Template do
       end
   end
 
+  @impl true
+  def handle_event("reset_ballot", %{"id" => id, "candidates" => candidates}, socket) do
+    <<head :: binary-size(36)>> <> rest = candidates
+    Logger.info("Candidate String --> #{candidates}", ansi_color: :magenta)
+    candidate_list =
+      case String.length(rest) do
+        0 -> [head]
+        _ -> [head, rest]
+      end
+    Logger.info("Canddiate List --> #{candidate_list}", ansi_color: :blue_background)
+    case Election.unregister_votes(candidate_list, :candidate) do
+      :ok        -> IO.puts("Getting one Ok")
+      [:ok, :ok] -> IO.puts("Got the OKOK")
+      _          -> IO.puts("NO Ok____Ok")
+    end
+    {:noreply, 
+      socket
+      # Alter the assigns so the page will refresh and checkmark will be cleared
+      |> assign(:vote_list, [Enum.reject(socket.assigns.vote_list, fn x -> x in candidate_list end)])
+      |> put_flash(:info, "Ballot has been reset")}
+  end
+
   def voted_for?(id, holds) do
     Enum.member?(holds, id)
   end
@@ -113,7 +136,7 @@ defmodule FanCanWeb.BallotLive.Template do
     # IO.inspect(opponents, label: "Opponent")
     has_voted = Enum.find(socket.assigns.vote_list, fn v -> v in candidate_ids end)
     if has_voted do
-      case Election.unregister_vote(has_voted, :candidate) do # Remove Previous Vote
+      case Election.unregister_votes([has_voted], :candidate) do # Remove Previous Vote
         {:ok, struct} -> 
           case Election.register_vote(attrs) do
             {:ok, holds} -> 

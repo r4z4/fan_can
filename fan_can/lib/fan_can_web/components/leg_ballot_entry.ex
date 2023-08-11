@@ -55,7 +55,9 @@ defmodule FanCanWeb.Components.LegBallotEntry do
           <h3 class="col-span-5 font-semibold text-lg leading-6 text-white h-5">
             <span class="ml-3 text-purple" :if={@ballot_race.district}>District: <%= @ballot_race.district %></span><span>Seat: <%= @ballot_race.seat %></span>
           </h3>
-          <Heroicons.LiveView.icon name="arrow-path-rounded-square" type="outline" class="h-5 w-5 text-yellow-300 col-span-1 md:col-span-1" />
+          <button type="button" phx-click="reset_ballot" phx-value-id={@ballot_race.id} phx-value-candidates={Enum.map(@ballot_race.candidates, fn x -> x.id end) |> List.to_string()}>
+            <Heroicons.LiveView.icon name="arrow-path-rounded-square" type="outline" class="h-5 w-5 text-yellow-300 col-span-1 md:col-span-1" />
+          </button>
         </div>
           <ul :for={candidate <- @ballot_race.candidates} class="mb-2">
           <button

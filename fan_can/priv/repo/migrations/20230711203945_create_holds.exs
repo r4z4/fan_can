@@ -8,6 +8,8 @@ defmodule FanCan.Repo.Migrations.CreateHolds do
       add :type, :string, null: false
       add :hold_cat_id, :binary_id, null: false
       add :hold_cat, :string, null: false
+      # Most common case is adding a hold = default to true
+      add :active, :boolean, null: false, default: true
 
       timestamps()
     end
