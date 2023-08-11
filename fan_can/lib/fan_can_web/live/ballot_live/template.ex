@@ -85,36 +85,20 @@ defmodule FanCanWeb.BallotLive.Template do
   end
 
   @impl true
-  def handle_event("bell_click", %{"id" => id}, socket) do
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :alert, hold_cat: :race, hold_cat_id: id}
+  def handle_event("action_click", %{"id" => id, "desc" => desc, "type" => type}, socket) do
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: type, hold_cat: :race, hold_cat_id: id}
+    IO.inspect(attrs, label: "attrs")
       # FIXME: Move to RegisterHandlers
       case Election.register_hold(attrs) do
         {:ok, holds} -> 
           {:noreply,
             socket
-            |> put_flash(:info, "We have set an alert for Race: #{holds.id}")}
+            |> put_flash(:info, "We have set a #{type} for #{attrs.hold_cat}: #{id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, 
             socket
-            |> put_flash(:error, "Error adding alert")}
-      end
-  end
-
-  @impl true
-  def handle_event("bookmark_click", %{"id" => id, "desc" => desc}, socket) do
-    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :bookmark, hold_cat: :race, hold_cat_id: id}
-      # FIXME: Move to RegisterHandlers
-      case Election.register_hold(attrs) do
-        {:ok, holds} -> 
-          {:noreply,
-            socket
-            |> put_flash(:info, "Successfully bookmarked race: #{desc}")}
-
-        {:error, %Ecto.Changeset{} = changeset} ->
-          {:noreply, 
-            socket
-            |> put_flash(:error, "Error adding alert for #{desc}")}
+            |> put_flash(:error, "Error adding a #{type} for #{attrs.hold_cat}")}
       end
   end
 
