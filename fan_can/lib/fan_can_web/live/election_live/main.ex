@@ -11,6 +11,10 @@ defmodule FanCanWeb.ElectionLive.Main do
   def mount(_params, _session, socket) do
     # IO.inspect(socket, label: "Election Socket")
     role = socket.assigns.current_user.role
+    {_id, pid} = :ets.lookup(:mailbox_registry, socket.assigns.current_user.id) |> List.first()
+    IO.inspect(pid, label: "PID")
+    {_messages, message_list} = Process.info(pid, :messages)
+    IO.inspect(message_list, label: "Message List")
     legislators = 
       case socket.assigns.use_local_data do
         true -> Public.list_legislators(socket.assigns.current_user.state)
