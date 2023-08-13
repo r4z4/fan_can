@@ -32,7 +32,6 @@ defmodule FanCanWeb.HomeLive do
         api_query(socket.assigns.current_user.state)
       end)
     Logger.info("Home Socket = #{inspect socket}", ansi_color: :magenta)
-    Logger.info("Self = #{inspect self()}", ansi_color: :magenta_background)
     # IO.inspect(self(), label: "Self")
     # IO.inspect(socket, label: "Home Socket")
     for hold_cat <- socket.assigns.current_user_holds do

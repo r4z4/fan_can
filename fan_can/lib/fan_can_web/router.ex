@@ -13,6 +13,10 @@ defmodule FanCanWeb.Router do
     plug :fetch_current_user
   end
 
+  # pipeline :messages do
+  #   plug :put_root_layout, {FanCanWeb.Layouts, :messages}
+  # end
+
   pipeline :api do
     plug :accepts, ["json"]
   end

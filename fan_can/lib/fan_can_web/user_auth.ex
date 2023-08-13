@@ -1,6 +1,6 @@
 defmodule FanCanWeb.UserAuth do
   use FanCanWeb, :verified_routes
-
+  require Logger
   import Plug.Conn
   import Phoenix.Controller
 
@@ -159,6 +159,7 @@ defmodule FanCanWeb.UserAuth do
     socket = mount_current_user(session, socket)
     socket = mount_current_user_holds(session, socket)
     socket = mount_state_id(socket)
+    socket = mount_mailbox_pid(socket)
     socket = mount_current_user_published_ids(session, socket)
     socket = mount_legiscan_keys(session, socket)
     socket = mount_use_local_data(socket.assigns.current_user.state, socket)
@@ -197,12 +198,6 @@ defmodule FanCanWeb.UserAuth do
   end
 
   defp mount_state_id(socket) do
-      pid = spawn(FanCan.Mailbox, :init, ["Hello, Alpha Centauri!"])
-      IO.inspect(pid, label: "The Pid Mane:")
-      # Dont need a new one each time
-      :ets.new(:mailbox_registry, [:set, :public, :named_table])
-      :ets.insert(:mailbox_registry, {socket.assigns.current_user.id, pid})
-      Phoenix.Component.assign(socket, :mailbox_pid, pid)
       Phoenix.Component.assign_new(socket, :state_id, fn ->
         Enum.with_index(Utils.states)
         |> Enum.find(fn {x,y} -> x == socket.assigns.current_user.state end)
@@ -211,9 +206,20 @@ defmodule FanCanWeb.UserAuth do
     end)
   end
 
+  defp mount_mailbox_pid(socket) do
+      {:ok, pid} = GenServer.start_link(FanCan.Mailbox, %{})
+      FanCanWeb.Endpoint.subscribe("user" <> "_" <> socket.assigns.current_user.id)
+      Logger.info("The Pid: #{inspect pid}", ansi_color: :magenta_background)
+      # Dont need a new one each time
+      :ets.new(:mailbox_registry, [:set, :public, :named_table])
+      :ets.insert(:mailbox_registry, {socket.assigns.current_user.id, pid})
+      Phoenix.Component.assign(socket, :mailbox_pid, pid)
+  end
+
   defp mount_use_local_data(state, socket) do
       {_id, pid} = :ets.lookup(:mailbox_registry, socket.assigns.current_user.id) |> List.first()
-      send(pid, "This is a message from mount_use_local_data")
+      # Send message to mailbox
+      GenServer.cast(pid, {:put, :some_id, "now its a string message for :some_id"})
       Phoenix.Component.assign_new(socket, :use_local_data, fn ->
       # if state in Utils.states do
         case Public.state_records_exist?(state) do
