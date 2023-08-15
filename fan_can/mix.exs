@@ -60,7 +60,8 @@ defmodule FanCan.MixProject do
       {:scrivener_ecto, "~> 2.0"},
       {:dotenv_parser, "~> 2.0"},
       {:logger_file_backend, "~> 0.0.10"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:uuidv7, "~> 0.2"}
     ]
   end
 

@@ -209,6 +209,16 @@ defmodule FanCanWeb.HomeLive do
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
   end
 
+  def handle_event("send_message", %{"message" => %{"text" => text, "subject" => subject}}, socket) do
+    Logger.info("Params are #{text} and #{subject}", ansi_color: :blue_background)
+    info =
+      "Your message has been sent to USERNAME"
+
+    {:noreply,
+     socket
+     |> put_flash(:info, info)}
+  end
+
   # def get_loc_info(ip) do
   #   {:ok, resp} =
   #   #   Finch.build(:get, "https://ip.city/api.php?ip=#{ip}&key=#{System.fetch_env!("IP_CITY_API_KEY")}")

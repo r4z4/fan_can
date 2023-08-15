@@ -8,6 +8,7 @@ defmodule FanCan.Application do
   @impl true
   def start(_type, _args) do
     :ok = :telemetry.attach("ecto-logger", [:fan_can, :repo, :query], &FanCan.EctoLogger.handle_event/4, %{})
+    :ets.new(:mailbox_registry, [:set, :public, :named_table])
 
     children = [
       # Start the Telemetry supervisor

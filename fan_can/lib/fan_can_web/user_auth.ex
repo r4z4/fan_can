@@ -211,7 +211,6 @@ defmodule FanCanWeb.UserAuth do
       FanCanWeb.Endpoint.subscribe("user" <> "_" <> socket.assigns.current_user.id)
       Logger.info("The Pid: #{inspect pid}", ansi_color: :magenta_background)
       # Dont need a new one each time
-      :ets.new(:mailbox_registry, [:set, :public, :named_table])
       :ets.insert(:mailbox_registry, {socket.assigns.current_user.id, pid})
       Phoenix.Component.assign(socket, :mailbox_pid, pid)
   end

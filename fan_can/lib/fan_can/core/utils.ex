@@ -62,6 +62,10 @@ defmodule FanCan.Core.Utils do
         [:admin, :reader, :voter, :candidate]
     end
 
+    def message_type do
+        [:p2p, :dm, :advert, :cast]
+    end
+
     def resources do
         [:ballot, :election, :user, :candidate, :race, :forum, :post, :thread]
     end

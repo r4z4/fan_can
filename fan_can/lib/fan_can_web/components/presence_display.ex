@@ -2,12 +2,13 @@ defmodule FanCanWeb.Components.PresenceDisplay do
   use Phoenix.LiveComponent
   alias FanCan.Presence
   alias FanCan.Accounts
+  alias FanCanWeb.Components.SendMessage
+  alias FanCanWeb.CoreComponents
   #{u.username, u.email, u.confirmed_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
   # us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
 
   def mount(params, _session, socket) do
-    IO.inspect(socket, label: "Component Socket")
-    IO.inspect(params, label: "Component Params")
+    Logger.inf9("Presence Mount", ansi_color: [:magenta, :yellow_background])
     # # before subscribing, get current_player_count
     # topic = "home_page"
     # initial_count = Presence.list(topic) |> map_size
@@ -25,7 +26,8 @@ defmodule FanCanWeb.Components.PresenceDisplay do
     # Assigning to parent LV socket. Use thin_wrapper
     {:ok, 
       socket
-      |> assign(:room, params.room)}
+      |> assign(:room, params.room)
+      |> assign(:form, to_form(%{}, as: "message"))}
   end
 
   defp users_from_metas(metas) do
@@ -34,7 +36,6 @@ defmodule FanCanWeb.Components.PresenceDisplay do
   end
 
   def get_users(joins) do
-  IO.inspect(joins, label: "joins")
     for x <- Map.keys(joins) do 
       joins
         |> Map.get(x)
@@ -44,19 +45,11 @@ defmodule FanCanWeb.Components.PresenceDisplay do
   end
 
   def update(assigns, socket) do
-    IO.inspect(assigns, label: "assigns")
-    IO.inspect(assigns.room, label: "ROOM")
     socket = assign(socket, assigns)
-
     # before subscribing, get current_player_count
     # topic = "Lobby"
     initial_count = Presence.list(assigns.room) |> map_size
     users = Presence.list(assigns.room) |> get_users()
-
-    IO.inspect(Presence.list(assigns.room), label: "Presence.list(assigns.room)")
-
-    IO.inspect(users, label: "USERS")
-
     # Subscribe to the topic
     FanCanWeb.Endpoint.subscribe(assigns.room)
 
@@ -75,7 +68,12 @@ defmodule FanCanWeb.Components.PresenceDisplay do
     {:ok,
       socket
       |> assign(:users, users)
-      |> assign(:social_count, initial_count)}
+      |> assign(:social_count, initial_count)
+      |> assign(:form, to_form(%{}, as: "message"))}
+  end
+
+  slot :inner_block, required: true do
+    "Innr Block"
   end
 
   def render(assigns) do
@@ -91,7 +89,23 @@ defmodule FanCanWeb.Components.PresenceDisplay do
                     </div>
                       <icon :if={user.user_id == assigns.user_id}>✴</icon><%= user.username %>
                   </div>
+                  <div>
+                    <icon :if={Enum.member?(@user_follow_holds, user.user_id)} phx-click={CoreComponents.show_modal("send_message")} value={ user.user_id }>🗉</icon>
+                    <icon phx-click={CoreComponents.show_modal("send_message")} value={ user.user_id }>🗉</icon>
+                  </div>
               </div>
+              <CoreComponents.modal id="send_message">
+                <h2>Add a pet.</h2>
+                <CoreComponents.simple_form for={@form} id="send_message_form" phx-submit="send_message">
+                  <CoreComponents.input field={@form[:subject]} type="text" placeholder="Subject" required />
+                  <CoreComponents.input field={@form[:text]} type="textarea" placeholder="Message" required />
+                  <:actions>
+                    <CoreComponents.button phx-disable-with="Sending..." class="w-full">
+                      Send Message
+                    </CoreComponents.button>
+                  </:actions>>
+                </CoreComponents.simple_form>
+              </CoreComponents.modal>
             <% end %>
           <!-- End Card -->
         </div>
