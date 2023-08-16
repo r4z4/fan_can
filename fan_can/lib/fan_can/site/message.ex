@@ -14,6 +14,7 @@ defmodule FanCan.Site.Message do
     field :type, Ecto.Enum, values: Utils.message_type
     field :text, :string
     field :read, :boolean
+    field :saved, :boolean
 
     timestamps(only: :updated_at)
   end
@@ -21,7 +22,7 @@ defmodule FanCan.Site.Message do
   @doc false
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:id, :to, :from, :subject, :type, :text, :read])
+    |> cast(attrs, [:id, :to, :from, :subject, :type, :text, :read, :saved])
     |> validate_required([:to, :from, :id, :type])
   end
 end

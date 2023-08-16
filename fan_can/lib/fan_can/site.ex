@@ -10,6 +10,7 @@ defmodule FanCan.Site do
   alias FanCan.Site.Forum.Post
   alias FanCan.Site.Forum.Thread
   alias FanCan.Site.Message
+  alias FanCan.Accounts.User
 
   @doc """
   Returns the list of forums.
@@ -146,17 +147,13 @@ defmodule FanCan.Site do
     Repo.all(Message)
   end
 
-  def list_messages_plus do
-    query = from t in Message,
+  def list_user_messages(user_id) do
+    query = from m in Message,
       join: u in User,
-      on: t.creator == u.id,
-      # FIXME Change this to confirmed_at > inserted_at
-      # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :creator_name => u.username, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
-      # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
-      #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
-      # distinct: p.id
-      # where: u.age > type(^age, :integer)
+      on: m.to == u.id,
+      where: m.to == ^user_id,
+      # where m.read == false
+      select: %{:id => m.id, :subject => m.subject, :text => m.text, :from => m.from, :updated_at => m.updated_at}
     FanCan.Repo.all(query)
   end
 

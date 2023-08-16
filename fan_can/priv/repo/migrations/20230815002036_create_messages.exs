@@ -11,6 +11,7 @@ defmodule FanCan.Repo.Migrations.CreateMessages do
       add :text, :string
       # Most common case is adding a hold = default to true
       add :read, :boolean, null: false, default: false
+      add :saved, :boolean, null: false, default: false
 
       timestamps(only: :updated_at)
     end

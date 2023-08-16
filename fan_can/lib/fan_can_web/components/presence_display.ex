@@ -91,12 +91,17 @@ defmodule FanCanWeb.Components.PresenceDisplay do
                   </div>
                   <div>
                     <icon :if={Enum.member?(@user_follow_holds, user.user_id)} phx-click={CoreComponents.show_modal("send_message")} value={ user.user_id }>🗉</icon>
-                    <icon phx-click={CoreComponents.show_modal("send_message")} value={ user.user_id }>🗉</icon>
+                    <icon class="hover:cursor-pointer w-4 h-4" phx-click={CoreComponents.show_modal("send_message")} value={ user.user_id }>🗉</icon>
                   </div>
               </div>
               <CoreComponents.modal id="send_message">
-                <h2>Add a pet.</h2>
+                <h2 class="text-center text-white">Send Message</h2>
                 <CoreComponents.simple_form for={@form} id="send_message_form" phx-submit="send_message">
+
+                  <p class="text-white">To: <%= user.username %></p>
+                  <CoreComponents.input field={@form[:to]} type="hidden" value={ user.user_id } readonly />
+                  <CoreComponents.input field={@form[:patch]} type="hidden" value={ "/home" } readonly />
+
                   <CoreComponents.input field={@form[:subject]} type="text" placeholder="Subject" required />
                   <CoreComponents.input field={@form[:text]} type="textarea" placeholder="Message" required />
                   <:actions>

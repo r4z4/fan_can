@@ -209,14 +209,24 @@ defmodule FanCanWeb.HomeLive do
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
   end
 
-  def handle_event("send_message", %{"message" => %{"text" => text, "subject" => subject}}, socket) do
-    Logger.info("Params are #{text} and #{subject}", ansi_color: :blue_background)
-    info =
-      "Your message has been sent to USERNAME"
-
-    {:noreply,
-     socket
-     |> put_flash(:info, info)}
+  def handle_event("send_message", %{"message" => %{"text" => text, "subject" => subject, "to" => to, "patch" => patch}}, socket) do
+    Logger.info("Params are #{text} and #{subject} and to is #{to}", ansi_color: :blue_background)
+    case attrs = %{id: UUIDv7.generate(), to: to, from: socket.assigns.current_user.id, subject: subject, type: :p2p, text: text} |> FanCan.Site.create_message() do
+      {:ok, _} -> 
+        notif = "Your message has been sent!"
+        recv = %{type: :p2p, string: "New Message Received"}
+        FanCanWeb.Endpoint.broadcast!("user_" <> to, "new_message", recv)
+        {:noreply,
+          socket
+          |> put_flash(:info, notif)
+          |> push_navigate(to: patch)}
+      {:error, changeset} -> 
+        Logger.info("Send Message Erroer", ansi_color: :yellow)
+        notif = "Error Sending Message."
+        {:noreply,
+          socket
+          |> put_flash(:error, notif)}
+    end
   end
 
   # def get_loc_info(ip) do
@@ -311,6 +321,12 @@ defmodule FanCanWeb.HomeLive do
   @impl true
   def handle_info(%{event: "new_message", payload: new_message}, socket) do
     updated_messages = socket.assigns[:messages] ++ [new_message]
+    case new_message.type do
+      :p2p -> Logger.info("In this case we need to refetch all unread messages from DB and display that number", ansi_color: :magenta_background)
+      :candidate -> Logger.info("Cndidate New Message", ansi_color: :yellow)
+      :post -> Logger.info("Post New Message", ansi_color: :yellow)
+      :thread -> Logger.info("Thread New Message", ansi_color: :yellow)
+    end
 
     {:noreply,
      socket

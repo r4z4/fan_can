@@ -68,6 +68,23 @@ defmodule FanCanWeb.ForumLive.Main do
     {:noreply, stream_insert(socket, :forums, forum)}
   end
 
+  def handle_event("send_message", %{"message" => %{"text" => text, "subject" => subject, "to" => to}}, socket) do
+    Logger.info("Params are #{text} and #{subject} and to is #{to}", ansi_color: :blue_background)
+    case attrs = %{id: UUIDv7.generate(), to: to, from: socket.assigns.current_user.user_id, subject: subject, type: :p2p, text: text, read: false} |> FanCan.Site.create_message() do
+      {:ok, _} -> 
+        info = "Your message has been sent to USERNAME"
+        {:noreply,
+          socket
+          |> put_flash(:info, info)}
+      {:error, changeset} -> 
+        Logger.info("Send Message Erroer", ansi_color: :yellow)
+        error = "Error Sending Message."
+        {:noreply,
+          socket
+          |> put_flash(:error, error)}
+    end
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     forum = Site.get_forum!(id)
