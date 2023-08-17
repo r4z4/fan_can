@@ -1,6 +1,6 @@
 defmodule FanCanWeb.ForumLive.Main do
   use FanCanWeb, :live_view
-
+  require Logger
   alias FanCan.Site
   alias FanCan.Site.Forum
   alias FanCanWeb.Components.PresenceDisplay
@@ -70,7 +70,7 @@ defmodule FanCanWeb.ForumLive.Main do
 
   def handle_event("send_message", %{"message" => %{"text" => text, "subject" => subject, "to" => to}}, socket) do
     Logger.info("Params are #{text} and #{subject} and to is #{to}", ansi_color: :blue_background)
-    case attrs = %{id: UUIDv7.generate(), to: to, from: socket.assigns.current_user.user_id, subject: subject, type: :p2p, text: text, read: false} |> FanCan.Site.create_message() do
+    case attrs = %{id: UUIDv7.generate(), to: to, from: socket.assigns.current_user.id, subject: subject, type: :p2p, text: text, read: false} |> FanCan.Site.create_message() do
       {:ok, _} -> 
         info = "Your message has been sent to USERNAME"
         {:noreply,
@@ -83,6 +83,22 @@ defmodule FanCanWeb.ForumLive.Main do
           socket
           |> put_flash(:error, error)}
     end
+  end
+
+  @impl true
+  def handle_info(%{event: "new_message", payload: new_message}, socket) do
+    updated_messages = socket.assigns[:messages] ++ [new_message]
+    case new_message.type do
+      :p2p -> Logger.info("In this case we need to refetch all unread messages from DB and display that number", ansi_color: :magenta_background)
+      :candidate -> Logger.info("Cndidate New Message", ansi_color: :yellow)
+      :post -> Logger.info("Post New Message", ansi_color: :yellow)
+      :thread -> Logger.info("Thread New Message", ansi_color: :yellow)
+    end
+
+    {:noreply,
+     socket
+     |> assign(:messages, updated_messages)
+     |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 
   @impl true

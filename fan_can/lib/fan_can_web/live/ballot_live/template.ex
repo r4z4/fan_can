@@ -68,6 +68,7 @@ defmodule FanCanWeb.BallotLive.Template do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     ballot_races = Election.get_ballot_races(id)
+    Logger.info("Template Issue #{inspect ballot_races}", ansi_color: :yellow)
     final_ballot_races = 
       for ballot_race <- ballot_races do
         # candidates = Election.get_candidates(ballot_race.id)
@@ -75,6 +76,7 @@ defmodule FanCanWeb.BallotLive.Template do
         new = 
           Map.replace(ballot_race, :candidates, candidates)
       end
+    Logger.info("Template Issue #{inspect final_ballot_races}", ansi_color: :green)
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))

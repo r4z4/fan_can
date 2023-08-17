@@ -125,6 +125,12 @@ defmodule FanCan.Accounts do
           # Repo.all returns a list
     Repo.all(query)
   end
+
+  def update_hold(%Holds{} = hold, attrs) do
+    hold
+    |> Holds.changeset(attrs)
+    |> Repo.update()
+  end
   
 
   @doc """

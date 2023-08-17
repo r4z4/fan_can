@@ -13,7 +13,7 @@ defmodule FanCanWeb.Components.StateSnapshot do
                     <div class="h-20 w-auto sm:mr-10 items-center justify-center flex-shrink-0">
                         <h1 class="text-black text-center text-2xl title-font font-bold mb-2">State Snapshot</h1>
                         <p class="leading-relaxed text-base md:text-sm sm:text-xs text-center">Highlights of current action in your state surrouding local, state and national elections.</p>
-                        <img class="m-auto text-center w-5/5" src={"/images/state_svg/ne.svg"} />
+                        <img class="m-auto text-center w-5/5" src={"/images/state_svg/#{Atom.to_string(@state) |> String.downcase()}/outline.svg"} />
                       </div>
                       <div class="py-4">
                           <div class=" inline-block mr-2" >

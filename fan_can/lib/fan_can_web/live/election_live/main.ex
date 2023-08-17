@@ -73,7 +73,7 @@ defmodule FanCanWeb.ElectionLive.Main do
     for item <- list do
       attrs = %{api_map: item}
       case Public.create_legislator_json(attrs) do
-        {:ok, leg} -> IO.puts("Leg")
+        {:ok, leg} -> :ok
         {:error, changeset} -> IO.puts("Nope")
       end
     end
@@ -103,9 +103,9 @@ defmodule FanCanWeb.ElectionLive.Main do
   end
 
   defp create_ballot_races(legislators, election_id) do
-    # IO.inspect(List.first(legislators), label: "LIST first leg")
+    IO.inspect(List.first(legislators), label: "LIST first leg")
     race_list = Enum.map(legislators, fn leg -> %{election_id: election_id, candidates: [leg.id], seat: String.to_existing_atom(leg.role), district: leg.district, inserted_at: NaiveDateTime.local_now(), updated_at: NaiveDateTime.local_now()} end)
-    # IO.inspect(race_list, label: "race_list")
+    IO.inspect(race_list, label: "race_list")
     case Public.create_leg_ballot_races(race_list) do
       {:ok, id} -> IO.inspect(id, label: "ID of Created Insert all")
       {:error, resp} -> IO.inspect(resp, label: "RESP")

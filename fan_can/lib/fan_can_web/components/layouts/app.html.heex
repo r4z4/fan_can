@@ -5,8 +5,9 @@
         <a href="/" class="hover:text-zinc-700">
           Main Site
         </a>
-        <FanCanWeb.Components.MailboxCard.display some_id={GenServer.call(@mailbox_pid, {:get, :some_id})}/>
-        <button class="rounded-lg bg-zinc-100 px-2 py-1 text-black hover:bg-zinc-200/80" phx-click={show_modal("user-modal")}><span aria-hidden="true">📧</span> Messages</button>
+        <%= if @current_user do %>
+          <FanCanWeb.Components.MailboxCard.display some_id={GenServer.call(@mailbox_pid, {:get, :some_id})}/>
+        <% end %>
       </p>
     </div>
     <div class="flex items-center gap-4 font-semibold leading-6 text-white">

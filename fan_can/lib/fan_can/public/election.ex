@@ -405,8 +405,10 @@ defmodule FanCan.Public.Election do
       where: h.type == ^attrs.type,
       select: h
     hold = FanCan.Repo.one(query)
-    Account.update_hold(hold, active: false)
-    if !hold do
+    
+    if hold do
+      Accounts.update_hold(hold, active: true)
+    else
       case Map.fetch(attrs, :hold_cat) do
         {:ok, :candidate} -> 
           %Holds{}

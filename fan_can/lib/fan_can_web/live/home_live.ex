@@ -191,7 +191,7 @@ defmodule FanCanWeb.HomeLive do
         
         </div>
 
-        <StateSnapshot.display g_candidates={@g_candidates}/>
+        <StateSnapshot.display state={@current_user.state} g_candidates={@g_candidates}/>
     </div>
     """
   end

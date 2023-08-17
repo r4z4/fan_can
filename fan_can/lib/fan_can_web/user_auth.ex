@@ -209,7 +209,7 @@ defmodule FanCanWeb.UserAuth do
   defp mount_mailbox_pid(socket) do
       {:ok, pid} = GenServer.start_link(FanCan.Mailbox, %{})
       FanCanWeb.Endpoint.subscribe("user" <> "_" <> socket.assigns.current_user.id)
-      Logger.info("The Pid: #{inspect pid}", ansi_color: :magenta_background)
+      Logger.info("The Pid: #{inspect pid} and Registered to user_#{socket.assigns.current_user.id}", ansi_color: :magenta_background)
       # Dont need a new one each time
       :ets.insert(:mailbox_registry, {socket.assigns.current_user.id, pid})
       Phoenix.Component.assign(socket, :mailbox_pid, pid)

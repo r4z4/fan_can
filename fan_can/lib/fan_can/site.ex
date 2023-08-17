@@ -152,8 +152,8 @@ defmodule FanCan.Site do
       join: u in User,
       on: m.to == u.id,
       where: m.to == ^user_id,
-      # where m.read == false
-      select: %{:id => m.id, :subject => m.subject, :text => m.text, :from => m.from, :updated_at => m.updated_at}
+      where: m.read == false or (m.read == true and m.saved == true),
+      select: %{:id => m.id, :subject => m.subject, :text => m.text, :from => m.from, :updated_at => m.updated_at, :read => m.read, :saved => m.saved}
     FanCan.Repo.all(query)
   end
 
