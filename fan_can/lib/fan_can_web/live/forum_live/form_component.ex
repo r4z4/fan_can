@@ -9,7 +9,6 @@ defmodule FanCanWeb.ForumLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage forum records in your database.</:subtitle>
       </.header>
 
       <.simple_form

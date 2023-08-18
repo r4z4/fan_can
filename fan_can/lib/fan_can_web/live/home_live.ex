@@ -284,7 +284,6 @@ defmodule FanCanWeb.HomeLive do
     """
 
   defp floor_query(chamber \\ "house") do
-    IO.puts("Floor Query firing")
     date = Date.utc_today()
     # state_str = get_str(state)
     # IO.inspect(state_str, label: "State")
@@ -320,7 +319,6 @@ defmodule FanCanWeb.HomeLive do
 
   @impl true
   def handle_info(%{event: "new_message", payload: new_message}, socket) do
-    updated_messages = socket.assigns[:messages] ++ [new_message]
     case new_message.type do
       :p2p -> Logger.info("In this case we need to refetch all unread messages from DB and display that number", ansi_color: :magenta_background)
       :candidate -> Logger.info("Cndidate New Message", ansi_color: :yellow)
@@ -330,7 +328,7 @@ defmodule FanCanWeb.HomeLive do
 
     {:noreply,
      socket
-     |> assign(:messages, updated_messages)
+     |> assign(:messages, FanCan.Site.list_user_messages(socket.assigns.current_user.id))
      |> put_flash(:info, "PubSub: #{new_message.string}")}
   end
 

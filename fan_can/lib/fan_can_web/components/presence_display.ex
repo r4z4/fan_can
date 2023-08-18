@@ -87,11 +87,11 @@ defmodule FanCanWeb.Components.PresenceDisplay do
                     <div :if={Enum.member?(@user_follow_holds, user.user_id)}>
                       <button phx-click="toggle_follow" value={ user.user_id } id="follow_btn">✅</button>
                     </div>
-                      <icon :if={user.user_id == assigns.user_id}>✴</icon><%= user.username %>
+                      <icon :if={user.user_id == assigns.user_id}><Heroicons.LiveView.icon name="user-circle" class="h-4 w-4 text-green-700" /></icon><%= user.username %>
                   </div>
                   <div>
                     <icon :if={Enum.member?(@user_follow_holds, user.user_id)} phx-click={CoreComponents.show_modal("send_message_" <> user.user_id)} value={ user.user_id }>🗉</icon>
-                    <icon class="hover:cursor-pointer w-4 h-4" phx-click={CoreComponents.show_modal("send_message_" <> user.user_id)} value={ user.user_id }>🗉</icon>
+                    <icon class="hover:cursor-pointer" phx-click={CoreComponents.show_modal("send_message_" <> user.user_id)} value={ user.user_id }><Heroicons.LiveView.icon name="envelope" class="ml-2 h-3 w-3" /></icon>
                   </div>
               </div>
               <CoreComponents.modal id={"send_message_" <> user.user_id}>

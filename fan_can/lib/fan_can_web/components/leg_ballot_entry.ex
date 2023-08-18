@@ -7,22 +7,7 @@ defmodule FanCanWeb.Components.LegBallotEntry do
   alias FanCanWeb.Components.StateSnapshot
   alias FanCan.Core.Utils
 
-  attr :ballot_race, :map, default: nil
-  attr :district, :integer, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-
-  slot :inner_block, required: true
-
-  defp get_races(holds) do
-    # Enum.filter(holds, fn x -> x.type == :races end)
-    holds.race_holds
-  end
-
-  defp get_elections(holds) do
-    holds.election_holds
-  end
-
-    defp comprehend(list) do
+  defp comprehend(list) do
     for x <- list do
       x.hold_cat_id
     end
@@ -73,10 +58,10 @@ defmodule FanCanWeb.Components.LegBallotEntry do
           <div class="mt-2">
             <a href={"/races/inspect/#{@ballot_race.id}"}><Heroicons.LiveView.icon name="magnifying-glass" type="outline" class="h-5 w-5 inline text-white" /></a>
             <div class="inline w-auto bg-slate-700 rounded-md">
-              <button type="button" phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:favorite}><Heroicons.LiveView.icon name="star" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-              <button type="button" phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:share}><Heroicons.LiveView.icon name="share" type="outline" class="h-5 w-5 text-white" /></button>
-              <button type="button" phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:alert}><Heroicons.LiveView.icon name="bell" type="outline" class="h-5 w-5 text-yellow-300" /></button>
-              <button type="button" phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:bookmark}><Heroicons.LiveView.icon name="bookmark" type="outline" class="h-5 w-5 text-orange-200" /></button>
+              <button type="button" disabled={Enum.any?(@race_holds, fn x -> x.type == :favorite end)} phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:favorite}><Heroicons.LiveView.icon name="star" type={if Enum.any?(@race_holds, fn x -> x.type == :favorite end), do: "solid", else: "outline"} class="h-5 w-5 text-yellow-300" /></button>
+              <button type="button" disabled={Enum.any?(@race_holds, fn x -> x.type == :share end)} phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:share}><Heroicons.LiveView.icon name="share" type={if Enum.any?(@race_holds, fn x -> x.type == :share end), do: "solid", else: "outline"} class="h-5 w-5 text-white" /></button>
+              <button type="button" disabled={Enum.any?(@race_holds, fn x -> x.type == :alert end)} phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:alert}><Heroicons.LiveView.icon name="bell" type={if Enum.any?(@race_holds, fn x -> x.type == :alert end), do: "solid", else: "outline"} class="h-5 w-5 text-yellow-300" /></button>
+              <button type="button" disabled={Enum.any?(@race_holds, fn x -> x.type == :bookmark end)} phx-click="action_click" phx-value-id={@ballot_race.id} phx-value-desc={@ballot_race.desc} phx-value-type={:bookmark}><Heroicons.LiveView.icon name="bookmark" type={if Enum.any?(@race_holds, fn x -> x.type == :bookmark end), do: "solid", else: "outline"} class="h-5 w-5 text-orange-200" /></button>
             </div>
           </div>
       </div>

@@ -43,13 +43,13 @@ defmodule FanCanWeb.ThreadLive.Show do
     attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :upvote, hold_cat: :post, hold_cat_id: id}
     case Election.register_hold(attrs) do
       {:ok, holds} -> 
-        IO.inspect(holds, label: "Holds: ")
         {:noreply,
           socket
+          # Not reading from DB. Just adding straight to FE state. But it will be in DB.
+          |> assign(:post_upvote_ids, [id | socket.assigns.post_upvote_ids])
           |> put_flash(:info, "Upvoted: #{post.title}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset, label: "Holds Error: ")
         {:noreply, 
           socket
           |> put_flash(:error, "Error upvoting #{post.title}")}
@@ -82,7 +82,21 @@ defmodule FanCanWeb.ThreadLive.Show do
     # Add pubsub msg
     downvoted_message = %{type: :post, string: "Hey! User #{socket.assigns.current_user.id} downvoted your post :)"}
     FanCanWeb.Endpoint.broadcast!("posts_" <> post.author, "new_message", downvoted_message)
-    {:noreply, socket}
+    attrs = %{id: Ecto.UUID.generate(), user_id: socket.assigns.current_user.id, type: :downvote, hold_cat: :post, hold_cat_id: id}
+    case Election.register_hold(attrs) do
+      {:ok, holds} -> 
+        IO.inspect(holds, label: "Holds: ")
+        {:noreply,
+          socket
+          |> assign(:post_downvote_ids, [id | socket.assigns.post_downvote_ids])
+          |> put_flash(:info, "Downvoted: #{post.title}")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset, label: "Holds Error: ")
+        {:noreply, 
+          socket
+          |> put_flash(:error, "Error downvoting #{post.title}")}
+    end
   end
 
   defp page_title(:show), do: "Posts for Thread"

@@ -11,7 +11,7 @@ defmodule FanCanWeb.Components.MailboxClient do
                       <%= for message <- @some_id do %>
                         <li class={"#{if message.read, do: 'border-2 border-sky-500'}"}}>
                           <details class="open:bg-slate-900 duration-300">
-                            <summary class="bg-inherit px-5 py-3 text-lg cursor-pointer"><%= message.updated_at %> || <b class="text-green-400">Subject:</b> <%= message.subject %></summary>
+                            <summary class="bg-inherit px-5 py-3 text-sm cursor-pointer"><%= message.updated_at %> || From: <%= message.from_name %> | <b class="text-green-400">Subject:</b> <%= message.subject %></summary>
                             <div class="px-5 py-3 border border-gray-300 text-sm font-light">
                                 <p><%= message.text %></p>
                             </div>

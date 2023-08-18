@@ -13,7 +13,7 @@
   row_click={fn {_id, thread} -> JS.navigate(~p"/threads/#{thread}") end}
 >
   <:col :let={{_id, thread}} label="Title"><%= thread.title %></:col>
-  <:col :let={{_id, thread}} label="Creator"><%= thread.creator %></:col>
+  <:col :let={{_id, thread}} label="Creator"><%= thread.creator_name %></:col>
   <:col :let={{_id, thread}} label="Content"><%= thread.content %></:col>
   <:col :let={{_id, thread}} label="Likes"><%= thread.likes %></:col>
   <:col :let={{_id, thread}} label="Shares"><%= thread.shares %></:col>

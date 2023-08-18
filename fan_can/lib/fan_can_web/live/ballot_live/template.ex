@@ -93,9 +93,10 @@ defmodule FanCanWeb.BallotLive.Template do
     IO.inspect(attrs, label: "attrs")
       # FIXME: Move to RegisterHandlers
       case Election.register_hold(attrs) do
-        {:ok, holds} -> 
+        {:ok, hold} -> 
           {:noreply,
             socket
+            |> assign(:current_user_holds, Map.put(socket.assigns.current_user_holds, :race_holds, [hold | socket.assigns.current_user_holds.race_holds]))
             |> put_flash(:info, "We have set a #{type} for #{attrs.hold_cat}: #{id}")}
 
         {:error, %Ecto.Changeset{} = changeset} ->

@@ -25,8 +25,8 @@ defmodule FanCan.Site.Forum do
     |> validate_required([:title, :category])
   end
 
-  alias FanCan.Site.Forum.Thread
-
+  alias FanCan.Site.Forum.{Thread, ThreadPlus}
+  
   @doc """
   Returns the threads for a particular forum based on forum_id.
 
@@ -70,7 +70,7 @@ defmodule FanCan.Site.Forum do
       on: t.creator == u.id,
       # FIXME Change this to confirmed_at > inserted_at
       # Or can do "id" => r.id, "candidates" => .... then access via ballot_race["id"] in template.
-      select: %{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :creator_name => u.username, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
+      select: %ThreadPlus{:id => t.id, :title => t.title, :forum_id => t.forum_id, :content => t.content, :creator => t.creator, :creator_name => u.username, :likes => t.likes, :shares => t.shares, :inserted_at => t.inserted_at, :updated_at => t.updated_at}
       # select: {u.username, u.email, u.inserted_at, us.easy_games_played, us.easy_games_finished, us.med_games_played, us.med_games_finished, us.hard_games_played, us.hard_games_finished, 
       #           us.easy_poss_pts, us.easy_earned_pts, us.med_poss_pts, us.med_earned_pts, us.hard_poss_pts, us.hard_earned_pts}
       # distinct: p.id

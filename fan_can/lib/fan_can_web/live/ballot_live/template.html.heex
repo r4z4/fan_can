@@ -64,7 +64,6 @@
     </div>
 </div>
 
-
 <section class="h-screen w-8/9 bg-slate-800">
   <.simple_form
     for={@ballot_form}
@@ -76,7 +75,7 @@
     <div class="grid justify-center md:grid-cols-4 lg:grid-cols-6 gap-3 lg:gap-5 my-10">
       <!-- Card -->
         <div :for={ballot_race <- @ballot_races} class="bg-slate-700 text-white rounded-lg border shadow-md max-w-xs md:max-w-none overflow-hidden">
-          <LegBallotEntry.display ballot_race={ballot_race} vote_list={@vote_list} />
+          <LegBallotEntry.display ballot_race={ballot_race} vote_list={@vote_list} race_holds={Enum.filter(@current_user_holds.race_holds, fn x -> x.hold_cat_id == ballot_race.id end)}/>
           <!-- <BallotEntry.display ballot_race={ballot_race} vote_list={@vote_list}/> -->
         </div>
     </div>

@@ -149,11 +149,14 @@ defmodule FanCan.Site do
 
   def list_user_messages(user_id) do
     query = from m in Message,
-      join: u in User,
-      on: m.to == u.id,
+      join: u_t in User,
+      on: m.to == u_t.id,
+      join: u_f in User,
+      on: m.from == u_f.id,
       where: m.to == ^user_id,
       where: m.read == false or (m.read == true and m.saved == true),
-      select: %{:id => m.id, :subject => m.subject, :text => m.text, :from => m.from, :updated_at => m.updated_at, :read => m.read, :saved => m.saved}
+      limit: 20,
+      select: %{:id => m.id, :subject => m.subject, :text => m.text, :from => m.from, :from_name => u_f.username, :updated_at => m.updated_at, :read => m.read, :saved => m.saved}
     FanCan.Repo.all(query)
   end
 
